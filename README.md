@@ -38,7 +38,11 @@ The site is fully static, so RSVPs need somewhere to go:
 
 **Azure Static Web Apps:** create a Static Web App pointing at this repo with app location `/` and no build command or output location.
 
-**GitHub Pages / any static host:** in the repo settings go to Pages, then deploy from the `main` branch, root folder. All paths are relative, so it also works from a sub-path.
+**GitHub Pages:** in **Settings → Pages**, choose **Deploy from a branch**, then **main** and **/ (root)**. The site is served at https://abinashpatra1.github.io/WeddingInvitation/ and every push to `main` redeploys it.
+
+> If you move the site to another URL, update `og:url`, `og:image` and `canonical` in `index.html`. Link previews on WhatsApp and Facebook need absolute URLs.
+
+**Any other static host:** upload the folder as-is. All asset paths are relative.
 
 **Local preview:**
 

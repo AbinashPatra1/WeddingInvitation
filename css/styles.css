@@ -805,6 +805,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .stepper input::-webkit-outer-spin-button,
 .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+.form__note { font-size: 0.8rem; text-align: center; color: var(--muted); margin-top: 10px; }
 .form__status { font-size: 0.85rem; text-align: center; color: #b23b2e; }
 .form__status:empty { display: none; }
 

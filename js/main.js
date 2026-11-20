@@ -10,12 +10,8 @@
     // Countdown target (IST)
     weddingDate: "2027-02-12T19:30:00+05:30",
 
-    // Optional: POST endpoint for RSVPs (Formspree, Google Apps Script, Azure Function…).
-    // Leave empty to keep RSVPs on-device and offer a WhatsApp hand-off instead.
-    // Formspree example: "https://formspree.io/f/xxxxxxx"
-    rsvpEndpoint: "",
-
-    // WhatsApp number to receive RSVPs (country code, digits only). Empty = let guest pick a chat.
+    // WhatsApp number that receives every RSVP (country code + digits only, no "+" or spaces).
+    // e.g. "919876543210". On submit, WhatsApp opens with the RSVP message pre-filled for this number.
     whatsappNumber: "",
 
     storageKey: "am-wedding-rsvp"
@@ -364,16 +360,20 @@
 
   function whatsappLink(d) {
     var foodLabel = { veg: "Veg", "non-veg": "Non-veg", jain: "Jain" }[d.food] || "";
+    var yes = d.attending === "yes";
     var lines = [
-      "💌 RSVP — Abinash & Mousumi's Wedding",
-      "Name: " + d.name,
-      "Attending: " + (d.attending === "yes" ? "Yes 🎉" : "No 🙏")
+      "💌 *New RSVP — Abinash & Mousumi's Wedding*",
+      "",
+      "👤 *Name:* " + d.name
     ];
-    if (d.attending === "yes") {
-      lines.push("Guests: " + d.guests);
-      lines.push("Food: " + foodLabel + (d.diet ? " (" + d.diet + ")" : ""));
+    if (d.phone) lines.push("📞 *Phone:* " + d.phone);
+    lines.push(yes ? "✅ *Attending:* Joyfully accepts 🎉" : "❌ *Attending:* Regretfully declines 🙏");
+    if (yes) {
+      lines.push("👥 *Guests:* " + d.guests);
+      lines.push("🍽️ *Food:* " + foodLabel);
+      if (d.diet) lines.push("⚠️ *Dietary notes:* " + d.diet);
     }
-    if (d.message) lines.push("Wish: " + d.message);
+    if (d.message) { lines.push(""); lines.push("💬 *Wish:* " + d.message); }
     var base = CONFIG.whatsappNumber ? "https://wa.me/" + CONFIG.whatsappNumber : "https://wa.me/";
     return base + "?text=" + encodeURIComponent(lines.join("\n"));
   }
@@ -402,15 +402,6 @@
     updateCounter();
   }
 
-  function send(d) {
-    if (!CONFIG.rsvpEndpoint) return Promise.resolve();
-    return fetch(CONFIG.rsvpEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(d)
-    }).then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); });
-  }
-
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.textContent = "";
@@ -430,25 +421,11 @@
     }
 
     var data = collect();
-    submitBtn.disabled = true;
-    submitBtn.classList.add("is-loading");
-    $(".btn__label", submitBtn).textContent = "Sending…";
-
-    send(data)
-      .then(function () {
-        store.set(CONFIG.storageKey, data);
-        showDone(data);
-      })
-      .catch(function () {
-        statusEl.textContent = "We couldn't send that right now. Please try again, or use WhatsApp below.";
-        store.set(CONFIG.storageKey, data);
-        $("#rsvp-whatsapp").href = whatsappLink(data);
-      })
-      .then(function () {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("is-loading");
-        $(".btn__label", submitBtn).textContent = $(".btn__label", submitBtn).dataset.idle || "Send RSVP";
-      });
+    store.set(CONFIG.storageKey, data);
+    showDone(data);
+    // Opened synchronously inside the submit gesture so popup blockers allow it.
+    // If it is blocked, the "Send on WhatsApp" button on the thank-you card still works.
+    window.open(whatsappLink(data), "_blank", "noopener");
   });
 
   $("#rsvp-edit").addEventListener("click", function () {

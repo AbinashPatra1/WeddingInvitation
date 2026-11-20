@@ -31,8 +31,7 @@ wedding/
 
 The site is fully static, so RSVPs need somewhere to go:
 
-1. **Default (no setup):** the response is saved on the guest's device. The guest then gets a one-tap **"Also send on WhatsApp"** button with a pre-filled message. Set `CONFIG.whatsappNumber` (for example `"919876543210"`) so those messages come straight to you.
-2. **Collected centrally:** set `CONFIG.rsvpEndpoint` to any endpoint that accepts a JSON `POST`, such as Formspree, a Google Apps Script web app writing to a Sheet, or an Azure Function.
+1. **WhatsApp (default):** when a guest submits, WhatsApp opens with a formatted RSVP message addressed to `CONFIG.whatsappNumber` (country code + digits, e.g. `"919876543210"`). The guest just presses send. A fallback button on the thank-you card reopens it if the browser blocked the popup.
 
 ## Deploy
 

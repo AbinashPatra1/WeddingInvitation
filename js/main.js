@@ -277,7 +277,6 @@
   var counter = $("#c-message");
   var guests = $("#f-guests");
   var nameInput = $("#f-name");
-  var phoneInput = $("#f-phone");
 
   var validators = {
     name: function () {
@@ -285,13 +284,6 @@
       if (!v) return "Please tell us your name.";
       if (v.length < 2) return "Name looks a little short.";
       if (!/^[\p{L}\p{M}' .-]+$/u.test(v)) return "Please use letters only.";
-      return "";
-    },
-    phone: function () {
-      var v = phoneInput.value.trim();
-      if (!v) return "";
-      var digits = v.replace(/\D/g, "");
-      if (!/^[+\d\s()-]+$/.test(v) || digits.length < 10 || digits.length > 13) return "Please enter a valid phone number.";
       return "";
     },
     attending: function () {
@@ -302,6 +294,10 @@
       var n = Number(guests.value);
       if (!Number.isInteger(n) || n < 1 || n > 10) return "Please choose between 1 and 10 guests.";
       return "";
+    },
+    events: function () {
+      if (form.attending.value !== "yes") return "";
+      return $$('input[name="events"]:checked', form).length ? "" : "Please pick at least one event.";
     },
     food: function () {
       if (form.attending.value !== "yes") return "";
@@ -330,7 +326,7 @@
 
   // Immediate feedback: validate on blur, re-validate live once a field has been touched
   var touched = {};
-  ["name", "phone"].forEach(function (name) {
+  ["name"].forEach(function (name) {
     var input = $("#f-" + name);
     input.addEventListener("blur", function () {
       if (input.value.trim() || touched[name]) { touched[name] = true; validateField(name, !!input.value.trim()); }
@@ -347,6 +343,9 @@
   }
   $$('input[name="attending"]').forEach(function (r) {
     r.addEventListener("change", function () { validateField("attending"); toggleExtra(); });
+  });
+  $$('input[name="events"]').forEach(function (c) {
+    c.addEventListener("change", function () { validateField("events"); });
   });
   $$('input[name="food"]').forEach(function (r) {
     r.addEventListener("change", function () { validateField("food"); });
@@ -374,11 +373,10 @@
     var attending = form.attending.value;
     return {
       name: nameInput.value.trim(),
-      phone: phoneInput.value.trim(),
       attending: attending,
       guests: attending === "yes" ? Number(guests.value) : 0,
       food: attending === "yes" ? form.food.value : "",
-      diet: attending === "yes" ? form.diet.value.trim() : "",
+      events: attending === "yes" ? $$('input[name="events"]:checked', form).map(function (c) { return c.value; }) : [],
       message: msg.value.trim(),
       submittedAt: new Date().toISOString()
     };
@@ -393,12 +391,11 @@
       "",
       "👤 *Name:* " + d.name
     ];
-    if (d.phone) lines.push("📞 *Phone:* " + d.phone);
     lines.push(yes ? "✅ *Attending:* Joyfully accepts 🎉" : "❌ *Attending:* Regretfully declines 🙏");
     if (yes) {
+      if (d.events && d.events.length) lines.push("📅 *Events:* " + d.events.join(", "));
       lines.push("👥 *Guests:* " + d.guests);
       lines.push("🍽️ *Food:* " + foodLabel);
-      if (d.diet) lines.push("⚠️ *Dietary notes:* " + d.diet);
     }
     if (d.message) { lines.push(""); lines.push("💬 *Wish:* " + d.message); }
     var base = CONFIG.whatsappNumber ? "https://wa.me/" + CONFIG.whatsappNumber : "https://wa.me/";
@@ -419,11 +416,11 @@
 
   function fillForm(d) {
     nameInput.value = d.name || "";
-    phoneInput.value = d.phone || "";
     $$('input[name="attending"]').forEach(function (r) { r.checked = r.value === d.attending; });
     guests.value = d.guests || 1;
     $$('input[name="food"]').forEach(function (r) { r.checked = r.value === d.food; });
-    form.diet.value = d.diet || "";
+    var chosen = d.events || [];
+    $$('input[name="events"]').forEach(function (c) { c.checked = !chosen.length || chosen.indexOf(c.value) !== -1; });
     msg.value = d.message || "";
     toggleExtra();
     updateCounter();
@@ -432,11 +429,11 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     statusEl.textContent = "";
-    var order = ["name", "phone", "attending", "guests", "food", "message"];
+    var order = ["attending", "name", "events", "guests", "food", "message"];
     var firstBad = null;
     order.forEach(function (name) {
       touched[name] = true;
-      var ok = validateField(name, name === "name" || (name === "phone" && phoneInput.value.trim()));
+      var ok = validateField(name, name === "name");
       if (!ok && !firstBad) firstBad = name;
     });
     if (firstBad) {

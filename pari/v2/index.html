@@ -212,6 +212,22 @@
         </ol>
       </section>
 
+      <!-- GIFTS (the humorous one) -->
+      <section class="section section--gifts" id="gifts" aria-labelledby="gifts-title">
+        <p class="eyebrow reveal">The Shagun Desk</p>
+        <h2 class="section__title reveal" id="gifts-title">Gift Registry<sup>*</sup></h2>
+
+        <div class="shagun card reveal">
+          <div class="shagun__coins" aria-hidden="true"><span>💸</span><span>💰</span><span>🪙</span></div>
+          <p class="shagun__pitch">We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.</p>
+          <p class="shagun__pitch">Your blessings are priceless. Cash, however, is also accepted. 😇</p>
+          <button class="btn btn--gold btn--block shagun__btn" type="button" id="shagun-btn">
+            <svg aria-hidden="true"><use href="#i-gift"/></svg>Send Shagun
+          </button>
+          <p class="shagun__fine"><sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.</p>
+        </div>
+      </section>
+
       <!-- RSVP -->
       <section class="section section--rsvp" id="rsvp" aria-labelledby="rsvp-title">
         <p class="eyebrow reveal">Kindly respond by 15 January 2027</p>
@@ -288,7 +304,7 @@
               <span class="btn__label">Send RSVP via WhatsApp</span>
               <span class="btn__spinner" aria-hidden="true"></span>
             </button>
-            <p class="form__note">Tapping send opens WhatsApp with your RSVP ready to go. Just press send there.</p>
+            <p class="form__note">Next, we'll open WhatsApp with your RSVP ready to go.</p>
             <p class="form__status" id="rsvp-status" role="status" aria-live="polite"></p>
           </form>
 
@@ -304,22 +320,6 @@
         </div>
       </section>
 
-      <!-- GIFTS (the humorous one) -->
-      <section class="section section--gifts" id="gifts" aria-labelledby="gifts-title">
-        <p class="eyebrow reveal">The Shagun Desk</p>
-        <h2 class="section__title reveal" id="gifts-title">Gift Registry<sup>*</sup></h2>
-
-        <div class="shagun card reveal">
-          <div class="shagun__coins" aria-hidden="true"><span>💸</span><span>💰</span><span>🪙</span></div>
-          <p class="shagun__pitch">We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.</p>
-          <p class="shagun__pitch">Your blessings are priceless. Cash, however, is also accepted. 😇</p>
-          <button class="btn btn--gold btn--block shagun__btn" type="button" id="shagun-btn">
-            <svg aria-hidden="true"><use href="#i-gift"/></svg>Send Shagun
-          </button>
-          <p class="shagun__fine"><sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.</p>
-        </div>
-      </section>
-
     </main>
 
     <footer class="footer">
@@ -332,8 +332,8 @@
     <nav class="tabbar" id="tabbar" aria-label="Sections">
       <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
       <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span>Events</span></a>
-      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>RSVP</span></a>
       <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span>Gifts</span></a>
+      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>RSVP</span></a>
       <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span>Share</span></button>
     </nav>
   </div>
@@ -347,6 +347,21 @@
       <div class="modal__actions">
         <button class="btn btn--gold btn--block" type="button" id="shagun-yes">Fine, I'll come! 🤗</button>
         <button class="btn btn--ghost btn--block" type="button" id="shagun-insist">No, I insist! 😤</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- WhatsApp reminder popup -->
+  <dialog class="modal" id="wa-modal" aria-labelledby="wa-title">
+    <div class="modal__card">
+      <h3 class="modal__title" id="wa-title">One last step 💚</h3>
+      <p class="modal__text"><strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.</p>
+      <img class="modal__img" src="../../assets/whatsapp-send.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
+      <div class="modal__actions">
+        <a class="btn btn--whatsapp btn--block" id="wa-open" target="_blank" rel="noopener" href="#">
+          <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Open WhatsApp
+        </a>
+        <button class="btn btn--ghost btn--block" type="button" id="wa-cancel">Go back</button>
       </div>
     </div>
   </dialog>

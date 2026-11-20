@@ -65,6 +65,10 @@ function dayLabel(iso) {
   const wd = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
   return `${DAYS[wd]} · ${d} ${MONTHS[m - 1]} ${y}`;
 }
+function shortDate(iso) {
+  const [, m, d] = iso.split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]}`;
+}
 function clock(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
   const hr = h % 12 === 0 ? 12 : h % 12;
@@ -143,6 +147,9 @@ function page(p) {
             <figcaption><span class="couple__name">${BRIDE}</span><span class="couple__role">The Bride</span></figcaption>
           </figure>`;
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length)).join("\n");
+  const eventChips = p.events
+    .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${esc(e.title)}</span><span class="chip__date">${shortDate(e.date)}</span></span></label>`)
+    .join("");
   const inviteCfg = JSON.stringify({
     id: p.label, first, second, weddingDate: WEDDING_ISO, whatsappNumber: RSVP_NUMBER,
     storageKey: `am-wedding-rsvp-${p.path.replace("/", "-")}`,
@@ -310,14 +317,13 @@ ${events}
               <p class="field__error" id="e-name" aria-live="polite"></p>
             </div>
 
-            <div class="field" data-field="phone">
-              <label for="f-phone">Phone <span class="field__opt">(optional)</span></label>
-              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210"
-                     maxlength="16" aria-describedby="e-phone" />
-              <p class="field__error" id="e-phone" aria-live="polite"></p>
-            </div>
-
             <div class="form__attending" id="attending-extra" hidden>
+              <fieldset class="field" data-field="events">
+                <legend>Events I'm attending <span aria-hidden="true">*</span></legend>
+                <div class="chips" id="event-chips">${eventChips}</div>
+                <p class="field__error" id="e-events" aria-live="polite"></p>
+              </fieldset>
+
               <div class="field" data-field="guests">
                 <label for="f-guests">How many of you are coming? <span class="field__opt">(including you)</span></label>
                 <div class="stepper">
@@ -337,11 +343,6 @@ ${events}
                 </div>
                 <p class="field__error" id="e-food" aria-live="polite"></p>
               </fieldset>
-
-              <div class="field" data-field="diet">
-                <label for="f-diet">Allergies / dietary restrictions <span class="field__opt">(optional)</span></label>
-                <input id="f-diet" name="diet" type="text" maxlength="100" placeholder="e.g. No nuts, gluten-free" />
-              </div>
             </div>
 
             <div class="field" data-field="message">

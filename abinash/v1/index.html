@@ -324,14 +324,13 @@
               <p class="field__error" id="e-name" aria-live="polite"></p>
             </div>
 
-            <div class="field" data-field="phone">
-              <label for="f-phone">Phone <span class="field__opt">(optional)</span></label>
-              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210"
-                     maxlength="16" aria-describedby="e-phone" />
-              <p class="field__error" id="e-phone" aria-live="polite"></p>
-            </div>
-
             <div class="form__attending" id="attending-extra" hidden>
+              <fieldset class="field" data-field="events">
+                <legend>Events I'm attending <span aria-hidden="true">*</span></legend>
+                <div class="chips" id="event-chips"><label class="chip"><input type="checkbox" name="events" value="Engagement" checked /><span class="chip__body"><span class="chip__title">Engagement</span><span class="chip__date">27 Jan</span></span></label><label class="chip"><input type="checkbox" name="events" value="Mehendi" checked /><span class="chip__body"><span class="chip__title">Mehendi</span><span class="chip__date">9 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Haldi" checked /><span class="chip__body"><span class="chip__title">Haldi</span><span class="chip__date">10 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Wedding" checked /><span class="chip__body"><span class="chip__title">Wedding</span><span class="chip__date">10 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Reception" checked /><span class="chip__body"><span class="chip__title">Reception</span><span class="chip__date">12 Feb</span></span></label></div>
+                <p class="field__error" id="e-events" aria-live="polite"></p>
+              </fieldset>
+
               <div class="field" data-field="guests">
                 <label for="f-guests">How many of you are coming? <span class="field__opt">(including you)</span></label>
                 <div class="stepper">
@@ -351,11 +350,6 @@
                 </div>
                 <p class="field__error" id="e-food" aria-live="polite"></p>
               </fieldset>
-
-              <div class="field" data-field="diet">
-                <label for="f-diet">Allergies / dietary restrictions <span class="field__opt">(optional)</span></label>
-                <input id="f-diet" name="diet" type="text" maxlength="100" placeholder="e.g. No nuts, gluten-free" />
-              </div>
             </div>
 
             <div class="field" data-field="message">

@@ -934,7 +934,9 @@ body.is-open .hero__petals i { animation-play-state: running; }
   border-radius: 16px;
   transition: transform 0.25s var(--ease), border-color 0.2s, background-color 0.2s, box-shadow 0.25s;
 }
-.tile--sm .tile__body { min-height: 80px; }
+.tile--sm .tile__body { min-height: 56px; padding: 8px 6px; gap: 0; border-radius: 14px; }
+.tile--sm .tile__emoji { font-size: 1.2rem; }
+.tile--sm .tile__title { font-size: 0.82rem; }
 .tile__emoji { font-size: 1.7rem; line-height: 1.1; }
 .tile__title { font-size: 0.9rem; font-weight: 500; line-height: 1.2; color: var(--charcoal); }
 .tile__sub { font-size: 0.72rem; color: var(--muted); }
@@ -946,6 +948,30 @@ body.is-open .hero__petals i { animation-play-state: running; }
 }
 .tile input:focus-visible + .tile__body { outline: 2px solid var(--gold); outline-offset: 2px; }
 .field.is-invalid .tile__body { border-color: #e2a59c; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; cursor: pointer; }
+.chip input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.chip__body {
+  display: grid;
+  gap: 0;
+  padding: 8px 14px;
+  line-height: 1.2;
+  background: #fff;
+  border: 1.5px solid #e8dccb;
+  border-radius: 14px;
+  transition: transform 0.2s var(--ease), border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+.chip__title { font-size: 0.86rem; font-weight: 500; color: var(--charcoal); }
+.chip__date { font-size: 0.68rem; letter-spacing: 0.06em; color: var(--muted); }
+.chip input:checked + .chip__body {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #fffaf0, var(--gold-pale));
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.chip input:checked + .chip__body .chip__title::before { content: "✓ "; color: var(--gold); }
+.chip input:focus-visible + .chip__body { outline: 2px solid var(--gold); outline-offset: 2px; }
+.field.is-invalid .chip__body { border-color: #e2a59c; }
 
 .stepper { border-radius: 999px; border-color: var(--gold-soft); }
 .stepper__btn { color: var(--gold); font-size: 1.6rem; }

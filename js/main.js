@@ -444,13 +444,29 @@
       return;
     }
 
+    // Show the reminder popup. WhatsApp opens from a real link tap inside it,
+    // so browsers never treat it as a blocked popup.
     var data = collect();
-    store.set(CONFIG.storageKey, data);
-    showDone(data);
-    // Opened synchronously inside the submit gesture so popup blockers allow it.
-    // If it is blocked, the "Send on WhatsApp" button on the thank-you card still works.
-    window.open(whatsappLink(data), "_blank", "noopener");
+    pendingRsvp = data;
+    $("#wa-open").href = whatsappLink(data);
+    if (waModal.showModal) waModal.showModal(); else waModal.setAttribute("open", "");
   });
+
+  var waModal = $("#wa-modal");
+  var pendingRsvp = null;
+  function closeWaModal() {
+    if (waModal.close) waModal.close(); else waModal.removeAttribute("open");
+  }
+  $("#wa-open").addEventListener("click", function () {
+    // The link itself opens WhatsApp; here we just record the RSVP and show the thank-you card.
+    if (!pendingRsvp) return;
+    var d = pendingRsvp;
+    store.set(CONFIG.storageKey, d);
+    closeWaModal();
+    showDone(d, true);
+  });
+  $("#wa-cancel").addEventListener("click", closeWaModal);
+  waModal.addEventListener("click", function (e) { if (e.target === waModal) closeWaModal(); });
 
   $("#rsvp-edit").addEventListener("click", function () {
     doneEl.hidden = true;

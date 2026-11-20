@@ -1023,6 +1023,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .modal__title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 500; line-height: 1.2; color: var(--charcoal); }
 .modal__text { font-size: 0.96rem; color: var(--muted); }
 .modal__text strong { color: var(--rose-deep); font-weight: 500; }
+.modal__img { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 6px 18px rgba(60, 40, 20, 0.15); }
 .modal__actions { display: grid; gap: 10px; margin-top: 8px; }
 .modal__actions .btn { white-space: normal; text-align: center; }
 

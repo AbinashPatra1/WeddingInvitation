@@ -12,7 +12,7 @@
 
     // WhatsApp number that receives every RSVP (country code + digits only, no "+" or spaces).
     // e.g. "919876543210". On submit, WhatsApp opens with the RSVP message pre-filled for this number.
-    whatsappNumber: "",
+    whatsappNumber: "917438013279",
 
     storageKey: "am-wedding-rsvp"
   };

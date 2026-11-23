@@ -502,30 +502,36 @@
     modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
   }
 
-  /* ---------- 7c. Fireworks: tap a rocket, it flies up and bursts on a small canvas ---------- */
+  /* ---------- 7c. Fireworks: tap a rocket, a copy of it flies out of the strip and bursts anywhere on screen ---------- */
   (function () {
     var sky = $("#sky");
     if (!sky) return;
     if (reduceMotion) { sky.hidden = true; return; }
     var stage = $(".sky__stage", sky);
-    var cvs = $(".sky__canvas", sky);
+    // one full-screen canvas that ignores taps; it is only shown while sparks are alive
+    var cvs = doc.createElement("canvas");
+    cvs.className = "fxsky";
+    cvs.setAttribute("aria-hidden", "true");
+    body.appendChild(cvs);
     var ctx = cvs.getContext("2d");
     var W = 0, H = 0, parts = [], raf = 0, last = 0, taps = 0;
 
     function size() {
-      var r = stage.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = r.width; H = r.height;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
       cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     size();
     window.addEventListener("resize", size);
 
-    // each burst is a ring/ball of particles; "heart" and "willow" are the two special ones
+    // each burst is a ring/ball of particles; "heart" and "willow" are the two special ones.
+    // Out in the open sky they are bigger than they were inside the strip (BIG).
+    var BIG = 1.45;
     function burst(x, y, kind, hue) {
-      var n = kind === "ring" ? 38 : kind === "heart" ? 54 : kind === "willow" ? 46 : 58, i, a, sp, p;
+      var n = kind === "ring" ? 44 : kind === "heart" ? 60 : kind === "willow" ? 52 : 66, i, a, sp, p;
       for (i = 0; i < n; i++) {
-        p = { x: x, y: y, life: 1, size: rand(1.4, 2.5), hue: hue + rand(-14, 14), drag: 0.985, g: 0.034, fade: rand(0.011, 0.017) };
+        p = { x: x, y: y, life: 1, size: rand(1.6, 2.9), hue: hue + rand(-14, 14), drag: 0.985, g: 0.034, fade: rand(0.009, 0.015) };
         if (kind === "heart") {
           a = (i / n) * Math.PI * 2;
           p.vx = 16 * Math.pow(Math.sin(a), 3) * 0.17;
@@ -541,10 +547,12 @@
           a = rand(0, Math.PI * 2); sp = rand(1.1, 3.4);
           p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
         }
+        p.vx *= BIG; p.vy *= BIG;
         parts.push(p);
       }
       // a quick white-gold flash at the centre of the burst
-      parts.push({ x: x, y: y, vx: 0, vy: 0, life: 1, size: 7, hue: 45, light: 90, drag: 1, g: 0, fade: 0.09 });
+      parts.push({ x: x, y: y, vx: 0, vy: 0, life: 1, size: 9, hue: 45, light: 90, drag: 1, g: 0, fade: 0.09 });
+      cvs.style.display = "block";
       if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
     }
 
@@ -562,12 +570,12 @@
         p.life -= p.fade * dt;
         if (p.life <= 0) { parts.splice(i, 1); continue; }
         ctx.beginPath();
-        ctx.fillStyle = "hsla(" + p.hue + ",100%," + (p.light || 62) + "%," + Math.min(p.life * 1.4, 1) + ")";
+        ctx.fillStyle = "hsla(" + p.hue + ",100%," + (p.light || 54) + "%," + Math.min(p.life * 1.4, 1) + ")";
         ctx.arc(p.x, p.y, p.size * (0.5 + p.life * 0.5), 0, 6.2832);
         ctx.fill();
       }
       if (parts.length) raf = requestAnimationFrame(tick);
-      else { raf = 0; ctx.globalCompositeOperation = "source-over"; ctx.clearRect(0, 0, W, H); }
+      else { raf = 0; ctx.globalCompositeOperation = "source-over"; ctx.clearRect(0, 0, W, H); cvs.style.display = "none"; }
     }
 
     function launch(btn, isDemo) {
@@ -575,18 +583,34 @@
       size();
       btn.classList.add("is-flying");
       if (navigator.vibrate) { try { navigator.vibrate(10); } catch (e) { /* ignore */ } }
-      var sr = stage.getBoundingClientRect(), br = btn.getBoundingClientRect();
-      var cx = br.left - sr.left + br.width / 2;
-      var top = br.top - sr.top;
-      var apexY = rand(0.2, 0.42) * H;                       // where it will burst
-      var rise = Math.max(top - apexY + 12, 60);
-      var flight = btn.animate(
-        [{ transform: "translateY(0)" }, { transform: "translateY(" + (-rise) + "px)" }],
-        { duration: rand(720, 920), easing: "cubic-bezier(0.25, 0.1, 0.5, 1)" }
+
+      // a copy of the rocket lifts off from where it stands and is free to fly anywhere over the page
+      var svgEl = btn.querySelector("svg");
+      var sr = svgEl.getBoundingClientRect();
+      var fly = doc.createElement("div");
+      fly.className = "fxrocket";
+      fly.setAttribute("aria-hidden", "true");
+      fly.style.setProperty("--c", btn.style.getPropertyValue("--c"));
+      fly.style.setProperty("--c2", btn.style.getPropertyValue("--c2"));
+      fly.appendChild(svgEl.cloneNode(true));
+      body.appendChild(fly);
+      btn.style.opacity = "0";
+
+      // it bursts somewhere in the upper part of the screen, always well above where it started
+      var dx = rand(-70, 70);
+      var apexY = Math.max(56, Math.min(rand(0.1, 0.4) * H, sr.top - 150));
+      var rise = Math.max(sr.top - apexY, 80);
+      var angle = Math.atan2(dx, rise) * 57.2958;
+      var flight = fly.animate(
+        [
+          { transform: "translate(" + sr.left + "px," + sr.top + "px) rotate(0deg)" },
+          { transform: "translate(" + (sr.left + dx) + "px," + (sr.top - rise) + "px) rotate(" + angle + "deg)" }
+        ],
+        { duration: Math.min(1300, 650 + rise * 0.6), easing: "cubic-bezier(0.25, 0.1, 0.5, 1)", fill: "forwards" }
       );
       flight.onfinish = function () {
-        btn.style.opacity = "0";
-        burst(cx, top - rise + 10, btn.getAttribute("data-kind"), Number(btn.getAttribute("data-hue")));
+        if (fly.parentNode) fly.parentNode.removeChild(fly);
+        burst(sr.left + dx + sr.width / 2, sr.top - rise + 8, btn.getAttribute("data-kind"), Number(btn.getAttribute("data-hue")));
         setTimeout(function () {                              // a fresh rocket appears on the ground again
           btn.classList.remove("is-flying");
           btn.style.opacity = "1";

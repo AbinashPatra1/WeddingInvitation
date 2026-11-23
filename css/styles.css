@@ -597,7 +597,11 @@ body.is-open .hero__petals i { animation-play-state: running; }
   box-shadow: 52px 34px 0 #fff, 120px 8px 0 #ffe9b0, 196px 46px 0 #fff, 258px 14px 0 #ffe9b0, 296px 60px 0 #fff, 22px 78px 0 #ffe9b0, 168px 92px 0 #fff;
   animation: twinkleStars 3.4s ease-in-out infinite;
 }
-.sky__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+/* the sky strip itself keeps overflow:hidden for its scenery; the fireworks live on their own layers above the page */
+.fxsky { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 105; display: none; pointer-events: none; }
+.fxrocket { position: fixed; left: 0; top: 0; z-index: 105; width: 26px; height: 70px; pointer-events: none; will-change: transform; }
+.fxrocket svg { width: 26px; height: 70px; overflow: visible; transform-origin: 50% 70%; }
+.fxrocket .flame { animation: flameFlicker 0.12s linear infinite alternate; transform-origin: 50% 0; }
 .sky__hint {
   position: absolute;
   top: 16px; left: 0; right: 0;

@@ -315,7 +315,6 @@ ${SPRITE.trimEnd()}
       <!-- FIREWORKS: tap a rocket, it flies up and bursts -->
       <section class="sky" id="sky" aria-label="Fireworks">
         <div class="sky__stage reveal">
-          <canvas class="sky__canvas" aria-hidden="true"></canvas>
           <p class="sky__hint" id="sky-hint"><span class="sky__hand" aria-hidden="true">👆</span> ${tr("Tap on the fireworks", "ଆତସବାଜିରେ ଟାପ୍ କରନ୍ତୁ")}</p>
           <div class="sky__ground" aria-hidden="true"></div>
           <div class="sky__rockets">

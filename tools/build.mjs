@@ -40,8 +40,8 @@ const VENUE = {
 /* start/end are IST. End times are assumptions used only for the "Save to calendar" file. */
 const EV = {
   engagement: { art: "engagement", icon: "i-rings", title: "Engagement", date: "2027-01-27", start: "10:00", end: "12:00", venue: VENUE.temple },
-  sangeetMehendi: { art: "sangeet", paint: "sangeet-mehendi", icon: "i-music", title: "Sangeet & Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.parija, dark: true },
-  mehendiGroom: { art: "sangeet", paint: "mehendi", icon: "i-music", title: "Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.patra, dark: true },
+  sangeetMehendi: { art: "sangeet", paint: "sangeet-mehendi", icon: "i-music", title: "Sangeet & Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.parija },
+  mehendiGroom: { art: "mehendi", paint: "mehendi", icon: "i-music", title: "Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.patra },
   haldiBride: { art: "haldi", icon: "i-haldi", title: "Haldi", date: "2027-02-10", start: "09:00", end: "13:00", venue: VENUE.parija },
   haldiGroom: { art: "haldi", icon: "i-haldi", title: "Haldi", date: "2027-02-10", start: "09:00", end: "13:00", venue: VENUE.patra },
   wedding: { art: "wedding", icon: "i-mandap", title: "Wedding", date: "2027-02-10", start: "19:00", end: "07:00+1", venue: VENUE.mandap, plan: WEDDING_PLAN, dark: true, main: true },

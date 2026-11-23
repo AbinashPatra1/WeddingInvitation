@@ -117,6 +117,29 @@ def draw_item(kind, name, rnd, x, y):
         return m_flower(x, y, s * .95, rot, "#ffffff", "#e6dafb", "#f6dd9a", 6)   # reception
     return ""
 
+ANIM_CLASS = {"light": "tw", "spark": "sp", "flower": "sw", "ring": "sw", "dring": "sw", "dhol": "sw", "petal": "dr"}
+SVG_CSS = (
+    ".tw,.sp,.sw,.dr{transform-box:fill-box;transform-origin:center}"
+    ".tw{animation:tw 3s ease-in-out infinite}"
+    "@keyframes tw{0%,100%{opacity:.3}50%{opacity:1}}"
+    ".sp{animation:sp 2.6s ease-in-out infinite}"
+    "@keyframes sp{0%,100%{opacity:.2;transform:scale(.55)}50%{opacity:1;transform:scale(1.2)}}"
+    ".sw{animation:sw 4s ease-in-out infinite}"
+    "@keyframes sw{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}"
+    ".dr{animation:dr 5s ease-in-out infinite}"
+    "@keyframes dr{0%,100%{transform:translateY(-2px) rotate(-22deg)}50%{transform:translateY(4px) rotate(24deg)}}"
+    "@media (prefers-reduced-motion:reduce){.tw,.sp,.sw,.dr{animation:none}}"
+)
+
+def animate(kind, rnd, svg_item):
+    cls = ANIM_CLASS.get(kind)
+    if not cls or not svg_item:
+        return svg_item
+    dur = rnd.uniform(2.4, 5.6)
+    delay = -rnd.uniform(0, dur)
+    return f'<g class="{cls}" style="animation-duration:{dur:.1f}s;animation-delay:{delay:.1f}s">{svg_item}</g>'
+
+
 def strip(name, length, vertical):
     t = THEMES[name]
     rnd = random.Random(t["seed"] * (3 if vertical else 1))
@@ -124,7 +147,7 @@ def strip(name, length, vertical):
     while pos < length - 16:
         y = BAND / 2 + rnd.uniform(-4.5, 4.5)
         kind = pick(rnd, t["items"])
-        body += draw_item(kind, name, rnd, pos, y)
+        body += animate(kind, rnd, draw_item(kind, name, rnd, pos, y))
         pos += rnd.uniform(*t.get("step", (17, 34)))
     if vertical:
         w, h = BAND, length
@@ -133,7 +156,7 @@ def strip(name, length, vertical):
         w, h = length, BAND
         inner = body
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
-            f'<defs>{glow_defs(t["glow"])}</defs>{inner}</svg>')
+            f'<defs>{glow_defs(t["glow"])}<style>{SVG_CSS}</style></defs>{inner}</svg>')
 
 for nm in THEMES:
     write(f"frame-{nm}-h.svg", strip(nm, 480, False))

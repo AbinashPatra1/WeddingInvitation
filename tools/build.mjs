@@ -190,10 +190,10 @@ function page(p) {
   <link rel="icon" href="${up}assets/favicon.svg" type="image/svg+xml" />
   <link rel="preload" as="image" href="${up}assets/bg.jpg" />
 
-  <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi -->
+  <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi (Om), Noto Sans Oriya (mantra) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="${up}css/styles.css" />
 </head>
@@ -235,7 +235,7 @@ ${SPRITE.trimEnd()}
       </div>
 
       <div class="hero__content">
-        <p class="hero__mantra" lang="hi">॥ श्री गणेशाय नमः ॥</p>
+        <p class="hero__mantra" lang="or">॥ ଶ୍ରୀ ଗଣେଶାୟ ନମଃ ॥</p>
         <span class="divider" aria-hidden="true"></span>
         <p class="hero__lead">Join us for</p>
         <p class="hero__the">The Wedding of</p>

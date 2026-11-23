@@ -25,7 +25,7 @@
   <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi (Om), Noto Sans Oriya (mantra) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="../../css/styles.css" />
 </head>
@@ -53,6 +53,7 @@
     <symbol id="i-bank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9.5 12 4l9 5.5zM5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20.5h18"/></g></symbol>
     <symbol id="i-music" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="23" r="3.6"/><circle cx="23" cy="20" r="3.6"/><path d="M13.6 23V8l13-3v15M13.6 12.5l13-3"/></g></symbol>
     <symbol id="i-mandap" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 16 4l12 8zM7 12v15M25 12v15M4 27h24M16 24c-3-3-2-6 0-9 2 3 3 6 0 9z"/></g></symbol>
+    <symbol id="i-flip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 13-5.1M19.5 12a7.5 7.5 0 0 1-13 5.1M18 3.5v4h-4M6 20.5v-4h4"/></g></symbol>
   </svg>
 
   <!-- ============ ENVELOPE OPENER ============ -->
@@ -73,8 +74,8 @@
     </button>
 
     <p class="opener__hint" id="opener-label">
-      <span class="opener__for">You are cordially invited</span>
-      <span class="opener__tap">Tap to open</span>
+      <span class="opener__for"><span data-or="ଆପଣଙ୍କୁ ଆନ୍ତରିକ ନିମନ୍ତ୍ରଣ">You are cordially invited</span></span>
+      <span class="opener__tap"><span data-or="ଖୋଲିବାକୁ ଟାପ୍ କରନ୍ତୁ">Tap to open</span></span>
     </p>
   </div>
 
@@ -88,19 +89,19 @@
       </div>
 
       <div class="hero__content">
-        <p class="hero__mantra" lang="or">॥ ଶ୍ରୀ ଗଣେଶାୟ ନମଃ ॥</p>
+        <button class="hero__mantra" type="button" lang="or" id="mantra" aria-label="Tap for a blessing">॥ ଶ୍ରୀ ଗଣେଶାୟ ନମଃ ॥</button>
         <span class="divider" aria-hidden="true"></span>
-        <p class="hero__lead">Join us for</p>
-        <p class="hero__the">The Wedding of</p>
+        <p class="hero__lead"><span data-or="ଆମ ସହ ଆନନ୍ଦ ବାଣ୍ଟିବାକୁ ଆସନ୍ତୁ">Join us for</span></p>
+        <p class="hero__the"><span data-or="ଶୁଭ ବିବାହ ଉତ୍ସବ">The Wedding of</span></p>
         <h1 class="hero__names">
           <span class="hero__name">Abinash</span>
           <span class="hero__amp">&amp;</span>
           <span class="hero__name">Mousumi</span>
         </h1>
         <p class="hero__date">
-          <time datetime="2027-02-10">Wednesday · 10 February 2027</time>
+          <time datetime="2027-02-10"><span data-or="ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭">Wednesday · 10 February 2027</span></time>
         </p>
-        <p class="hero__place">Jagatsinghpur, Odisha</p>
+        <p class="hero__place"><span data-or="ଜଗତସିଂହପୁର, ଓଡ଼ିଶା">Jagatsinghpur, Odisha</span></p>
       </div>
 
       <a class="scroll-cue" href="#countdown" aria-label="Scroll to details">
@@ -112,50 +113,97 @@
 
       <!-- COUNTDOWN -->
       <section class="section section--countdown" id="countdown" aria-labelledby="countdown-title">
-        <p class="eyebrow reveal">Counting down to forever</p>
-        <h2 class="section__title reveal" id="countdown-title">The Big Day</h2>
+        <p class="eyebrow reveal"><span data-or="ଚିରସାଥୀ ହେବାର ଗଣନା">Counting down to forever</span></p>
+        <h2 class="section__title reveal" id="countdown-title"><span data-or="ଶୁଭ ଦିନ">The Big Day</span></h2>
         <div class="countdown reveal" id="countdown-timer" role="timer" aria-live="off">
-          <div class="countdown__unit"><span class="countdown__num" data-unit="days">--</span><span class="countdown__label">Days</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__label">Hours</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__label">Minutes</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__label">Seconds</span></div>
+          <button type="button" class="countdown__unit" data-fact="days"><span class="countdown__num" data-unit="days">--</span><span class="countdown__label"><span data-or="ଦିନ">Days</span></span></button>
+          <button type="button" class="countdown__unit" data-fact="hours"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__label"><span data-or="ଘଣ୍ଟା">Hours</span></span></button>
+          <button type="button" class="countdown__unit" data-fact="minutes"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__label"><span data-or="ମିନିଟ୍">Minutes</span></span></button>
+          <button type="button" class="countdown__unit" data-fact="seconds"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__label"><span data-or="ସେକେଣ୍ଡ">Seconds</span></span></button>
         </div>
-        <p class="countdown__done" id="countdown-done" hidden>We're married! Thank you for your blessings. ✨</p>
-        <p class="section__note reveal">10 February 2027 · 7:00 PM IST</p>
+        <p class="countdown__fact" id="countdown-fact" aria-live="polite">Tap a box for a fun fact</p>
+        <p class="countdown__done" id="countdown-done" hidden><span data-or="ଆମେ ବିବାହିତ! ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ପାଇଁ ଧନ୍ୟବାଦ। ✨">We're married! Thank you for your blessings. ✨</span></p>
+        <p class="section__note reveal"><span data-or="୧୦ ଫେବୃଆରୀ ୨୦୨୭ · ସନ୍ଧ୍ୟା ୭:୦୦ (IST)">10 February 2027 · 7:00 PM IST</span></p>
+      </section>
+
+      <!-- FIREWORKS: tap a rocket, it flies up and bursts -->
+      <section class="sky" id="sky" aria-label="Fireworks">
+        <div class="sky__stage reveal">
+          <canvas class="sky__canvas" aria-hidden="true"></canvas>
+          <p class="sky__hint" id="sky-hint"><span class="sky__hand" aria-hidden="true">👆</span> <span data-or="ଆତସବାଜିରେ ଟାପ୍ କରନ୍ତୁ">Tap on the fireworks</span></p>
+          <div class="sky__ground" aria-hidden="true"></div>
+          <div class="sky__rockets">
+            <button class="rocket" type="button" style="left:9%;--c:#e9b949;--c2:#b9852a" data-kind="willow" data-hue="44" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:29%;--c:#e6788f;--c2:#b04560" data-kind="heart" data-hue="340" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:50%;--c:#7fc4a8;--c2:#4a8b72" data-kind="ring" data-hue="160" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:71%;--c:#9b86e0;--c2:#6551b4" data-kind="peony" data-hue="265" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:90%;--c:#f08a4b;--c2:#bf5a22" data-kind="peony" data-hue="22" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+          </div>
+        </div>
       </section>
 
       <!-- COUPLE -->
       <section class="section section--couple" id="couple" aria-labelledby="couple-title">
-        <p class="eyebrow reveal">Two souls, one journey</p>
-        <h2 class="section__title reveal" id="couple-title">The Couple</h2>
+        <p class="eyebrow reveal"><span data-or="ଦୁଇ ଆତ୍ମା, ଗୋଟିଏ ଯାତ୍ରା">Two souls, one journey</span></p>
+        <h2 class="section__title reveal" id="couple-title"><span data-or="ଦମ୍ପତି">The Couple</span></h2>
 
         <div class="couple">
           <figure class="couple__card reveal">
-            <div class="arch-frame">
-              <!-- Replace with your photo: assets/groom.jpg -->
-              <img src="../../assets/groom-placeholder.svg" alt="Portrait of Abinash" width="300" height="400" loading="lazy" decoding="async" />
-            </div>
-            <figcaption><span class="couple__name">Abinash</span><span class="couple__role">The Groom</span></figcaption>
+            <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of Abinash">
+              <span class="flip__face flip__front arch-frame">
+                <!-- Replace with your photo: assets/groom.jpg -->
+                <img src="../../assets/groom-placeholder.svg" alt="Portrait of Abinash" width="300" height="400" loading="lazy" decoding="async" />
+                <span class="flip__badge" aria-hidden="true"><svg><use href="#i-flip"/></svg></span>
+              </span>
+              <span class="flip__face flip__back arch-frame" aria-hidden="true">
+                <span class="flip__inner">
+                  <span class="flip__q"><span data-or="ଜାଣିଥିଲେ କି?">Did you know?</span></span>
+                  <span class="flip__fact"><span data-or="ସେ କହେ ସେ ରାନ୍ଧିପାରେ। ବିଚାର ଆପଣ କରନ୍ତୁ! 🍳">He says he can cook. We'll let you be the judge! 🍳</span></span>
+                  <svg class="flip__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
+                </span>
+              </span>
+            </button>
+            <figcaption><span class="couple__name">Abinash</span><span class="couple__role"><span data-or="ବର">The Groom</span></span></figcaption>
           </figure>
           <figure class="couple__card reveal">
-            <div class="arch-frame">
-              <!-- Replace with your photo: assets/bride.jpg -->
-              <img src="../../assets/bride-placeholder.svg" alt="Portrait of Mousumi" width="300" height="400" loading="lazy" decoding="async" />
-            </div>
-            <figcaption><span class="couple__name">Mousumi</span><span class="couple__role">The Bride</span></figcaption>
+            <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of Mousumi">
+              <span class="flip__face flip__front arch-frame">
+                <!-- Replace with your photo: assets/bride.jpg -->
+                <img src="../../assets/bride-placeholder.svg" alt="Portrait of Mousumi" width="300" height="400" loading="lazy" decoding="async" />
+                <span class="flip__badge" aria-hidden="true"><svg><use href="#i-flip"/></svg></span>
+              </span>
+              <span class="flip__face flip__back arch-frame" aria-hidden="true">
+                <span class="flip__inner">
+                  <span class="flip__q"><span data-or="ଜାଣିଥିଲେ କି?">Did you know?</span></span>
+                  <span class="flip__fact"><span data-or="ସେ ଯେକୌଣସି ଜିନିଷର ସବୁଠୁ ସୁନ୍ଦର ରଙ୍ଗ ଦୂରରୁ ଚିହ୍ନିପାରେ। 🎨">She can spot the perfect shade of anything from a mile away. 🎨</span></span>
+                  <svg class="flip__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
+                </span>
+              </span>
+            </button>
+            <figcaption><span class="couple__name">Mousumi</span><span class="couple__role"><span data-or="କନ୍ୟା">The Bride</span></span></figcaption>
           </figure>
           <div class="couple__hearts" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
 
         <blockquote class="quote reveal">
-          <p><span class="quote__line">“Like Shiva and Shakti, two halves of one whole —</span> <span class="quote__line">bound by love, blessed by the divine.”</span></p>
+          <p><span class="quote__line"><span data-or="“ଶିବ ଓ ଶକ୍ତିଙ୍କ ପରି, ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣତାର ଦୁଇ ଅଂଶ —">“Like Shiva and Shakti, two halves of one whole —</span></span> <span class="quote__line"><span data-or="ପ୍ରେମରେ ବାନ୍ଧି, ଭଗବାନଙ୍କ ଆଶୀର୍ବାଦରେ ଧନ୍ୟ।”">bound by love, blessed by the divine.”</span></span></p>
         </blockquote>
       </section>
 
       <!-- EVENTS -->
       <section class="section section--events" id="events" aria-labelledby="events-title">
-        <p class="eyebrow reveal">Celebrations</p>
-        <h2 class="section__title reveal" id="events-title">Events &amp; Schedule</h2>
+        <p class="eyebrow reveal"><span data-or="ଉତ୍ସବ">Celebrations</span></p>
+        <h2 class="section__title reveal" id="events-title"><span data-or="କାର୍ଯ୍ୟକ୍ରମ ସୂଚୀ">Events &amp; Schedule</span></h2>
 
         <ol class="events">
 
@@ -168,9 +216,9 @@
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">01 / 05</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#i-rings"/></svg></div>
-                <p class="event__day">Wednesday · 27 Jan 2027</p>
-                <h3 class="event__name">Engagement</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>10:00 AM onwards</p>
+                <p class="event__day"><span data-or="ବୁଧବାର · ୨୭ ଜାନୁଆରୀ ୨୦୨୭">Wednesday · 27 Jan 2027</span></p>
+                <h3 class="event__name"><span data-or="ଏଙ୍ଗେଜମେଣ୍ଟ">Engagement</span></h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-or="ସକାଳ ୧୦:୦୦ ଠାରୁ">10:00 AM onwards</span></p>
                 
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -183,10 +231,10 @@
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="https://maps.app.goo.gl/hMyFZrRNAsmVHJ2B6">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg><span data-or="ରାସ୍ତା ଦେଖନ୍ତୁ">Get Directions</span>
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save Engagement to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-or="ସେଭ୍ କରନ୍ତୁ">Save</span>
                   </button>
                 </div>
               </div>
@@ -202,9 +250,9 @@
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">02 / 05</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#i-music"/></svg></div>
-                <p class="event__day">Tuesday · 9 Feb 2027</p>
-                <h3 class="event__name">Mehendi</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>7:00 PM onwards</p>
+                <p class="event__day"><span data-or="ମଙ୍ଗଳବାର · ୯ ଫେବୃଆରୀ ୨୦୨୭">Tuesday · 9 Feb 2027</span></p>
+                <h3 class="event__name"><span data-or="ମେହେନ୍ଦି">Mehendi</span></h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-or="ସନ୍ଧ୍ୟା ୭:୦୦ ଠାରୁ">7:00 PM onwards</span></p>
                 
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -217,10 +265,10 @@
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="https://maps.app.goo.gl/cMWfeXijimVZaX8m6">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg><span data-or="ରାସ୍ତା ଦେଖନ୍ତୁ">Get Directions</span>
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save Mehendi to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-or="ସେଭ୍ କରନ୍ତୁ">Save</span>
                   </button>
                 </div>
               </div>
@@ -236,9 +284,9 @@
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">03 / 05</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#i-haldi"/></svg></div>
-                <p class="event__day">Wednesday · 10 Feb 2027</p>
-                <h3 class="event__name">Haldi</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>9:00 AM onwards</p>
+                <p class="event__day"><span data-or="ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭">Wednesday · 10 Feb 2027</span></p>
+                <h3 class="event__name"><span data-or="ହଳଦୀ">Haldi</span></h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-or="ସକାଳ ୯:୦୦ ଠାରୁ">9:00 AM onwards</span></p>
                 
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -251,10 +299,10 @@
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="https://maps.app.goo.gl/cMWfeXijimVZaX8m6">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg><span data-or="ରାସ୍ତା ଦେଖନ୍ତୁ">Get Directions</span>
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save Haldi to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-or="ସେଭ୍ କରନ୍ତୁ">Save</span>
                   </button>
                 </div>
               </div>
@@ -270,12 +318,12 @@
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">04 / 05</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#i-mandap"/></svg></div>
-                <p class="event__day">Wednesday · 10 Feb 2027</p>
-                <h3 class="event__name">Wedding</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>7:00 PM onwards</p>
+                <p class="event__day"><span data-or="ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭">Wednesday · 10 Feb 2027</span></p>
+                <h3 class="event__name"><span data-or="ବିବାହ">Wedding</span></h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-or="ସନ୍ଧ୍ୟା ୭:୦୦ ଠାରୁ">7:00 PM onwards</span></p>
                 <details class="more">
-                  <summary><span>More details</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
-                  <ol class="timeline" aria-label="Wedding day order of events"><li><time>10:00 PM</time><span>Baarat</span></li><li><time>11:00 PM</time><span>Reception</span></li><li><time>1:00 AM<small>11 Feb</small></time><span>Hata Ganthi / Bahaghara</span></li><li><time>6:00 AM<small>11 Feb</small></time><span>Bidia</span></li></ol>
+                  <summary><span data-or="ଅଧିକ ବିବରଣୀ">More details</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+                  <ol class="timeline" aria-label="Wedding day order of events"><li><time><span data-or="ରାତି ୧୦:୦୦">10:00 PM</span></time><span><span data-or="ବରଯାତ୍ରା">Baarat</span></span></li><li><time><span data-or="ରାତି ୧୧:୦୦">11:00 PM</span></time><span><span data-or="ରିସେପ୍ସନ୍">Reception</span></span></li><li><time><span data-or="ରାତି ୧:୦୦">1:00 AM</span><small><span data-or="୧୧ ଫେବୃ">11 Feb</span></small></time><span><span data-or="ହାତଗଣ୍ଠି / ବାହାଘର">Hata Ganthi / Bahaghara</span></span></li><li><time><span data-or="ସକାଳ ୬:୦୦">6:00 AM</span><small><span data-or="୧୧ ଫେବୃ">11 Feb</span></small></time><span><span data-or="ବିଦାୟ">Bidia</span></span></li></ol>
                 </details>
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -288,10 +336,10 @@
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="https://maps.app.goo.gl/RopJnxUpWHEfgMF47">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg><span data-or="ରାସ୍ତା ଦେଖନ୍ତୁ">Get Directions</span>
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save Wedding to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-or="ସେଭ୍ କରନ୍ତୁ">Save</span>
                   </button>
                 </div>
               </div>
@@ -307,9 +355,9 @@
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">05 / 05</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#i-glass"/></svg></div>
-                <p class="event__day">Friday · 12 Feb 2027</p>
-                <h3 class="event__name">Reception</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>7:00 PM onwards</p>
+                <p class="event__day"><span data-or="ଶୁକ୍ରବାର · ୧୨ ଫେବୃଆରୀ ୨୦୨୭">Friday · 12 Feb 2027</span></p>
+                <h3 class="event__name"><span data-or="ରିସେପ୍ସନ୍">Reception</span></h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-or="ସନ୍ଧ୍ୟା ୭:୦୦ ଠାରୁ">7:00 PM onwards</span></p>
                 
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -322,10 +370,10 @@
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="https://maps.app.goo.gl/n7MHrjqUbhgPd3dr6">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg><span data-or="ରାସ୍ତା ଦେଖନ୍ତୁ">Get Directions</span>
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save Reception to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg><span data-or="ସେଭ୍ କରନ୍ତୁ">Save</span>
                   </button>
                 </div>
               </div>
@@ -336,24 +384,24 @@
 
       <!-- GIFTS (the humorous one) -->
       <section class="section section--gifts" id="gifts" aria-labelledby="gifts-title">
-        <p class="eyebrow reveal">The Shagun Desk</p>
-        <h2 class="section__title reveal" id="gifts-title">Gift Registry<sup>*</sup></h2>
+        <p class="eyebrow reveal"><span data-or="ଶଗୁଣ କାଉଣ୍ଟର">The Shagun Desk</span></p>
+        <h2 class="section__title reveal" id="gifts-title"><span data-or="ଉପହାର ତାଲିକା&lt;sup&gt;*&lt;/sup&gt;">Gift Registry<sup>*</sup></span></h2>
 
         <div class="shagun card reveal">
           <div class="shagun__coins" aria-hidden="true"><span>💸</span><span>💰</span><span>🪙</span></div>
-          <p class="shagun__pitch">We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.</p>
-          <p class="shagun__pitch">Your blessings are priceless. Cash, however, is also accepted. 😇</p>
+          <p class="shagun__pitch"><span data-or="ଆମକୁ ଘର ସଜାଇବାକୁ ଅଛି, ହନିମୁନ୍ ଯୋଜନା କରିବାକୁ ଅଛି, ଆଉ &lt;em&gt;“ବିବାହ ବଜେଟ୍”&lt;/em&gt; ନାମକ ଏକ ରହସ୍ୟମୟ ସ୍ପ୍ରେଡ୍‌ସିଟ୍ କୋଣରେ କାନ୍ଦୁଛି।">We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.</span></p>
+          <p class="shagun__pitch"><span data-or="ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଅମୂଲ୍ୟ। ହେଲେ, ନଗଦ ଟଙ୍କା ମଧ୍ୟ ଗ୍ରହଣୀୟ। 😇">Your blessings are priceless. Cash, however, is also accepted. 😇</span></p>
           <button class="btn btn--gold btn--block shagun__btn" type="button" id="shagun-btn">
-            <svg aria-hidden="true"><use href="#i-gift"/></svg>Send Shagun
+            <svg aria-hidden="true"><use href="#i-gift"/></svg><span data-or="ଶଗୁଣ ପଠାନ୍ତୁ">Send Shagun</span>
           </button>
-          <p class="shagun__fine"><sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.</p>
+          <p class="shagun__fine"><span data-or="&lt;sup&gt;*&lt;/sup&gt;ସର୍ତ୍ତ ପ୍ରଯୁଜ୍ୟ। କ୍ଲିକ୍ କଲେ ଦୋଷବୋଧ ହୋଇପାରେ।"><sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.</span></p>
         </div>
       </section>
 
       <!-- RSVP -->
       <section class="section section--rsvp" id="rsvp" aria-labelledby="rsvp-title">
-        <p class="eyebrow reveal">Kindly respond by 15 January 2027</p>
-        <h2 class="section__title reveal" id="rsvp-title">RSVP</h2>
+        <p class="eyebrow reveal"><span data-or="ଦୟାକରି ୧୫ ଜାନୁଆରୀ ୨୦୨୭ ମଧ୍ୟରେ ଜଣାନ୍ତୁ">Kindly respond by 15 January 2027</span></p>
+        <h2 class="section__title reveal" id="rsvp-title"><span data-or="ଉତ୍ତର ଜଣାନ୍ତୁ">RSVP</span></h2>
 
         <div class="rsvp reveal">
           <span class="rsvp__corner rsvp__corner--tl" aria-hidden="true"></span>
@@ -364,35 +412,35 @@
           <form class="form" id="rsvp-form" novalidate>
             <div class="rsvp__head">
               <span class="rsvp__seal" aria-hidden="true"><svg><use href="#i-mail"/></svg></span>
-              <p class="rsvp__lead">Will you celebrate with us?</p>
-              <p class="rsvp__sub">Takes less than a minute</p>
+              <p class="rsvp__lead"><span data-or="ଆପଣ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ କି?">Will you celebrate with us?</span></p>
+              <p class="rsvp__sub"><span data-or="ଏକ ମିନିଟରୁ କମ୍ ସମୟ ଲାଗିବ">Takes less than a minute</span></p>
             </div>
 
             <fieldset class="field" data-field="attending">
               <legend class="sr-only">Will you attend? *</legend>
               <div class="tiles tiles--2">
-                <label class="tile"><input type="radio" name="attending" value="yes" required aria-describedby="e-attending" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🎉</span><span class="tile__title">Joyfully accept</span><span class="tile__sub">Count me in!</span></span></label>
-                <label class="tile"><input type="radio" name="attending" value="no" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🙏</span><span class="tile__title">Regretfully decline</span><span class="tile__sub">Sending blessings</span></span></label>
+                <label class="tile"><input type="radio" name="attending" value="yes" required aria-describedby="e-attending" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🎉</span><span class="tile__title"><span data-or="ଖୁସିରେ ଆସିବି">Joyfully accept</span></span><span class="tile__sub"><span data-or="ମୋତେ ଗଣନ୍ତୁ!">Count me in!</span></span></span></label>
+                <label class="tile"><input type="radio" name="attending" value="no" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🙏</span><span class="tile__title"><span data-or="ଦୁଃଖିତ, ଆସିପାରିବି ନାହିଁ">Regretfully decline</span></span><span class="tile__sub"><span data-or="ଆଶୀର୍ବାଦ ପଠାଉଛି">Sending blessings</span></span></span></label>
               </div>
               <p class="field__error" id="e-attending" aria-live="polite"></p>
             </fieldset>
 
             <div class="field" data-field="name">
-              <label for="f-name">Your name <span aria-hidden="true">*</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Priya Sharma"
+              <label for="f-name"><span data-or="ଆପଣଙ୍କ ନାମ">Your name</span> <span aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Priya Sharma" data-or-ph="ଯଥା: ପ୍ରିୟା ଶର୍ମା"
                      required minlength="2" maxlength="60" aria-describedby="e-name" />
               <p class="field__error" id="e-name" aria-live="polite"></p>
             </div>
 
             <div class="form__attending" id="attending-extra" hidden>
               <fieldset class="field" data-field="events">
-                <legend>Events I'm attending <span aria-hidden="true">*</span></legend>
-                <div class="chips" id="event-chips"><label class="chip"><input type="checkbox" name="events" value="Engagement" checked /><span class="chip__body"><span class="chip__title">Engagement</span><span class="chip__date">27 Jan</span></span></label><label class="chip"><input type="checkbox" name="events" value="Mehendi" checked /><span class="chip__body"><span class="chip__title">Mehendi</span><span class="chip__date">9 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Haldi" checked /><span class="chip__body"><span class="chip__title">Haldi</span><span class="chip__date">10 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Wedding" checked /><span class="chip__body"><span class="chip__title">Wedding</span><span class="chip__date">10 Feb</span></span></label><label class="chip"><input type="checkbox" name="events" value="Reception" checked /><span class="chip__body"><span class="chip__title">Reception</span><span class="chip__date">12 Feb</span></span></label></div>
+                <legend><span data-or="ମୁଁ ଯେଉଁ କାର୍ଯ୍ୟକ୍ରମରେ ଯୋଗ ଦେବି">Events I'm attending</span> <span aria-hidden="true">*</span></legend>
+                <div class="chips" id="event-chips"><label class="chip"><input type="checkbox" name="events" value="Engagement" checked /><span class="chip__body"><span class="chip__title"><span data-or="ଏଙ୍ଗେଜମେଣ୍ଟ">Engagement</span></span><span class="chip__date"><span data-or="୨୭ ଜାନୁ">27 Jan</span></span></span></label><label class="chip"><input type="checkbox" name="events" value="Mehendi" checked /><span class="chip__body"><span class="chip__title"><span data-or="ମେହେନ୍ଦି">Mehendi</span></span><span class="chip__date"><span data-or="୯ ଫେବୃ">9 Feb</span></span></span></label><label class="chip"><input type="checkbox" name="events" value="Haldi" checked /><span class="chip__body"><span class="chip__title"><span data-or="ହଳଦୀ">Haldi</span></span><span class="chip__date"><span data-or="୧୦ ଫେବୃ">10 Feb</span></span></span></label><label class="chip"><input type="checkbox" name="events" value="Wedding" checked /><span class="chip__body"><span class="chip__title"><span data-or="ବିବାହ">Wedding</span></span><span class="chip__date"><span data-or="୧୦ ଫେବୃ">10 Feb</span></span></span></label><label class="chip"><input type="checkbox" name="events" value="Reception" checked /><span class="chip__body"><span class="chip__title"><span data-or="ରିସେପ୍ସନ୍">Reception</span></span><span class="chip__date"><span data-or="୧୨ ଫେବୃ">12 Feb</span></span></span></label></div>
                 <p class="field__error" id="e-events" aria-live="polite"></p>
               </fieldset>
 
               <div class="field" data-field="guests">
-                <label for="f-guests">How many of you are coming? <span class="field__opt">(including you)</span></label>
+                <label for="f-guests"><span data-or="ଆପଣମାନେ କେତେ ଜଣ ଆସୁଛନ୍ତି?">How many of you are coming?</span> <span class="field__opt"><span data-or="(ଆପଣଙ୍କୁ ମିଶାଇ)">(including you)</span></span></label>
                 <div class="stepper">
                   <button type="button" class="stepper__btn" data-step="-1" aria-label="Fewer guests">−</button>
                   <input id="f-guests" name="guests" type="number" inputmode="numeric" min="1" max="10" value="1" aria-describedby="e-guests" />
@@ -402,20 +450,20 @@
               </div>
 
               <fieldset class="field" data-field="food">
-                <legend>Food preference <span aria-hidden="true">*</span></legend>
+                <legend><span data-or="ଖାଦ୍ୟ ପସନ୍ଦ">Food preference</span> <span aria-hidden="true">*</span></legend>
                 <div class="tiles tiles--3">
-                  <label class="tile tile--sm"><input type="radio" name="food" value="veg" aria-describedby="e-food" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🥗</span><span class="tile__title">Veg</span></span></label>
-                  <label class="tile tile--sm"><input type="radio" name="food" value="non-veg" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🍗</span><span class="tile__title">Non-veg</span></span></label>
-                  <label class="tile tile--sm"><input type="radio" name="food" value="jain" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🌿</span><span class="tile__title">Jain</span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="veg" aria-describedby="e-food" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🥗</span><span class="tile__title"><span data-or="ନିରାମିଷ">Veg</span></span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="non-veg" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🍗</span><span class="tile__title"><span data-or="ଆମିଷ">Non-veg</span></span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="jain" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🌿</span><span class="tile__title"><span data-or="ଜୈନ">Jain</span></span></span></label>
                 </div>
                 <p class="field__error" id="e-food" aria-live="polite"></p>
               </fieldset>
             </div>
 
             <div class="field" data-field="message">
-              <label for="f-message">A wish for the couple <span class="field__opt">(optional)</span></label>
+              <label for="f-message"><span data-or="ଦମ୍ପତିଙ୍କ ପାଇଁ ଶୁଭେଚ୍ଛା">A wish for the couple</span> <span class="field__opt"><span data-or="(ଇଚ୍ଛାଧୀନ)">(optional)</span></span></label>
               <textarea id="f-message" name="message" rows="4" maxlength="300"
-                        placeholder="Share your blessings, a memory or a warm wish…" aria-describedby="e-message c-message"></textarea>
+                        placeholder="Share your blessings, a memory or a warm wish…" data-or-ph="ଆପଣଙ୍କ ଆଶୀର୍ବାଦ, ସ୍ମୃତି ବା ଶୁଭେଚ୍ଛା ଲେଖନ୍ତୁ…" aria-describedby="e-message c-message"></textarea>
               <div class="field__foot">
                 <p class="field__error" id="e-message" aria-live="polite"></p>
                 <span class="field__count" id="c-message">0 / 300</span>
@@ -423,10 +471,10 @@
             </div>
 
             <button class="btn btn--primary btn--block" type="submit" id="rsvp-submit">
-              <span class="btn__label">Send RSVP via WhatsApp</span>
+              <span class="btn__label" data-or="ହ୍ୱାଟସଆପ୍ ଜରିଆରେ ପଠାନ୍ତୁ">Send RSVP via WhatsApp</span>
               <span class="btn__spinner" aria-hidden="true"></span>
             </button>
-            <p class="form__note">Next, we'll open WhatsApp with your RSVP ready to go.</p>
+            <p class="form__note"><span data-or="ପରେ, ଆପଣଙ୍କ ଉତ୍ତର ସହ ହ୍ୱାଟସଆପ୍ ଖୋଲିବ।">Next, we'll open WhatsApp with your RSVP ready to go.</span></p>
             <p class="form__status" id="rsvp-status" role="status" aria-live="polite"></p>
           </form>
 
@@ -435,9 +483,9 @@
             <h3 class="rsvp__done-title" id="rsvp-done-title">Thank you!</h3>
             <p class="rsvp__done-text" id="rsvp-done-text"></p>
             <a class="btn btn--whatsapp btn--block" id="rsvp-whatsapp" target="_blank" rel="noopener" href="#">
-              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Send RSVP on WhatsApp
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span data-or="ହ୍ୱାଟସଆପ୍‌ରେ ପଠାନ୍ତୁ">Send RSVP on WhatsApp</span>
             </a>
-            <button class="btn btn--ghost btn--block" type="button" id="rsvp-edit">Edit my response</button>
+            <button class="btn btn--ghost btn--block" type="button" id="rsvp-edit"><span data-or="ମୋ ଉତ୍ତର ବଦଳାନ୍ତୁ">Edit my response</span></button>
           </div>
         </div>
       </section>
@@ -447,17 +495,17 @@
     <footer class="footer">
       <svg class="footer__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
       <p class="footer__names">Abinash <span>&amp;</span> Mousumi</p>
-      <p class="footer__text">With love and gratitude, we look forward to celebrating with you.</p>
+      <p class="footer__text"><span data-or="ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ।">With love and gratitude, we look forward to celebrating with you.</span></p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
     </footer>
 
     <!-- Bottom nav (social-app style) -->
     <nav class="tabbar" id="tabbar" aria-label="Sections">
-      <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
-      <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span>Events</span></a>
-      <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span>Gifts</span></a>
-      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>RSVP</span></a>
-      <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span>Share</span></button>
+      <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span><span data-or="ହୋମ୍">Home</span></span></a>
+      <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span><span data-or="କାର୍ଯ୍ୟକ୍ରମ">Events</span></span></a>
+      <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span><span data-or="ଉପହାର">Gifts</span></span></a>
+      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span><span data-or="ଉତ୍ତର">RSVP</span></span></a>
+      <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span><span data-or="ଶେୟାର୍">Share</span></span></button>
     </nav>
   </div>
 
@@ -469,7 +517,7 @@
       <p class="modal__text" id="shagun-text">Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list.</p>
       <div class="modal__actions">
         <button class="btn btn--gold btn--block" type="button" id="shagun-yes">Fine, I'll come! 🤗</button>
-        <button class="btn btn--ghost btn--block" type="button" id="shagun-insist">No, I insist! 😤</button>
+        <button class="btn btn--ghost btn--block" type="button" id="shagun-insist" data-or="ନା, ମୁଁ ଜିଦ୍ କରୁଛି! 😤">No, I insist! 😤</button>
       </div>
     </div>
   </dialog>
@@ -477,17 +525,19 @@
   <!-- WhatsApp reminder popup -->
   <dialog class="modal" id="wa-modal" aria-labelledby="wa-title">
     <div class="modal__card">
-      <h3 class="modal__title" id="wa-title">One last step 💚</h3>
-      <p class="modal__text"><strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.</p>
-      <img class="modal__img" src="../../assets/whatsapp-send.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
+      <h3 class="modal__title" id="wa-title"><span data-or="ଶେଷ ପଦକ୍ଷେପ 💚">One last step 💚</span></h3>
+      <p class="modal__text"><span data-or="&lt;strong&gt;ଦୟାକରି ହ୍ୱାଟସଆପ୍‌ରେ “Send” ଦାବିବାକୁ ଭୁଲିବେ ନାହିଁ।&lt;/strong&gt; ଆପଣ ପଠାଇଲେ ହିଁ ଆପଣଙ୍କ ଉତ୍ତର ଆମ ପାଖରେ ପହଞ୍ଚିବ।"><strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.</span></p>
+      <img class="modal__img" src="../../assets/whatsapp-send.svg" data-src-or="../../assets/whatsapp-send-or.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
       <div class="modal__actions">
         <a class="btn btn--whatsapp btn--block" id="wa-open" target="_blank" rel="noopener" href="#">
-          <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Open WhatsApp
+          <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span data-or="ହ୍ୱାଟସଆପ୍ ଖୋଲନ୍ତୁ">Open WhatsApp</span>
         </a>
-        <button class="btn btn--ghost btn--block" type="button" id="wa-cancel">Go back</button>
+        <button class="btn btn--ghost btn--block" type="button" id="wa-cancel"><span data-or="ପଛକୁ ଯାଆନ୍ତୁ">Go back</span></button>
       </div>
     </div>
   </dialog>
+
+  <button class="lang" id="lang-btn" type="button" aria-label="Switch language: English or Odia">ଓଡ଼ିଆ</button>
 
   <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 

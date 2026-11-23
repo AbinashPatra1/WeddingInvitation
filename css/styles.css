@@ -25,6 +25,7 @@
   --font-script: "Pinyon Script", "Cormorant Garamond", cursive;
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-deva: "Tiro Devanagari Hindi", "Noto Serif Devanagari", serif;
+  --font-odia: "Noto Sans Oriya", "Tiro Devanagari Hindi", "Noto Serif Devanagari", sans-serif;
 
   --app-w: min(100vw, 480px);
   --radius: 20px;
@@ -267,7 +268,8 @@ button { cursor: pointer; }
   background: radial-gradient(ellipse at center, rgba(251, 247, 240, 0.78) 0%, rgba(251, 247, 240, 0.4) 50%, transparent 72%);
 }
 .hero__mantra {
-  font-family: var(--font-deva);
+  font-family: var(--font-odia);
+  font-weight: 500;
   font-size: clamp(0.85rem, 3.6vw, 1rem);
   color: var(--vermilion);
   letter-spacing: 0.04em;

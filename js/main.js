@@ -360,6 +360,115 @@
     modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
   }
 
+  /* ---------- 7c. Fireworks: tap a rocket, it flies up and bursts on a small canvas ---------- */
+  (function () {
+    var sky = $("#sky");
+    if (!sky) return;
+    if (reduceMotion) { sky.hidden = true; return; }
+    var stage = $(".sky__stage", sky);
+    var cvs = $(".sky__canvas", sky);
+    var ctx = cvs.getContext("2d");
+    var W = 0, H = 0, parts = [], raf = 0, last = 0, taps = 0;
+
+    function size() {
+      var r = stage.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    window.addEventListener("resize", size);
+
+    // each burst is a ring/ball of particles; "heart" and "willow" are the two special ones
+    function burst(x, y, kind, hue) {
+      var n = kind === "ring" ? 38 : kind === "heart" ? 54 : kind === "willow" ? 46 : 58, i, a, sp, p;
+      for (i = 0; i < n; i++) {
+        p = { x: x, y: y, life: 1, size: rand(1.4, 2.5), hue: hue + rand(-14, 14), drag: 0.985, g: 0.034, fade: rand(0.011, 0.017) };
+        if (kind === "heart") {
+          a = (i / n) * Math.PI * 2;
+          p.vx = 16 * Math.pow(Math.sin(a), 3) * 0.17;
+          p.vy = -(13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a)) * 0.17;
+          p.hue = hue + rand(-8, 8);
+        } else if (kind === "ring") {
+          a = (i / n) * Math.PI * 2; sp = 2.7;
+          p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
+        } else if (kind === "willow") {
+          a = rand(0, Math.PI * 2); sp = rand(0.8, 3.2);
+          p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp; p.g = 0.06; p.fade = rand(0.006, 0.01); p.drag = 0.978;
+        } else {
+          a = rand(0, Math.PI * 2); sp = rand(1.1, 3.4);
+          p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp;
+        }
+        parts.push(p);
+      }
+      // a quick white-gold flash at the centre of the burst
+      parts.push({ x: x, y: y, vx: 0, vy: 0, life: 1, size: 7, hue: 45, light: 90, drag: 1, g: 0, fade: 0.09 });
+      if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
+    }
+
+    function tick(t) {
+      var dt = Math.min((t - last) / 16.67, 3), i, p;
+      last = t;
+      ctx.globalCompositeOperation = "destination-out";        // fade the previous frame = soft trails
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      for (i = parts.length - 1; i >= 0; i--) {
+        p = parts[i];
+        p.vx *= p.drag; p.vy = p.vy * p.drag + p.g * dt;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        p.life -= p.fade * dt;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.fillStyle = "hsla(" + p.hue + ",100%," + (p.light || 62) + "%," + Math.min(p.life * 1.4, 1) + ")";
+        ctx.arc(p.x, p.y, p.size * (0.5 + p.life * 0.5), 0, 6.2832);
+        ctx.fill();
+      }
+      if (parts.length) raf = requestAnimationFrame(tick);
+      else { raf = 0; ctx.globalCompositeOperation = "source-over"; ctx.clearRect(0, 0, W, H); }
+    }
+
+    function launch(btn, isDemo) {
+      if (btn.classList.contains("is-flying")) return;
+      size();
+      btn.classList.add("is-flying");
+      if (navigator.vibrate) { try { navigator.vibrate(10); } catch (e) { /* ignore */ } }
+      var sr = stage.getBoundingClientRect(), br = btn.getBoundingClientRect();
+      var cx = br.left - sr.left + br.width / 2;
+      var top = br.top - sr.top;
+      var apexY = rand(0.2, 0.42) * H;                       // where it will burst
+      var rise = Math.max(top - apexY + 12, 60);
+      var flight = btn.animate(
+        [{ transform: "translateY(0)" }, { transform: "translateY(" + (-rise) + "px)" }],
+        { duration: rand(720, 920), easing: "cubic-bezier(0.25, 0.1, 0.5, 1)" }
+      );
+      flight.onfinish = function () {
+        btn.style.opacity = "0";
+        burst(cx, top - rise + 10, btn.getAttribute("data-kind"), Number(btn.getAttribute("data-hue")));
+        setTimeout(function () {                              // a fresh rocket appears on the ground again
+          btn.classList.remove("is-flying");
+          btn.style.opacity = "1";
+        }, 1700);
+      };
+      if (!isDemo && ++taps === 1) $("#sky-hint").innerHTML = "Make a wish ✨";
+    }
+
+    $$(".rocket", sky).forEach(function (btn) {
+      btn.addEventListener("click", function () { launch(btn); });
+    });
+
+    // one demo launch the first time the strip scrolls into view, so guests see what happens
+    if ("IntersectionObserver" in window) {
+      var demo = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          demo.disconnect();
+          setTimeout(function () { if (!taps) launch($$(".rocket", sky)[2], true); }, 900);
+        }
+      }, { threshold: 0.7 });
+      demo.observe(stage);
+    }
+  })();
+
   /* ---------- 8. RSVP form ---------- */
   var form = $("#rsvp-form");
   var extra = $("#attending-extra");

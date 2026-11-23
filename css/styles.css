@@ -553,6 +553,71 @@ body.is-open .hero__petals i { animation-play-state: running; }
   color: var(--rose-deep);
 }
 
+/* ---------- 7b. Fireworks strip ---------- */
+.sky { padding: 4px 16px 44px; background: var(--ivory); }
+.sky__stage {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 26px;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(214, 120, 140, 0.45), transparent 60%),
+    linear-gradient(180deg, #120a2a 0%, #251341 55%, #3d1d4b 100%);
+  box-shadow: var(--shadow-lg);
+}
+.sky__stage::before { /* a handful of twinkling stars, drawn with one element */
+  content: "";
+  position: absolute;
+  top: 18px; left: 12%;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 52px 34px 0 #fff, 120px 8px 0 #ffe9b0, 196px 46px 0 #fff, 258px 14px 0 #ffe9b0, 296px 60px 0 #fff, 22px 78px 0 #ffe9b0, 168px 92px 0 #fff;
+  animation: twinkleStars 3.4s ease-in-out infinite;
+}
+.sky__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.sky__hint {
+  position: absolute;
+  top: 16px; left: 0; right: 0;
+  z-index: 3;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #f3d28a;
+  pointer-events: none;
+}
+.sky__hand { display: inline-block; margin-right: 4px; letter-spacing: 0; animation: handTap 1.6s ease-in-out infinite; }
+.sky__ground { /* a low temple-and-hills silhouette */
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 62px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 62' preserveAspectRatio='none'%3E%3Cpath d='M0 62V40c30-8 60-8 90 0 20-14 34-22 46-34 12 12 26 20 46 34 40-12 80-12 120 2 26-18 38-26 50-40 12 14 24 22 50 40 22-6 36-6 58-2v22z' fill='%230a0416'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
+  z-index: 1;
+}
+.sky__rockets { position: absolute; inset: 0; z-index: 4; }
+.rocket {
+  position: absolute;
+  bottom: 12px;
+  width: 44px; height: 84px;
+  margin-left: -22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  display: grid;
+  place-items: end center;
+  transition: opacity 0.5s;
+  touch-action: manipulation;
+}
+.rocket svg { width: 26px; height: 70px; overflow: visible; transform-origin: 50% 100%; animation: rocketIdle 3.2s ease-in-out infinite; }
+.rocket:nth-child(even) svg { animation-delay: -1.6s; }
+.rocket .flame { opacity: 0; }
+.rocket.is-flying .flame { opacity: 1; animation: flameFlicker 0.12s linear infinite alternate; transform-origin: 50% 0; }
+.rocket.is-flying svg { animation: none; }
+.rocket:active svg { transform: scale(0.94); }
+
 /* ---------- 8. Couple ---------- */
 .couple {
   position: relative;
@@ -1301,6 +1366,10 @@ body.is-open .progress { opacity: 1; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 @keyframes tabBounce { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-8px) scale(1.18); } 100% { transform: translateY(-2px) scale(1); } }
 @keyframes emojiBounce { 0% { transform: scale(0.3) rotate(-20deg); opacity: 0; } 55% { transform: scale(1.25) rotate(8deg); opacity: 1; } 80% { transform: scale(0.92) rotate(-4deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes twinkleStars { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes handTap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes rocketIdle { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes flameFlicker { from { transform: scaleY(0.8); } to { transform: scaleY(1.25); } }
 @keyframes wiggle { 0%, 88%, 100% { transform: rotate(0); } 91% { transform: rotate(-2.5deg); } 94% { transform: rotate(2.5deg); } 97% { transform: rotate(-1.5deg); } }
 @keyframes pop { from { opacity: 0; transform: scale(0.85) translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -1338,4 +1407,5 @@ body.is-open .progress { opacity: 1; }
   .hero__name { clip-path: none; }
   .quote__line { opacity: 1; transform: none; }
   .couple__hearts, .fx { display: none; }
+  .sky { display: none; }
 }

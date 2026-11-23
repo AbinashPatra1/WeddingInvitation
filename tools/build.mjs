@@ -271,6 +271,32 @@ ${SPRITE.trimEnd()}
         <p class="section__note reveal">10 February 2027 · 7:00 PM IST</p>
       </section>
 
+      <!-- FIREWORKS: tap a rocket, it flies up and bursts -->
+      <section class="sky" id="sky" aria-label="Fireworks">
+        <div class="sky__stage reveal">
+          <canvas class="sky__canvas" aria-hidden="true"></canvas>
+          <p class="sky__hint" id="sky-hint"><span class="sky__hand" aria-hidden="true">👆</span> Tap on the fireworks</p>
+          <div class="sky__ground" aria-hidden="true"></div>
+          <div class="sky__rockets">
+            <button class="rocket" type="button" style="left:9%;--c:#e9b949;--c2:#b9852a" data-kind="willow" data-hue="44" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:29%;--c:#e6788f;--c2:#b04560" data-kind="heart" data-hue="340" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:50%;--c:#7fc4a8;--c2:#4a8b72" data-kind="ring" data-hue="160" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:71%;--c:#9b86e0;--c2:#6551b4" data-kind="peony" data-hue="265" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+            <button class="rocket" type="button" style="left:90%;--c:#f08a4b;--c2:#bf5a22" data-kind="peony" data-hue="22" aria-label="Launch a firework">
+              <svg viewBox="0 0 30 80" aria-hidden="true"><g class="rocket__body"><rect x="14" y="44" width="2" height="36" fill="#c9a56a"/><path class="flame" d="M10.5 50 Q15 76 19.5 50Z" fill="#ffb347"/><path d="M8 46 L3 56 L9 52Z M22 46 L27 56 L21 52Z" fill="var(--c2)"/><rect x="8" y="14" width="14" height="34" rx="3" fill="var(--c)"/><rect x="8" y="27" width="14" height="5" fill="#fff" opacity=".55"/><path d="M8 15 L15 0 L22 15Z" fill="var(--c2)"/></g></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- COUPLE -->
       <section class="section section--couple" id="couple" aria-labelledby="couple-title">
         <p class="eyebrow reveal">Two souls, one journey</p>

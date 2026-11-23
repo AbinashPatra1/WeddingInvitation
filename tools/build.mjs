@@ -84,7 +84,7 @@ function isoRange(ev) {
 }
 const pad2 = (n) => String(n).padStart(2, "0");
 
-function eventCard(ev, i, total) {
+function eventCard(ev, i, total, up) {
   const { start, end } = isoRange(ev);
   const dir = ev.venue.map;
   const plan = ev.plan
@@ -97,24 +97,32 @@ function eventCard(ev, i, total) {
               data-title="${esc(ev.title)} · ${esc(GROOM)} &amp; ${esc(BRIDE)}"
               data-start="${start}" data-end="${end}"
               data-location="${esc(ev.venue.name + ", " + ev.venue.addr)}">
+            <span class="event__frame" aria-hidden="true"></span>
             <div class="event__panel">
-              <span class="event__count" aria-hidden="true">${pad2(i + 1)} / ${pad2(total)}</span>
-              <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
-              <p class="event__day">${dayLabel(ev.date)}</p>
-              <h3 class="event__name">${esc(ev.title)}</h3>
-              <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${clock(ev.start)}${ev.plan ? " · Wedding rituals begin" : " onwards"}</p>
-              ${plan}
-              <div class="event__venue">
-                <svg aria-hidden="true"><use href="#i-pin"/></svg>
-                <p><strong>${esc(ev.venue.name)}</strong><br />${esc(ev.venue.addr)}</p>
+              <div class="event__head">
+                <span class="event__count" aria-hidden="true">${pad2(i + 1)} / ${pad2(total)}</span>
+                <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
+                <p class="event__day">${dayLabel(ev.date)}</p>
+                <h3 class="event__name">${esc(ev.title)}</h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${clock(ev.start)}${ev.plan ? " · Wedding rituals begin" : " onwards"}</p>
+                ${plan}
               </div>
-              <div class="event__actions">
-                <a class="btn btn--gold" target="_blank" rel="noopener" href="${dir}">
-                  <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
-                </a>
-                <button class="btn btn--ghost js-ics" type="button" aria-label="Save ${esc(ev.title)} to calendar">
-                  <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
-                </button>
+              <div class="event__mid" aria-hidden="true">
+                <img class="event__paint" src="${up}assets/events/paint-${ev.art}.svg" alt="" width="320" height="260" loading="lazy" decoding="async" />
+              </div>
+              <div class="event__foot">
+                <div class="event__venue">
+                  <svg aria-hidden="true"><use href="#i-pin"/></svg>
+                  <p><strong>${esc(ev.venue.name)}</strong><br />${esc(ev.venue.addr)}</p>
+                </div>
+                <div class="event__actions">
+                  <a class="btn btn--gold" target="_blank" rel="noopener" href="${dir}">
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                  </a>
+                  <button class="btn btn--ghost js-ics" type="button" aria-label="Save ${esc(ev.title)} to calendar">
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                  </button>
+                </div>
               </div>
             </div>
           </li>`;
@@ -146,7 +154,7 @@ function page(p) {
             </div>
             <figcaption><span class="couple__name">${BRIDE}</span><span class="couple__role">The Bride</span></figcaption>
           </figure>`;
-  const events = p.events.map((e, i) => eventCard(e, i, p.events.length)).join("\n");
+  const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
     .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${esc(e.title)}</span><span class="chip__date">${shortDate(e.date)}</span></span></label>`)
     .join("");

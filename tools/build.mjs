@@ -18,10 +18,10 @@ const RSVP_NUMBER = "917438013279";
 
 /* ------------------------------------------------------------------ event catalogue */
 const WEDDING_PLAN = [
-  { time: "10:00 PM", label: "Baarat" },
-  { time: "11:00 PM", label: "Reception" },
-  { time: "1:00 AM", note: "11 Feb", label: "Hata Ganthi / Bahaghara" },
-  { time: "6:00 AM", note: "11 Feb", label: "Bidia" },
+  { time: "10:00 PM", t24: "22:00", label: "Baarat", labelOr: "ବରଯାତ୍ରା" },
+  { time: "11:00 PM", t24: "23:00", label: "Reception", labelOr: "ରିସେପ୍ସନ୍" },
+  { time: "1:00 AM", t24: "01:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Hata Ganthi / Bahaghara", labelOr: "ହାତଗଣ୍ଠି / ବାହାଘର" },
+  { time: "6:00 AM", t24: "06:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Bidia", labelOr: "ବିଦାୟ" },
 ];
 const MAPS = {
   temple: "https://maps.app.goo.gl/hMyFZrRNAsmVHJ2B6",
@@ -84,14 +84,50 @@ function isoRange(ev) {
 }
 const pad2 = (n) => String(n).padStart(2, "0");
 
+/* ---- Odia support: every translatable element carries its Odia text in data-or; js/main.js swaps it in ---- */
+const OD_DIGITS = "୦୧୨୩୪୫୬୭୮୯";
+const od = (s) => String(s).replace(/\d/g, (d) => OD_DIGITS[d]);
+const OD_DAYS = ["ରବିବାର", "ସୋମବାର", "ମଙ୍ଗଳବାର", "ବୁଧବାର", "ଗୁରୁବାର", "ଶୁକ୍ରବାର", "ଶନିବାର"];
+const OD_MONTHS = ["ଜାନୁଆରୀ", "ଫେବୃଆରୀ", "ମାର୍ଚ୍ଚ", "ଏପ୍ରିଲ", "ମଇ", "ଜୁନ", "ଜୁଲାଇ", "ଅଗଷ୍ଟ", "ସେପ୍ଟେମ୍ବର", "ଅକ୍ଟୋବର", "ନଭେମ୍ବର", "ଡିସେମ୍ବର"];
+const OD_MON_SHORT = ["ଜାନୁ", "ଫେବୃ", "ମାର୍ଚ୍ଚ", "ଏପ୍ରି", "ମଇ", "ଜୁନ", "ଜୁଲା", "ଅଗ", "ସେପ୍ଟେ", "ଅକ୍ଟୋ", "ନଭେ", "ଡିସେ"];
+const OD_TITLES = {
+  "Engagement": "ଏଙ୍ଗେଜମେଣ୍ଟ",
+  "Sangeet & Mehendi": "ସଂଗୀତ ଓ ମେହେନ୍ଦି",
+  "Mehendi": "ମେହେନ୍ଦି",
+  "Haldi": "ହଳଦୀ",
+  "Wedding": "ବିବାହ",
+  "Reception": "ରିସେପ୍ସନ୍",
+};
+const tr = (en, or) => `<span data-or="${esc(or)}">${en}</span>`;
+const ph = (or) => ` data-or-ph="${esc(or)}"`;
+function odDayLabel(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${OD_DAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]} · ${od(d)} ${OD_MONTHS[m - 1]} ${od(y)}`;
+}
+function odShort(iso) {
+  const [, m, d] = iso.split("-").map(Number);
+  return `${od(d)} ${OD_MON_SHORT[m - 1]}`;
+}
+function odClock(hhmm) {
+  const [h, m] = hhmm.split(":").map(Number);
+  const part = h < 4 ? "ରାତି" : h < 12 ? "ସକାଳ" : h < 16 ? "ଅପରାହ୍ନ" : h < 20 ? "ସନ୍ଧ୍ୟା" : "ରାତି";
+  return `${part} ${od(h % 12 === 0 ? 12 : h % 12)}:${od(pad2(m))}`;
+}
+
+/* A light-hearted line on the back of each portrait. PLACEHOLDERS: replace with real fun facts. */
+const FACTS = {
+  groom: { en: "He says he can cook. We'll let you be the judge! 🍳", or: "ସେ କହେ ସେ ରାନ୍ଧିପାରେ। ବିଚାର ଆପଣ କରନ୍ତୁ! 🍳" },
+  bride: { en: "She can spot the perfect shade of anything from a mile away. 🎨", or: "ସେ ଯେକୌଣସି ଜିନିଷର ସବୁଠୁ ସୁନ୍ଦର ରଙ୍ଗ ଦୂରରୁ ଚିହ୍ନିପାରେ। 🎨" },
+};
+
 function eventCard(ev, i, total, up) {
   const { start, end } = isoRange(ev);
   const dir = ev.venue.map;
   const plan = ev.plan
     ? `<details class="more">
-                  <summary><span>More details</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+                  <summary>${tr("More details", "ଅଧିକ ବିବରଣୀ")}<svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
                   <ol class="timeline" aria-label="Wedding day order of events">${ev.plan
-                    .map((p) => `<li><time>${p.time}${p.note ? `<small>${p.note}</small>` : ""}</time><span>${esc(p.label)}</span></li>`)
+                    .map((p) => `<li><time>${tr(p.time, odClock(p.t24))}${p.note ? `<small>${tr(p.note, p.noteOr)}</small>` : ""}</time><span>${tr(esc(p.label), p.labelOr)}</span></li>`)
                     .join("")}</ol>
                 </details>`
     : "";
@@ -105,9 +141,9 @@ function eventCard(ev, i, total, up) {
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">${pad2(i + 1)} / ${pad2(total)}</span>
                 <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
-                <p class="event__day">${dayLabel(ev.date)}</p>
-                <h3 class="event__name">${esc(ev.title)}</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${clock(ev.start)} onwards</p>
+                <p class="event__day">${tr(dayLabel(ev.date), odDayLabel(ev.date))}</p>
+                <h3 class="event__name">${tr(esc(ev.title), OD_TITLES[ev.title])}</h3>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${tr(`${clock(ev.start)} onwards`, `${odClock(ev.start)} ଠାରୁ`)}</p>
                 ${plan}
               </div>
               <div class="event__mid" aria-hidden="true">
@@ -120,10 +156,10 @@ function eventCard(ev, i, total, up) {
                 </div>
                 <div class="event__actions">
                   <a class="btn btn--gold" target="_blank" rel="noopener" href="${dir}">
-                    <svg aria-hidden="true"><use href="#i-nav"/></svg>Get Directions
+                    <svg aria-hidden="true"><use href="#i-nav"/></svg>${tr("Get Directions", "ରାସ୍ତା ଦେଖନ୍ତୁ")}
                   </a>
                   <button class="btn btn--ghost js-ics" type="button" aria-label="Save ${esc(ev.title)} to calendar">
-                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>Save
+                    <svg aria-hidden="true"><use href="#i-calendar"/></svg>${tr("Save", "ସେଭ୍ କରନ୍ତୁ")}
                   </button>
                 </div>
               </div>
@@ -141,25 +177,29 @@ function page(p) {
   const up = "../../";
   const pageTitle = `${first} &amp; ${second} · Wedding Invitation`;
   const ogDesc = "Join us as we begin our forever. 10 February 2027 · Jagatsinghpur, Odisha";
-  const groomCard = `
+  const coupleCard = (name, role, roleOr, img, comment, fact) => `
           <figure class="couple__card reveal">
-            <div class="arch-frame">
-              <!-- Replace with your photo: assets/groom.jpg -->
-              <img src="${up}assets/groom-placeholder.svg" alt="Portrait of ${GROOM}" width="300" height="400" loading="lazy" decoding="async" />
-            </div>
-            <figcaption><span class="couple__name">${GROOM}</span><span class="couple__role">The Groom</span></figcaption>
+            <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of ${name}">
+              <span class="flip__face flip__front arch-frame">
+                <!-- ${comment} -->
+                <img src="${up}assets/${img}" alt="Portrait of ${name}" width="300" height="400" loading="lazy" decoding="async" />
+                <span class="flip__badge" aria-hidden="true"><svg><use href="#i-flip"/></svg></span>
+              </span>
+              <span class="flip__face flip__back arch-frame" aria-hidden="true">
+                <span class="flip__inner">
+                  <span class="flip__q">${tr("Did you know?", "ଜାଣିଥିଲେ କି?")}</span>
+                  <span class="flip__fact">${tr(esc(fact.en), fact.or)}</span>
+                  <svg class="flip__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
+                </span>
+              </span>
+            </button>
+            <figcaption><span class="couple__name">${name}</span><span class="couple__role">${tr(role, roleOr)}</span></figcaption>
           </figure>`;
-  const brideCard = `
-          <figure class="couple__card reveal">
-            <div class="arch-frame">
-              <!-- Replace with your photo: assets/bride.jpg -->
-              <img src="${up}assets/bride-placeholder.svg" alt="Portrait of ${BRIDE}" width="300" height="400" loading="lazy" decoding="async" />
-            </div>
-            <figcaption><span class="couple__name">${BRIDE}</span><span class="couple__role">The Bride</span></figcaption>
-          </figure>`;
+  const groomCard = coupleCard(GROOM, "The Groom", "ବର", "groom-placeholder.svg", "Replace with your photo: assets/groom.jpg", FACTS.groom);
+  const brideCard = coupleCard(BRIDE, "The Bride", "କନ୍ୟା", "bride-placeholder.svg", "Replace with your photo: assets/bride.jpg", FACTS.bride);
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
-    .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${esc(e.title)}</span><span class="chip__date">${shortDate(e.date)}</span></span></label>`)
+    .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${tr(esc(e.title), OD_TITLES[e.title])}</span><span class="chip__date">${tr(shortDate(e.date), odShort(e.date))}</span></span></label>`)
     .join("");
   const inviteCfg = JSON.stringify({
     id: p.label, first, second, weddingDate: WEDDING_ISO, whatsappNumber: RSVP_NUMBER,
@@ -193,7 +233,7 @@ function page(p) {
   <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi (Om), Noto Sans Oriya (mantra) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="${up}css/styles.css" />
 </head>
@@ -220,8 +260,8 @@ ${SPRITE.trimEnd()}
     </button>
 
     <p class="opener__hint" id="opener-label">
-      <span class="opener__for">You are cordially invited</span>
-      <span class="opener__tap">Tap to open</span>
+      <span class="opener__for">${tr("You are cordially invited", "ଆପଣଙ୍କୁ ଆନ୍ତରିକ ନିମନ୍ତ୍ରଣ")}</span>
+      <span class="opener__tap">${tr("Tap to open", "ଖୋଲିବାକୁ ଟାପ୍ କରନ୍ତୁ")}</span>
     </p>
   </div>
 
@@ -235,19 +275,19 @@ ${SPRITE.trimEnd()}
       </div>
 
       <div class="hero__content">
-        <p class="hero__mantra" lang="or">॥ ଶ୍ରୀ ଗଣେଶାୟ ନମଃ ॥</p>
+        <button class="hero__mantra" type="button" lang="or" id="mantra" aria-label="Tap for a blessing">॥ ଶ୍ରୀ ଗଣେଶାୟ ନମଃ ॥</button>
         <span class="divider" aria-hidden="true"></span>
-        <p class="hero__lead">Join us for</p>
-        <p class="hero__the">The Wedding of</p>
+        <p class="hero__lead">${tr("Join us for", "ଆମ ସହ ଆନନ୍ଦ ବାଣ୍ଟିବାକୁ ଆସନ୍ତୁ")}</p>
+        <p class="hero__the">${tr("The Wedding of", "ଶୁଭ ବିବାହ ଉତ୍ସବ")}</p>
         <h1 class="hero__names">
           <span class="hero__name">${first}</span>
           <span class="hero__amp">&amp;</span>
           <span class="hero__name">${second}</span>
         </h1>
         <p class="hero__date">
-          <time datetime="2027-02-10">Wednesday · 10 February 2027</time>
+          <time datetime="2027-02-10">${tr("Wednesday · 10 February 2027", "ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭")}</time>
         </p>
-        <p class="hero__place">Jagatsinghpur, Odisha</p>
+        <p class="hero__place">${tr("Jagatsinghpur, Odisha", "ଜଗତସିଂହପୁର, ଓଡ଼ିଶା")}</p>
       </div>
 
       <a class="scroll-cue" href="#countdown" aria-label="Scroll to details">
@@ -259,23 +299,24 @@ ${SPRITE.trimEnd()}
 
       <!-- COUNTDOWN -->
       <section class="section section--countdown" id="countdown" aria-labelledby="countdown-title">
-        <p class="eyebrow reveal">Counting down to forever</p>
-        <h2 class="section__title reveal" id="countdown-title">The Big Day</h2>
+        <p class="eyebrow reveal">${tr("Counting down to forever", "ଚିରସାଥୀ ହେବାର ଗଣନା")}</p>
+        <h2 class="section__title reveal" id="countdown-title">${tr("The Big Day", "ଶୁଭ ଦିନ")}</h2>
         <div class="countdown reveal" id="countdown-timer" role="timer" aria-live="off">
-          <div class="countdown__unit"><span class="countdown__num" data-unit="days">--</span><span class="countdown__label">Days</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__label">Hours</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__label">Minutes</span></div>
-          <div class="countdown__unit"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__label">Seconds</span></div>
+          <button type="button" class="countdown__unit" data-fact="days"><span class="countdown__num" data-unit="days">--</span><span class="countdown__label">${tr("Days", "ଦିନ")}</span></button>
+          <button type="button" class="countdown__unit" data-fact="hours"><span class="countdown__num" data-unit="hours">--</span><span class="countdown__label">${tr("Hours", "ଘଣ୍ଟା")}</span></button>
+          <button type="button" class="countdown__unit" data-fact="minutes"><span class="countdown__num" data-unit="minutes">--</span><span class="countdown__label">${tr("Minutes", "ମିନିଟ୍")}</span></button>
+          <button type="button" class="countdown__unit" data-fact="seconds"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__label">${tr("Seconds", "ସେକେଣ୍ଡ")}</span></button>
         </div>
-        <p class="countdown__done" id="countdown-done" hidden>We're married! Thank you for your blessings. ✨</p>
-        <p class="section__note reveal">10 February 2027 · 7:00 PM IST</p>
+        <p class="countdown__fact" id="countdown-fact" aria-live="polite">Tap a box for a fun fact</p>
+        <p class="countdown__done" id="countdown-done" hidden>${tr("We're married! Thank you for your blessings. ✨", "ଆମେ ବିବାହିତ! ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ପାଇଁ ଧନ୍ୟବାଦ। ✨")}</p>
+        <p class="section__note reveal">${tr("10 February 2027 · 7:00 PM IST", "୧୦ ଫେବୃଆରୀ ୨୦୨୭ · ସନ୍ଧ୍ୟା ୭:୦୦ (IST)")}</p>
       </section>
 
       <!-- FIREWORKS: tap a rocket, it flies up and bursts -->
       <section class="sky" id="sky" aria-label="Fireworks">
         <div class="sky__stage reveal">
           <canvas class="sky__canvas" aria-hidden="true"></canvas>
-          <p class="sky__hint" id="sky-hint"><span class="sky__hand" aria-hidden="true">👆</span> Tap on the fireworks</p>
+          <p class="sky__hint" id="sky-hint"><span class="sky__hand" aria-hidden="true">👆</span> ${tr("Tap on the fireworks", "ଆତସବାଜିରେ ଟାପ୍ କରନ୍ତୁ")}</p>
           <div class="sky__ground" aria-hidden="true"></div>
           <div class="sky__rockets">
             <button class="rocket" type="button" style="left:9%;--c:#e9b949;--c2:#b9852a" data-kind="willow" data-hue="44" aria-label="Launch a firework">
@@ -299,22 +340,22 @@ ${SPRITE.trimEnd()}
 
       <!-- COUPLE -->
       <section class="section section--couple" id="couple" aria-labelledby="couple-title">
-        <p class="eyebrow reveal">Two souls, one journey</p>
-        <h2 class="section__title reveal" id="couple-title">The Couple</h2>
+        <p class="eyebrow reveal">${tr("Two souls, one journey", "ଦୁଇ ଆତ୍ମା, ଗୋଟିଏ ଯାତ୍ରା")}</p>
+        <h2 class="section__title reveal" id="couple-title">${tr("The Couple", "ଦମ୍ପତି")}</h2>
 
         <div class="couple">${bridePage ? brideCard + groomCard : groomCard + brideCard}
           <div class="couple__hearts" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
 
         <blockquote class="quote reveal">
-          <p><span class="quote__line">“Like Shiva and Shakti, two halves of one whole —</span> <span class="quote__line">bound by love, blessed by the divine.”</span></p>
+          <p><span class="quote__line">${tr("“Like Shiva and Shakti, two halves of one whole —", "“ଶିବ ଓ ଶକ୍ତିଙ୍କ ପରି, ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣତାର ଦୁଇ ଅଂଶ —")}</span> <span class="quote__line">${tr("bound by love, blessed by the divine.”", "ପ୍ରେମରେ ବାନ୍ଧି, ଭଗବାନଙ୍କ ଆଶୀର୍ବାଦରେ ଧନ୍ୟ।”")}</span></p>
         </blockquote>
       </section>
 
       <!-- EVENTS -->
       <section class="section section--events" id="events" aria-labelledby="events-title">
-        <p class="eyebrow reveal">Celebrations</p>
-        <h2 class="section__title reveal" id="events-title">Events &amp; Schedule</h2>
+        <p class="eyebrow reveal">${tr("Celebrations", "ଉତ୍ସବ")}</p>
+        <h2 class="section__title reveal" id="events-title">${tr("Events &amp; Schedule", "କାର୍ଯ୍ୟକ୍ରମ ସୂଚୀ")}</h2>
 
         <ol class="events">
 ${events}
@@ -323,24 +364,24 @@ ${events}
 
       <!-- GIFTS (the humorous one) -->
       <section class="section section--gifts" id="gifts" aria-labelledby="gifts-title">
-        <p class="eyebrow reveal">The Shagun Desk</p>
-        <h2 class="section__title reveal" id="gifts-title">Gift Registry<sup>*</sup></h2>
+        <p class="eyebrow reveal">${tr("The Shagun Desk", "ଶଗୁଣ କାଉଣ୍ଟର")}</p>
+        <h2 class="section__title reveal" id="gifts-title">${tr("Gift Registry<sup>*</sup>", "ଉପହାର ତାଲିକା<sup>*</sup>")}</h2>
 
         <div class="shagun card reveal">
           <div class="shagun__coins" aria-hidden="true"><span>💸</span><span>💰</span><span>🪙</span></div>
-          <p class="shagun__pitch">We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.</p>
-          <p class="shagun__pitch">Your blessings are priceless. Cash, however, is also accepted. 😇</p>
+          <p class="shagun__pitch">${tr("We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.", "ଆମକୁ ଘର ସଜାଇବାକୁ ଅଛି, ହନିମୁନ୍ ଯୋଜନା କରିବାକୁ ଅଛି, ଆଉ <em>“ବିବାହ ବଜେଟ୍”</em> ନାମକ ଏକ ରହସ୍ୟମୟ ସ୍ପ୍ରେଡ୍‌ସିଟ୍ କୋଣରେ କାନ୍ଦୁଛି।")}</p>
+          <p class="shagun__pitch">${tr("Your blessings are priceless. Cash, however, is also accepted. 😇", "ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଅମୂଲ୍ୟ। ହେଲେ, ନଗଦ ଟଙ୍କା ମଧ୍ୟ ଗ୍ରହଣୀୟ। 😇")}</p>
           <button class="btn btn--gold btn--block shagun__btn" type="button" id="shagun-btn">
-            <svg aria-hidden="true"><use href="#i-gift"/></svg>Send Shagun
+            <svg aria-hidden="true"><use href="#i-gift"/></svg>${tr("Send Shagun", "ଶଗୁଣ ପଠାନ୍ତୁ")}
           </button>
-          <p class="shagun__fine"><sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.</p>
+          <p class="shagun__fine">${tr("<sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.", "<sup>*</sup>ସର୍ତ୍ତ ପ୍ରଯୁଜ୍ୟ। କ୍ଲିକ୍ କଲେ ଦୋଷବୋଧ ହୋଇପାରେ।")}</p>
         </div>
       </section>
 
       <!-- RSVP -->
       <section class="section section--rsvp" id="rsvp" aria-labelledby="rsvp-title">
-        <p class="eyebrow reveal">Kindly respond by 15 January 2027</p>
-        <h2 class="section__title reveal" id="rsvp-title">RSVP</h2>
+        <p class="eyebrow reveal">${tr("Kindly respond by 15 January 2027", "ଦୟାକରି ୧୫ ଜାନୁଆରୀ ୨୦୨୭ ମଧ୍ୟରେ ଜଣାନ୍ତୁ")}</p>
+        <h2 class="section__title reveal" id="rsvp-title">${tr("RSVP", "ଉତ୍ତର ଜଣାନ୍ତୁ")}</h2>
 
         <div class="rsvp reveal">
           <span class="rsvp__corner rsvp__corner--tl" aria-hidden="true"></span>
@@ -351,35 +392,35 @@ ${events}
           <form class="form" id="rsvp-form" novalidate>
             <div class="rsvp__head">
               <span class="rsvp__seal" aria-hidden="true"><svg><use href="#i-mail"/></svg></span>
-              <p class="rsvp__lead">Will you celebrate with us?</p>
-              <p class="rsvp__sub">Takes less than a minute</p>
+              <p class="rsvp__lead">${tr("Will you celebrate with us?", "ଆପଣ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ କି?")}</p>
+              <p class="rsvp__sub">${tr("Takes less than a minute", "ଏକ ମିନିଟରୁ କମ୍ ସମୟ ଲାଗିବ")}</p>
             </div>
 
             <fieldset class="field" data-field="attending">
               <legend class="sr-only">Will you attend? *</legend>
               <div class="tiles tiles--2">
-                <label class="tile"><input type="radio" name="attending" value="yes" required aria-describedby="e-attending" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🎉</span><span class="tile__title">Joyfully accept</span><span class="tile__sub">Count me in!</span></span></label>
-                <label class="tile"><input type="radio" name="attending" value="no" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🙏</span><span class="tile__title">Regretfully decline</span><span class="tile__sub">Sending blessings</span></span></label>
+                <label class="tile"><input type="radio" name="attending" value="yes" required aria-describedby="e-attending" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🎉</span><span class="tile__title">${tr("Joyfully accept", "ଖୁସିରେ ଆସିବି")}</span><span class="tile__sub">${tr("Count me in!", "ମୋତେ ଗଣନ୍ତୁ!")}</span></span></label>
+                <label class="tile"><input type="radio" name="attending" value="no" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🙏</span><span class="tile__title">${tr("Regretfully decline", "ଦୁଃଖିତ, ଆସିପାରିବି ନାହିଁ")}</span><span class="tile__sub">${tr("Sending blessings", "ଆଶୀର୍ବାଦ ପଠାଉଛି")}</span></span></label>
               </div>
               <p class="field__error" id="e-attending" aria-live="polite"></p>
             </fieldset>
 
             <div class="field" data-field="name">
-              <label for="f-name">Your name <span aria-hidden="true">*</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Priya Sharma"
+              <label for="f-name">${tr("Your name", "ଆପଣଙ୍କ ନାମ")} <span aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Priya Sharma"${ph("ଯଥା: ପ୍ରିୟା ଶର୍ମା")}
                      required minlength="2" maxlength="60" aria-describedby="e-name" />
               <p class="field__error" id="e-name" aria-live="polite"></p>
             </div>
 
             <div class="form__attending" id="attending-extra" hidden>
               <fieldset class="field" data-field="events">
-                <legend>Events I'm attending <span aria-hidden="true">*</span></legend>
+                <legend>${tr("Events I'm attending", "ମୁଁ ଯେଉଁ କାର୍ଯ୍ୟକ୍ରମରେ ଯୋଗ ଦେବି")} <span aria-hidden="true">*</span></legend>
                 <div class="chips" id="event-chips">${eventChips}</div>
                 <p class="field__error" id="e-events" aria-live="polite"></p>
               </fieldset>
 
               <div class="field" data-field="guests">
-                <label for="f-guests">How many of you are coming? <span class="field__opt">(including you)</span></label>
+                <label for="f-guests">${tr("How many of you are coming?", "ଆପଣମାନେ କେତେ ଜଣ ଆସୁଛନ୍ତି?")} <span class="field__opt">${tr("(including you)", "(ଆପଣଙ୍କୁ ମିଶାଇ)")}</span></label>
                 <div class="stepper">
                   <button type="button" class="stepper__btn" data-step="-1" aria-label="Fewer guests">−</button>
                   <input id="f-guests" name="guests" type="number" inputmode="numeric" min="1" max="10" value="1" aria-describedby="e-guests" />
@@ -389,20 +430,20 @@ ${events}
               </div>
 
               <fieldset class="field" data-field="food">
-                <legend>Food preference <span aria-hidden="true">*</span></legend>
+                <legend>${tr("Food preference", "ଖାଦ୍ୟ ପସନ୍ଦ")} <span aria-hidden="true">*</span></legend>
                 <div class="tiles tiles--3">
-                  <label class="tile tile--sm"><input type="radio" name="food" value="veg" aria-describedby="e-food" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🥗</span><span class="tile__title">Veg</span></span></label>
-                  <label class="tile tile--sm"><input type="radio" name="food" value="non-veg" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🍗</span><span class="tile__title">Non-veg</span></span></label>
-                  <label class="tile tile--sm"><input type="radio" name="food" value="jain" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🌿</span><span class="tile__title">Jain</span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="veg" aria-describedby="e-food" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🥗</span><span class="tile__title">${tr("Veg", "ନିରାମିଷ")}</span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="non-veg" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🍗</span><span class="tile__title">${tr("Non-veg", "ଆମିଷ")}</span></span></label>
+                  <label class="tile tile--sm"><input type="radio" name="food" value="jain" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🌿</span><span class="tile__title">${tr("Jain", "ଜୈନ")}</span></span></label>
                 </div>
                 <p class="field__error" id="e-food" aria-live="polite"></p>
               </fieldset>
             </div>
 
             <div class="field" data-field="message">
-              <label for="f-message">A wish for the couple <span class="field__opt">(optional)</span></label>
+              <label for="f-message">${tr("A wish for the couple", "ଦମ୍ପତିଙ୍କ ପାଇଁ ଶୁଭେଚ୍ଛା")} <span class="field__opt">${tr("(optional)", "(ଇଚ୍ଛାଧୀନ)")}</span></label>
               <textarea id="f-message" name="message" rows="4" maxlength="300"
-                        placeholder="Share your blessings, a memory or a warm wish…" aria-describedby="e-message c-message"></textarea>
+                        placeholder="Share your blessings, a memory or a warm wish…"${ph("ଆପଣଙ୍କ ଆଶୀର୍ବାଦ, ସ୍ମୃତି ବା ଶୁଭେଚ୍ଛା ଲେଖନ୍ତୁ…")} aria-describedby="e-message c-message"></textarea>
               <div class="field__foot">
                 <p class="field__error" id="e-message" aria-live="polite"></p>
                 <span class="field__count" id="c-message">0 / 300</span>
@@ -410,10 +451,10 @@ ${events}
             </div>
 
             <button class="btn btn--primary btn--block" type="submit" id="rsvp-submit">
-              <span class="btn__label">Send RSVP via WhatsApp</span>
+              <span class="btn__label" data-or="ହ୍ୱାଟସଆପ୍ ଜରିଆରେ ପଠାନ୍ତୁ">Send RSVP via WhatsApp</span>
               <span class="btn__spinner" aria-hidden="true"></span>
             </button>
-            <p class="form__note">Next, we'll open WhatsApp with your RSVP ready to go.</p>
+            <p class="form__note">${tr("Next, we'll open WhatsApp with your RSVP ready to go.", "ପରେ, ଆପଣଙ୍କ ଉତ୍ତର ସହ ହ୍ୱାଟସଆପ୍ ଖୋଲିବ।")}</p>
             <p class="form__status" id="rsvp-status" role="status" aria-live="polite"></p>
           </form>
 
@@ -422,9 +463,9 @@ ${events}
             <h3 class="rsvp__done-title" id="rsvp-done-title">Thank you!</h3>
             <p class="rsvp__done-text" id="rsvp-done-text"></p>
             <a class="btn btn--whatsapp btn--block" id="rsvp-whatsapp" target="_blank" rel="noopener" href="#">
-              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Send RSVP on WhatsApp
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>${tr("Send RSVP on WhatsApp", "ହ୍ୱାଟସଆପ୍‌ରେ ପଠାନ୍ତୁ")}
             </a>
-            <button class="btn btn--ghost btn--block" type="button" id="rsvp-edit">Edit my response</button>
+            <button class="btn btn--ghost btn--block" type="button" id="rsvp-edit">${tr("Edit my response", "ମୋ ଉତ୍ତର ବଦଳାନ୍ତୁ")}</button>
           </div>
         </div>
       </section>
@@ -434,17 +475,17 @@ ${events}
     <footer class="footer">
       <svg class="footer__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
       <p class="footer__names">${first} <span>&amp;</span> ${second}</p>
-      <p class="footer__text">With love and gratitude, we look forward to celebrating with you.</p>
+      <p class="footer__text">${tr("With love and gratitude, we look forward to celebrating with you.", "ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ।")}</p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
     </footer>
 
     <!-- Bottom nav (social-app style) -->
     <nav class="tabbar" id="tabbar" aria-label="Sections">
-      <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a>
-      <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span>Events</span></a>
-      <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span>Gifts</span></a>
-      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>RSVP</span></a>
-      <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span>Share</span></button>
+      <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span>${tr("Home", "ହୋମ୍")}</span></a>
+      <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span>${tr("Events", "କାର୍ଯ୍ୟକ୍ରମ")}</span></a>
+      <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span>${tr("Gifts", "ଉପହାର")}</span></a>
+      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>${tr("RSVP", "ଉତ୍ତର")}</span></a>
+      <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span>${tr("Share", "ଶେୟାର୍")}</span></button>
     </nav>
   </div>
 
@@ -456,7 +497,7 @@ ${events}
       <p class="modal__text" id="shagun-text">Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list.</p>
       <div class="modal__actions">
         <button class="btn btn--gold btn--block" type="button" id="shagun-yes">Fine, I'll come! 🤗</button>
-        <button class="btn btn--ghost btn--block" type="button" id="shagun-insist">No, I insist! 😤</button>
+        <button class="btn btn--ghost btn--block" type="button" id="shagun-insist" data-or="ନା, ମୁଁ ଜିଦ୍ କରୁଛି! 😤">No, I insist! 😤</button>
       </div>
     </div>
   </dialog>
@@ -464,17 +505,19 @@ ${events}
   <!-- WhatsApp reminder popup -->
   <dialog class="modal" id="wa-modal" aria-labelledby="wa-title">
     <div class="modal__card">
-      <h3 class="modal__title" id="wa-title">One last step 💚</h3>
-      <p class="modal__text"><strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.</p>
-      <img class="modal__img" src="${up}assets/whatsapp-send.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
+      <h3 class="modal__title" id="wa-title">${tr("One last step 💚", "ଶେଷ ପଦକ୍ଷେପ 💚")}</h3>
+      <p class="modal__text">${tr("<strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.", "<strong>ଦୟାକରି ହ୍ୱାଟସଆପ୍‌ରେ “Send” ଦାବିବାକୁ ଭୁଲିବେ ନାହିଁ।</strong> ଆପଣ ପଠାଇଲେ ହିଁ ଆପଣଙ୍କ ଉତ୍ତର ଆମ ପାଖରେ ପହଞ୍ଚିବ।")}</p>
+      <img class="modal__img" src="${up}assets/whatsapp-send.svg" data-src-or="${up}assets/whatsapp-send-or.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
       <div class="modal__actions">
         <a class="btn btn--whatsapp btn--block" id="wa-open" target="_blank" rel="noopener" href="#">
-          <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Open WhatsApp
+          <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>${tr("Open WhatsApp", "ହ୍ୱାଟସଆପ୍ ଖୋଲନ୍ତୁ")}
         </a>
-        <button class="btn btn--ghost btn--block" type="button" id="wa-cancel">Go back</button>
+        <button class="btn btn--ghost btn--block" type="button" id="wa-cancel">${tr("Go back", "ପଛକୁ ଯାଆନ୍ତୁ")}</button>
       </div>
     </div>
   </dialog>
+
+  <button class="lang" id="lang-btn" type="button" aria-label="Switch language: English or Odia">ଓଡ଼ିଆ</button>
 
   <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 

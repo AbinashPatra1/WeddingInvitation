@@ -41,6 +41,76 @@
     toastTimer = setTimeout(function () { toastEl.classList.remove("is-visible"); }, 2200);
   }
 
+  /* ---------- Language: English / Odia ----------
+     Static text carries its Odia version in data-or (see tools/build.mjs); text built here comes from T. */
+  var T = {
+    shareCopied: ["Invitation link copied", "ଆମନ୍ତ୍ରଣ ଲିଙ୍କ୍ କପି ହେଲା"],
+    calAdded: ["Added to your calendar file", "ଆପଣଙ୍କ କ୍ୟାଲେଣ୍ଡର୍ ଫାଇଲ୍‌ରେ ଯୋଡ଼ାଗଲା"],
+    nameReq: ["Please tell us your name.", "ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ।"],
+    nameShort: ["Name looks a little short.", "ନାମ ଟିକେ ଛୋଟ ଲାଗୁଛି।"],
+    nameLetters: ["Please use letters only.", "ଦୟାକରି କେବଳ ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"],
+    attendReq: ["Please let us know if you can make it.", "ଆପଣ ଆସିପାରିବେ କି ନାହିଁ ଜଣାନ୍ତୁ।"],
+    eventsReq: ["Please pick at least one event.", "ଅତିକମରେ ଗୋଟିଏ କାର୍ଯ୍ୟକ୍ରମ ବାଛନ୍ତୁ।"],
+    guestsRange: ["Please choose between 1 and 10 guests.", "୧ ରୁ ୧୦ ଜଣ ମଧ୍ୟରେ ବାଛନ୍ତୁ।"],
+    foodReq: ["Please pick a food preference.", "ଖାଦ୍ୟ ପସନ୍ଦ ବାଛନ୍ତୁ।"],
+    msgLong: ["Please keep your wish under 300 characters.", "ଦୟାକରି ଶୁଭେଚ୍ଛା ୩୦୦ ଅକ୍ଷର ମଧ୍ୟରେ ରଖନ୍ତୁ।"],
+    doneYesTitle: ["Thank you, {n}!", "ଧନ୍ୟବାଦ, {n}!"],
+    doneNoTitle: ["We'll miss you, {n}", "ଆପଣଙ୍କୁ ମନେ ପଡ଼ିବ, {n}"],
+    doneYesText: ["We're so happy you'll be celebrating with us. See you soon!", "ଆପଣ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି। ଶୀଘ୍ର ଦେଖା ହେବ!"],
+    doneYesMany: ["We're so happy you'll be celebrating with us — all {g} of you. See you soon!", "ଆପଣମାନେ {g} ଜଣ ଯାକ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି। ଶୀଘ୍ର ଦେଖା ହେବ!"],
+    doneNoText: ["Thank you for letting us know. Your blessings mean the world to us.", "ଜଣାଇଥିବାରୁ ଧନ୍ୟବାଦ। ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଆମ ପାଇଁ ସବୁକିଛି।"],
+    update: ["Update RSVP", "ଉତ୍ତର ଅପଡେଟ୍ କରନ୍ତୁ"],
+    wish: ["Make a wish ✨", "ଗୋଟିଏ ଇଚ୍ଛା କରନ୍ତୁ ✨"],
+    blessing: ["Blessings! 🌼", "ଆଶୀର୍ବାଦ! 🌼"],
+    factHint: ["Tap a box for a fun fact", "ଏକ ମଜାଦାର ତଥ୍ୟ ପାଇଁ ବାକ୍ସରେ ଟାପ୍ କରନ୍ତୁ"],
+    factWeekends: ["That's about {n} weekends to go 🗓️", "ପ୍ରାୟ {n}ଟି ସପ୍ତାହାନ୍ତ ବାକି 🗓️"],
+    factSunrises: ["{n} sunrises to go 🌅", "{n}ଟି ସୂର୍ଯ୍ୟୋଦୟ ବାକି 🌅"],
+    factMovies: ["Enough time to watch about {n} movies 🎬", "ପ୍ରାୟ {n}ଟି ସିନେମା ଦେଖିବା ପାଇଁ ଯଥେଷ୍ଟ ସମୟ 🎬"],
+    factChai: ["That's roughly {n} cups of chai ☕", "ପ୍ରାୟ {n} କପ୍ ଚା' ☕"],
+    factBeats: ["Your heart will beat about {n} times until then 💓", "ସେତେବେଳ ଯାଏ ଆପଣଙ୍କ ହୃଦୟ ପ୍ରାୟ {n} ଥର ଧଡ଼କିବ 💓"],
+    s1Title: ["Wait… you really wanted to gift us?", "ଅପେକ୍ଷା କରନ୍ତୁ… ଆପଣ ସତରେ ଉପହାର ଦେବାକୁ ଚାହୁଁଥିଲେ?"],
+    s1Text: ["Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list.", "ଆହା, କେତେ ମଧୁର! କିନ୍ତୁ ଆପଣଙ୍କ <strong>ଉପସ୍ଥିତି</strong> ହିଁ ଆମ ପାଇଁ ସବୁଠୁ ବଡ଼ ଉପହାର। ଭୋକିଲା ହୋଇ ଆସନ୍ତୁ, ଖୁବ୍ ନାଚନ୍ତୁ ଆଉ ଆମକୁ ଆଶୀର୍ବାଦ ଦିଅନ୍ତୁ। ଏତିକି ଆମର ଉପହାର ତାଲିକା।"],
+    s2Title: ["Okay, you're stubborn. We like that.", "ଠିକ୍ ଅଛି, ଆପଣ ଜିଦ୍ଖୋର। ଆମକୁ ତାହା ଭଲ ଲାଗେ।"],
+    s2Text: ["Then here's the deal: bring your <strong>blessings</strong>, your best dance moves and an empty stomach. Gulab jamuns are our official currency. 🍬", "ତେବେ ଏଇ ଚୁକ୍ତି: ଆପଣଙ୍କ <strong>ଆଶୀର୍ବାଦ</strong>, ସର୍ବୋତ୍ତମ ନାଚ ଆଉ ଖାଲି ପେଟ ନେଇ ଆସନ୍ତୁ। ଗୁଲାବ୍ ଜାମୁନ୍ ହିଁ ଆମର ସରକାରୀ ମୁଦ୍ରା। 🍬"],
+    yes1: ["Fine, I'll come! 🤗", "ଠିକ୍ ଅଛି, ମୁଁ ଆସିବି! 🤗"],
+    yes2: ["Deal! See you there 🤝", "ଠିକ୍! ସେଠାରେ ଦେଖା ହେବ 🤝"],
+    deal: ["It's a deal! 🎉", "ଚୁକ୍ତି ପକ୍କା! 🎉"],
+    seeYou: ["See you at the celebrations! 🎉", "ଉତ୍ସବରେ ଦେଖା ହେବ! 🎉"]
+  };
+  var lang = store.get("am-lang") === "or" ? "or" : "en";
+  var ODIGITS = "୦୧୨୩୪୫୬୭୮୯";
+  function t(key, vars) {
+    var v = T[key][lang === "or" ? 1 : 0];
+    if (vars) Object.keys(vars).forEach(function (k) { v = v.replace("{" + k + "}", vars[k]); });
+    return v;
+  }
+  function num(n) {                                   // 6,48,00,000 style, in Odia digits when needed
+    var str = Math.round(n).toLocaleString("en-IN");
+    return lang === "or" ? str.replace(/\d/g, function (d) { return ODIGITS.charAt(d); }) : str;
+  }
+  var langBtn = $("#lang-btn");
+  var skyTapped = false;                              // set by the fireworks strip
+  function applyLang(l) {
+    lang = l;
+    doc.documentElement.lang = l === "or" ? "or" : "en";
+    $$("[data-or]").forEach(function (el) {
+      if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+      el.innerHTML = l === "or" ? el.dataset.or : el.dataset.en;
+    });
+    $$("[data-or-ph]").forEach(function (el) {
+      if (el.dataset.enPh === undefined) el.dataset.enPh = el.getAttribute("placeholder") || "";
+      el.setAttribute("placeholder", l === "or" ? el.getAttribute("data-or-ph") : el.dataset.enPh);
+    });
+    $$("[data-src-or]").forEach(function (img) {
+      if (img.dataset.srcEn === undefined) img.dataset.srcEn = img.getAttribute("src");
+      img.setAttribute("src", l === "or" ? img.getAttribute("data-src-or") : img.dataset.srcEn);
+    });
+    langBtn.textContent = l === "or" ? "English" : "ଓଡ଼ିଆ";
+    store.set("am-lang", l);
+    refreshDynamic();
+  }
+  langBtn.addEventListener("click", function () { applyLang(lang === "or" ? "en" : "or"); });
+
   /* ---------- Effects: petal burst, confetti, coin rain (all skipped for reduced motion) ---------- */
   var COLORS = ["#c98a86", "#d8bd85", "#b48a42", "#b8432c", "#f4dcd6", "#7f9878", "#efe2c4"];
   function rand(a, b) { return a + Math.random() * (b - a); }
@@ -77,6 +147,17 @@
         { transform: "translate(" + (x + Math.cos(a) * d) + "px," + (y + Math.sin(a) * d - 60) + "px) rotate(" + rand(-300, 300) + "deg) scale(1)", opacity: 0 }
       ];
     }, { min: 1100, max: 1900 });
+  }
+  // a few hearts float up from a tap
+  function popHearts(x, y) {
+    if (reduceMotion || !doc.body.animate) return;
+    var host = layer();
+    spawn(host, "heartpop", 8, function () {
+      return [
+        { transform: "translate(" + x + "px," + y + "px) scale(0.5)", opacity: 1 },
+        { transform: "translate(" + (x + rand(-46, 46)) + "px," + (y - rand(90, 170)) + "px) scale(1.1)", opacity: 0 }
+      ];
+    }, { min: 900, max: 1500, delay: 160, text: ["❤️", "💖", "💗", "🩷"] });
   }
   // confetti or coins falling from the top of the screen
   function rainDown(opts) {
@@ -155,6 +236,36 @@
   updateCountdown();
   cdTimer = setInterval(updateCountdown, 1000);
 
+  var factKey = null, factVariant = 0, factTimer;
+  function factText() {
+    var s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    switch (factKey) {
+      case "days": return factVariant % 2 ? t("factSunrises", { n: num(s / 86400) }) : t("factWeekends", { n: num(s / 604800) });
+      case "hours": return t("factMovies", { n: num(s / 3600 / 2.5) });
+      case "minutes": return t("factChai", { n: num(s / 60 / 20) });
+      case "seconds": return t("factBeats", { n: num(s * 1.2) });
+    }
+    return t("factHint");
+  }
+  function renderFact() {
+    var el = $("#countdown-fact");
+    if (!el) return;
+    el.textContent = factText();
+    el.classList.remove("is-new");
+    void el.offsetWidth;
+    if (factKey) el.classList.add("is-new");
+  }
+  $$(".countdown__unit[data-fact]").forEach(function (box) {
+    box.addEventListener("click", function () {
+      var key = box.getAttribute("data-fact");
+      factVariant = key === factKey ? factVariant + 1 : 0;
+      factKey = key;
+      renderFact();
+      clearTimeout(factTimer);
+      factTimer = setTimeout(function () { factKey = null; renderFact(); }, 7000);
+    });
+  });
+
   /* ---------- 3. Reveal on scroll ---------- */
   var reveals = $$(".reveal");
   if ("IntersectionObserver" in window && !reduceMotion) {
@@ -217,6 +328,15 @@
   window.addEventListener("scroll", function () {
     if (!ticking) { ticking = true; requestAnimationFrame(paintProgress); }
   }, { passive: true });
+
+  // the language pill slides away while scrolling down and comes back when scrolling up
+  var lastY = 0;
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY;
+    if (y > lastY + 8 && y > 140) langBtn.classList.add("is-away");
+    else if (y < lastY - 8 || y < 100) langBtn.classList.remove("is-away");
+    lastY = y;
+  }, { passive: true });
   paintProgress();
 
   /* ---------- 4c. "More details" accordion that slides open/closed ---------- */
@@ -240,6 +360,34 @@
     });
   });
 
+  /* ---------- 4d. Tap the mantra for a shower of flowers ---------- */
+  var mantra = $("#mantra");
+  if (mantra) {
+    mantra.addEventListener("click", function () {
+      rainDown({ count: 34, text: ["🌼", "🌸", "🏵️", "🌺", "🌼"] });
+      toast(t("blessing"));
+    });
+  }
+
+  /* ---------- 4e. Tap a portrait to flip it ---------- */
+  $$(".flip").forEach(function (card) {
+    card.addEventListener("click", function (e) {
+      var on = !card.classList.contains("is-flipped");
+      $$(".flip.is-flipped").forEach(function (o) {
+        o.classList.remove("is-flipped");
+        o.setAttribute("aria-pressed", "false");
+        o.querySelector(".flip__back").setAttribute("aria-hidden", "true");
+      });
+      if (on) {
+        card.classList.add("is-flipped");
+        card.setAttribute("aria-pressed", "true");
+        card.querySelector(".flip__back").setAttribute("aria-hidden", "false");
+        var r = card.getBoundingClientRect();
+        popHearts(e.clientX || r.left + r.width / 2, e.clientY || r.top + r.height / 2);
+      }
+    });
+  });
+
   /* ---------- 5. Share ---------- */
   $("#share-btn").addEventListener("click", function () {
     var data = {
@@ -250,7 +398,7 @@
     if (navigator.share) {
       navigator.share(data).catch(function () { /* user cancelled */ });
     } else {
-      copyText(data.url).then(function () { toast("Invitation link copied"); });
+      copyText(data.url).then(function () { toast(t("shareCopied")); });
     }
   });
 
@@ -288,7 +436,7 @@
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-      toast("Added to your calendar file");
+      toast(t("calAdded"));
     });
   });
 
@@ -315,28 +463,22 @@
   var shagunBtn = $("#shagun-btn");
   var insisted = false;
   var steps = {
-    first: {
-      emoji: "🥹",
-      title: "Wait… you really wanted to gift us?",
-      text: "Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list."
-    },
-    second: {
-      emoji: "🤨",
-      title: "Okay, you're stubborn. We like that.",
-      text: "Then here's the deal: bring your <strong>blessings</strong>, your best dance moves and an empty stomach. Gulab jamuns are our official currency. 🍬"
-    }
+    first: { emoji: "🥹", title: "s1Title", text: "s1Text", yes: "yes1" },
+    second: { emoji: "🤨", title: "s2Title", text: "s2Text", yes: "yes2" }
   };
+  var currentStep = "first";
   function showStep(key) {
     var st = steps[key];
+    currentStep = key;
     var emo = $("#shagun-emoji");
     emo.textContent = st.emoji;
     emo.classList.remove("is-bouncing");
     void emo.offsetWidth; // restart the animation
     emo.classList.add("is-bouncing");
-    $("#shagun-title").textContent = st.title;
-    $("#shagun-text").innerHTML = st.text;
+    $("#shagun-title").textContent = t(st.title);
+    $("#shagun-text").innerHTML = t(st.text);
     $("#shagun-insist").hidden = key === "second";
-    $("#shagun-yes").textContent = key === "second" ? "Deal! See you there 🤝" : "Fine, I'll come! 🤗";
+    $("#shagun-yes").textContent = t(st.yes);
   }
   function closeModal(msgText) {
     if (modal.close) modal.close(); else modal.setAttribute("hidden", "");
@@ -349,7 +491,7 @@
       if (modal.showModal) modal.showModal(); else modal.setAttribute("open", "");
     });
     $("#shagun-yes").addEventListener("click", function () {
-      closeModal(insisted ? "It's a deal! 🎉" : "See you at the celebrations! 🎉");
+      closeModal(insisted ? t("deal") : t("seeYou"));
     });
     $("#shagun-insist").addEventListener("click", function () {
       insisted = true;
@@ -450,7 +592,7 @@
           btn.style.opacity = "1";
         }, 1700);
       };
-      if (!isDemo && ++taps === 1) $("#sky-hint").innerHTML = "Make a wish ✨";
+      if (!isDemo && ++taps === 1) { skyTapped = true; $("#sky-hint").textContent = t("wish"); }
     }
 
     $$(".rocket", sky).forEach(function (btn) {
@@ -483,30 +625,30 @@
   var validators = {
     name: function () {
       var v = nameInput.value.trim();
-      if (!v) return "Please tell us your name.";
-      if (v.length < 2) return "Name looks a little short.";
-      if (!/^[\p{L}\p{M}' .-]+$/u.test(v)) return "Please use letters only.";
+      if (!v) return t("nameReq");
+      if (v.length < 2) return t("nameShort");
+      if (!/^[\p{L}\p{M}' .-]+$/u.test(v)) return t("nameLetters");
       return "";
     },
     attending: function () {
-      return form.attending.value ? "" : "Please let us know if you can make it.";
+      return form.attending.value ? "" : t("attendReq");
     },
     guests: function () {
       if (form.attending.value !== "yes") return "";
       var n = Number(guests.value);
-      if (!Number.isInteger(n) || n < 1 || n > 10) return "Please choose between 1 and 10 guests.";
+      if (!Number.isInteger(n) || n < 1 || n > 10) return t("guestsRange");
       return "";
     },
     events: function () {
       if (form.attending.value !== "yes") return "";
-      return $$('input[name="events"]:checked', form).length ? "" : "Please pick at least one event.";
+      return $$('input[name="events"]:checked', form).length ? "" : t("eventsReq");
     },
     food: function () {
       if (form.attending.value !== "yes") return "";
-      return form.food.value ? "" : "Please pick a food preference.";
+      return form.food.value ? "" : t("foodReq");
     },
     message: function () {
-      return msg.value.length > 300 ? "Please keep your wish under 300 characters." : "";
+      return msg.value.length > 300 ? t("msgLong") : "";
     }
   };
 
@@ -604,12 +746,17 @@
     return base + "?text=" + encodeURIComponent(lines.join("\n"));
   }
 
-  function showDone(d, noFocus) {
+  var lastDone = null;
+  function renderDone(d) {
     var first = d.name.split(" ")[0];
-    $("#rsvp-done-title").textContent = d.attending === "yes" ? "Thank you, " + first + "!" : "We'll miss you, " + first;
+    $("#rsvp-done-title").textContent = d.attending === "yes" ? t("doneYesTitle", { n: first }) : t("doneNoTitle", { n: first });
     $("#rsvp-done-text").textContent = d.attending === "yes"
-      ? "We're so happy you'll be celebrating with us" + (d.guests > 1 ? " — all " + d.guests + " of you" : "") + ". See you soon!"
-      : "Thank you for letting us know. Your blessings mean the world to us.";
+      ? (d.guests > 1 ? t("doneYesMany", { g: d.guests }) : t("doneYesText"))
+      : t("doneNoText");
+  }
+  function showDone(d, noFocus) {
+    lastDone = d;
+    renderDone(d);
     $("#rsvp-whatsapp").href = whatsappLink(d);
     form.hidden = true;
     doneEl.hidden = false;
@@ -679,9 +826,11 @@
   $("#rsvp-edit").addEventListener("click", function () {
     doneEl.hidden = true;
     form.hidden = false;
-    $(".btn__label", submitBtn).textContent = "Update RSVP";
+    var lbl = $(".btn__label", submitBtn);
+    lbl.dataset.en = T.update[0];
+    lbl.dataset.or = T.update[1];
+    lbl.textContent = t("update");
     nameInput.focus();
-    $(".btn__label", submitBtn).dataset.idle = "Update RSVP";
   });
 
   // Restore a previous response from this device
@@ -691,4 +840,14 @@
     showDone(saved, true);
   }
   updateCounter();
+
+  // everything text-related that was built in JS and has to follow the language switch
+  function refreshDynamic() {
+    renderFact();
+    $$(".field.is-invalid").forEach(function (f) { validateField(f.getAttribute("data-field")); });
+    if (lastDone && !doneEl.hidden) renderDone(lastDone);
+    if (modal && modal.open) showStep(currentStep);
+    if (skyTapped) $("#sky-hint").textContent = t("wish");
+  }
+  applyLang(lang);
 })();

@@ -286,6 +286,15 @@ button { cursor: pointer; }
   background: radial-gradient(ellipse at center, rgba(251, 247, 240, 0.78) 0%, rgba(251, 247, 240, 0.4) 50%, transparent 72%);
 }
 .hero__mantra {
+  padding: 4px 10px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: mantraGlow 3.4s ease-in-out 3s infinite;
+}
+.hero__mantra:active { transform: scale(0.96); }
+.hero__mantra {
   font-family: var(--font-odia);
   font-weight: 500;
   font-size: clamp(0.85rem, 3.6vw, 1rem);
@@ -536,6 +545,19 @@ body.is-open .hero__petals i { animation-play-state: running; }
   color: var(--charcoal);
   font-variant-numeric: tabular-nums;
 }
+.countdown__unit { font: inherit; color: inherit; cursor: pointer; text-align: center; touch-action: manipulation; -webkit-appearance: none; appearance: none; transition: transform 0.2s var(--ease); }
+.countdown__unit:active { transform: scale(0.95); }
+.countdown__fact {
+  min-height: 3.2em;
+  margin: 16px auto 0;
+  max-width: 30ch;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.countdown__fact.is-new { color: var(--rose-deep); animation: lineIn 0.6s var(--ease) both; }
 .countdown__num { display: inline-block; transform-origin: 50% 80%; }
 .countdown__num.tick { animation: flip 0.55s var(--ease); }
 .countdown__unit:last-child { animation: heartbeat 1s ease-in-out infinite; }
@@ -642,6 +664,48 @@ body.is-open .hero__petals i { animation-play-state: running; }
   border-radius: inherit;
   background: var(--blush);
 }
+.flip {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  background: none;
+  perspective: 900px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.flip .arch-frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+.flip__face { backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform 0.8s var(--ease); }
+.flip__front { transform: rotateY(0deg); }
+.flip__back {
+  transform: rotateY(-180deg);
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #fff6e2, var(--gold-pale) 55%, #f4dcd6);
+}
+.flip.is-flipped .flip__front { transform: rotateY(180deg); }
+.flip.is-flipped .flip__back { transform: rotateY(0deg); }
+.flip__badge {
+  position: absolute;
+  right: 12px; bottom: 12px;
+  width: 30px; height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--gold);
+  background: rgba(255, 252, 246, 0.92);
+  box-shadow: 0 2px 8px rgba(60, 40, 20, 0.2);
+  animation: badgePulse 2.6s ease-in-out infinite;
+}
+.flip__badge svg { width: 16px; height: 16px; }
+.flip__inner { display: grid; justify-items: center; gap: 8px; padding: 26px 14px 20px; text-align: center; }
+.flip__q { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+.flip__fact { font-family: var(--font-serif); font-style: italic; font-size: 0.98rem; line-height: 1.35; color: var(--ink); }
+.flip__heart { width: 18px; height: 18px; color: var(--rose); }
 .couple__card figcaption {
   display: flex;
   flex-direction: column;
@@ -1283,6 +1347,40 @@ body.is-open .tabbar { transform: translate(-50%, 0); }
 .tabbar__item.is-active { color: var(--gold); }
 .tabbar__item.is-active svg { transform: translateY(-2px); animation: tabBounce 0.55s var(--ease); }
 
+/* ---------- 14a. Language switch ---------- */
+.lang {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  right: max(12px, calc(50vw - var(--app-w) / 2 + 12px));
+  z-index: 110;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--gold-soft);
+  border-radius: 999px;
+  background: rgba(255, 252, 246, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--charcoal);
+  font-family: "Noto Sans Oriya", var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  box-shadow: 0 3px 12px rgba(60, 40, 20, 0.15);
+  touch-action: manipulation;
+}
+.lang { transition: transform 0.35s var(--ease), opacity 0.3s; }
+.lang:active { transform: scale(0.95); }
+.lang.is-away { transform: translateY(-70px); opacity: 0; pointer-events: none; }
+
+/* Odia: a font that has the glyphs, and no letter-spacing/uppercase (they break Odia conjuncts) */
+html[lang="or"] {
+  --font-serif: "Noto Sans Oriya", "Cormorant Garamond", serif;
+  --font-sans: "Noto Sans Oriya", "Jost", sans-serif;
+}
+html[lang="or"] body * { letter-spacing: normal !important; text-transform: none !important; }
+html[lang="or"] .event__name, html[lang="or"] .section__title, html[lang="or"] .rsvp__lead, html[lang="or"] .modal__title { line-height: 1.35; }
+html[lang="or"] .eyebrow, html[lang="or"] .event__day { font-size: 0.8rem; }
+html[lang="or"] .hero__name, html[lang="or"] .hero__amp, html[lang="or"] .couple__name, html[lang="or"] .footer__names, html[lang="or"] .envelope__letter-names { font-family: var(--font-script); }
+
 /* ---------- 14b. Scroll progress + celebration layer ---------- */
 .progress {
   position: fixed;
@@ -1308,6 +1406,7 @@ body.is-open .progress { opacity: 1; }
 .fx i { position: absolute; top: 0; left: 0; display: block; will-change: transform, opacity; }
 .fx .piece { width: 9px; height: 13px; border-radius: 2px; }
 .fx .coin { font-style: normal; font-size: 1.6rem; line-height: 1; }
+.fx .heartpop { font-style: normal; font-size: 1.15rem; line-height: 1; }
 .fx .petal { width: 11px; height: 16px; border-radius: 80% 0 80% 0; }
 
 /* ---------- 15. Toast ---------- */
@@ -1370,6 +1469,8 @@ body.is-open .progress { opacity: 1; }
 @keyframes handTap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes rocketIdle { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
 @keyframes flameFlicker { from { transform: scaleY(0.8); } to { transform: scaleY(1.25); } }
+@keyframes mantraGlow { 0%, 100% { text-shadow: 0 0 0 rgba(216, 160, 70, 0); } 50% { text-shadow: 0 0 14px rgba(216, 160, 70, 0.75); } }
+@keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 @keyframes wiggle { 0%, 88%, 100% { transform: rotate(0); } 91% { transform: rotate(-2.5deg); } 94% { transform: rotate(2.5deg); } 97% { transform: rotate(-1.5deg); } }
 @keyframes pop { from { opacity: 0; transform: scale(0.85) translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -1408,4 +1509,6 @@ body.is-open .progress { opacity: 1; }
   .quote__line { opacity: 1; transform: none; }
   .couple__hearts, .fx { display: none; }
   .sky { display: none; }
+  .flip__badge, .hero__mantra { animation: none; }
+  .flip__face { transition-duration: 0.01ms; }
 }

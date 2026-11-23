@@ -277,10 +277,11 @@ ${SPRITE.trimEnd()}
         <h2 class="section__title reveal" id="couple-title">The Couple</h2>
 
         <div class="couple">${bridePage ? brideCard + groomCard : groomCard + brideCard}
+          <div class="couple__hearts" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
 
         <blockquote class="quote reveal">
-          <p>“Like Shiva and Shakti, two halves of one whole — bound by love, blessed by the divine.”</p>
+          <p><span class="quote__line">“Like Shiva and Shakti, two halves of one whole —</span> <span class="quote__line">bound by love, blessed by the divine.”</span></p>
         </blockquote>
       </section>
 
@@ -405,6 +406,7 @@ ${events}
     </main>
 
     <footer class="footer">
+      <svg class="footer__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
       <p class="footer__names">${first} <span>&amp;</span> ${second}</p>
       <p class="footer__text">With love and gratitude, we look forward to celebrating with you.</p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
@@ -447,6 +449,8 @@ ${events}
       </div>
     </div>
   </dialog>
+
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

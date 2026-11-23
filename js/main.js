@@ -41,6 +41,58 @@
     toastTimer = setTimeout(function () { toastEl.classList.remove("is-visible"); }, 2200);
   }
 
+  /* ---------- Effects: petal burst, confetti, coin rain (all skipped for reduced motion) ---------- */
+  var COLORS = ["#c98a86", "#d8bd85", "#b48a42", "#b8432c", "#f4dcd6", "#7f9878", "#efe2c4"];
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function layer(into) {
+    var el = doc.createElement("div");
+    el.className = "fx";
+    el.setAttribute("aria-hidden", "true");
+    (into || body).appendChild(el);
+    return el;
+  }
+  function spawn(host, cls, count, buildFrames, opts) {
+    var done = 0;
+    for (var i = 0; i < count; i++) {
+      var p = doc.createElement("i");
+      p.className = cls;
+      if (opts.text) p.textContent = opts.text[i % opts.text.length];
+      else p.style.background = COLORS[i % COLORS.length];
+      host.appendChild(p);
+      var anim = p.animate(buildFrames(), { duration: rand(opts.min, opts.max), delay: rand(0, opts.delay || 0), easing: opts.easing || "cubic-bezier(0.2, 0.7, 0.3, 1)", fill: "both" });
+      anim.onfinish = function () {
+        done++;
+        if (done >= count && host.parentNode) host.parentNode.removeChild(host);
+      };
+    }
+  }
+  // petals fly outward from a point
+  function petalBurst(x, y) {
+    if (reduceMotion || !doc.body.animate) return;
+    var host = layer();
+    spawn(host, "petal", 30, function () {
+      var a = rand(0, Math.PI * 2), d = rand(110, 340);
+      return [
+        { transform: "translate(" + x + "px," + y + "px) rotate(0deg) scale(0.4)", opacity: 1 },
+        { transform: "translate(" + (x + Math.cos(a) * d) + "px," + (y + Math.sin(a) * d - 60) + "px) rotate(" + rand(-300, 300) + "deg) scale(1)", opacity: 0 }
+      ];
+    }, { min: 1100, max: 1900 });
+  }
+  // confetti or coins falling from the top of the screen
+  function rainDown(opts) {
+    if (reduceMotion || !doc.body.animate) return;
+    var host = layer(opts.into);
+    var w = window.innerWidth, h = window.innerHeight;
+    spawn(host, opts.text ? "coin" : "piece", opts.count || 46, function () {
+      var x = rand(0, w), sway = rand(-60, 60);
+      return [
+        { transform: "translate(" + x + "px,-40px) rotate(0deg)", opacity: 1 },
+        { transform: "translate(" + (x + sway) + "px," + h * 0.5 + "px) rotate(" + rand(200, 400) + "deg)", opacity: 1, offset: 0.55 },
+        { transform: "translate(" + (x - sway) + "px," + (h + 40) + "px) rotate(" + rand(500, 900) + "deg)", opacity: 0.9 }
+      ];
+    }, { min: 2200, max: 3800, delay: 700, text: opts.text, easing: "ease-in" });
+  }
+
   /* ---------- 1. Envelope opener ---------- */
   var opener = $("#opener");
   var envelope = $("#envelope");
@@ -51,6 +103,8 @@
     opened = true;
     envelope.classList.add("is-open");
     opener.classList.add("is-opening");
+    var er = envelope.getBoundingClientRect();
+    petalBurst(er.left + er.width / 2, er.top + er.height * 0.55);
     if (navigator.vibrate) { try { navigator.vibrate(15); } catch (e) { /* ignore */ } }
 
     var delay = reduceMotion ? 50 : 1700;
@@ -152,6 +206,40 @@
     });
   });
 
+  /* ---------- 4b. Scroll progress line ---------- */
+  var bar = $("#progress-bar");
+  var ticking = false;
+  function paintProgress() {
+    var max = doc.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (max > 0 ? Math.min(window.scrollY / max, 1) : 0) + ")";
+    ticking = false;
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(paintProgress); }
+  }, { passive: true });
+  paintProgress();
+
+  /* ---------- 4c. "More details" accordion that slides open/closed ---------- */
+  $$("details.more").forEach(function (d) {
+    var sum = d.querySelector("summary");
+    var anim = null;
+    sum.addEventListener("click", function (e) {
+      if (reduceMotion || !d.animate) return;           // plain native toggle
+      e.preventDefault();
+      if (anim) anim.cancel();
+      var start = d.offsetHeight;
+      var opening = !d.open;
+      if (opening) d.open = true;
+      var end = opening ? d.scrollHeight : sum.offsetHeight;
+      anim = d.animate({ height: [start + "px", end + "px"] }, { duration: 380, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      anim.onfinish = anim.oncancel = function () {
+        if (!opening) d.open = false;
+        d.style.height = "";
+        anim = null;
+      };
+    });
+  });
+
   /* ---------- 5. Share ---------- */
   $("#share-btn").addEventListener("click", function () {
     var data = {
@@ -240,7 +328,11 @@
   };
   function showStep(key) {
     var st = steps[key];
-    $("#shagun-emoji").textContent = st.emoji;
+    var emo = $("#shagun-emoji");
+    emo.textContent = st.emoji;
+    emo.classList.remove("is-bouncing");
+    void emo.offsetWidth; // restart the animation
+    emo.classList.add("is-bouncing");
     $("#shagun-title").textContent = st.title;
     $("#shagun-text").innerHTML = st.text;
     $("#shagun-insist").hidden = key === "second";
@@ -262,6 +354,7 @@
     $("#shagun-insist").addEventListener("click", function () {
       insisted = true;
       showStep("second");
+      rainDown({ into: modal, text: ["💸", "🪙", "💰", "💵"], count: 34 });
     });
     // a click on the backdrop closes it
     modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
@@ -454,6 +547,10 @@
 
   var waModal = $("#wa-modal");
   var pendingRsvp = null;
+  var celebrateOnReturn = false;
+  doc.addEventListener("visibilitychange", function () {
+    if (doc.visibilityState === "visible" && celebrateOnReturn) { celebrateOnReturn = false; rainDown({ count: 40 }); }
+  });
   function closeWaModal() {
     if (waModal.close) waModal.close(); else waModal.removeAttribute("open");
   }
@@ -464,6 +561,8 @@
     store.set(CONFIG.storageKey, d);
     closeWaModal();
     showDone(d, true);
+    rainDown({ count: 54 });
+    celebrateOnReturn = true;
   });
   $("#wa-cancel").addEventListener("click", closeWaModal);
   waModal.addEventListener("click", function (e) { if (e.target === waModal) closeWaModal(); });

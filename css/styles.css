@@ -199,7 +199,17 @@ button { cursor: pointer; }
   font-weight: 600;
   letter-spacing: 0.04em;
   transition: transform 0.45s var(--ease), opacity 0.35s;
+  overflow: hidden;
 }
+.envelope:not(.is-open) .envelope__seal { animation: sealPulse 2.4s ease-in-out infinite; }
+.envelope__seal::after { /* a soft shine that sweeps across the wax */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%) -120% 0 / 220% 100% no-repeat;
+  animation: sealShine 3.6s ease-in-out 1s infinite;
+}
+.envelope.is-open .envelope__seal::after { animation: none; }
 .envelope__seal i { font-style: italic; font-weight: 400; margin: 0 1px; opacity: 0.8; }
 
 /* Open state */
@@ -224,7 +234,7 @@ button { cursor: pointer; }
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--gold);
-  animation: pulse 1.8s ease-in-out infinite;
+  animation: pulse 1.8s ease-in-out infinite, bob 1.8s ease-in-out infinite;
 }
 .opener.is-opening .opener__hint { opacity: 0; }
 
@@ -234,8 +244,16 @@ button { cursor: pointer; }
   /* Never shorter than the artwork's own ratio → overlay positions stay aligned to the arch & mandala */
   height: max(100svh, calc(var(--app-w) * 1.777));
   min-height: max(100vh, calc(var(--app-w) * 1.777));
-  background: url("../assets/bg.jpg") center top / cover no-repeat, var(--cream);
+  background: var(--cream);
   overflow: hidden;
+}
+.hero::before { /* the artwork lives here so the mandala can slowly breathe */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/bg.jpg") center top / cover no-repeat;
+  transform-origin: 50% 38%;
+  animation: breathe 11s ease-in-out infinite;
 }
 @supports (height: 100svh) {
   .hero { min-height: 0; }
@@ -316,12 +334,22 @@ button { cursor: pointer; }
   padding: 0.2em 0.15em 0.14em; /* room for the script swashes: background-clip:text clips to this box */
   margin: -0.2em 0 -0.14em;
 }
+.hero__name { clip-path: inset(-25% 100% -25% -10%); }
+body.is-open .hero__name { animation: write 1.9s cubic-bezier(0.55, 0, 0.25, 1) forwards; }
+body.is-open .hero__name:first-child { animation-delay: 0.9s; }
+body.is-open .hero__name:last-child { animation-delay: 2.3s; }
+.no-js .hero__name { clip-path: none; }
 .hero__amp {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: clamp(1.5rem, 7vw, 2rem);
-  color: var(--gold);
   line-height: 1;
+  color: var(--gold);
+  background: linear-gradient(100deg, var(--gold) 38%, #fff3c4 50%, var(--gold) 62%) 0 0 / 250% 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s ease-in-out 2.5s infinite;
 }
 .hero__date {
   font-family: var(--font-serif);
@@ -508,7 +536,9 @@ body.is-open .hero__petals i { animation-play-state: running; }
   color: var(--charcoal);
   font-variant-numeric: tabular-nums;
 }
-.countdown__num.tick { animation: tick 0.5s var(--ease); }
+.countdown__num { display: inline-block; transform-origin: 50% 80%; }
+.countdown__num.tick { animation: flip 0.55s var(--ease); }
+.countdown__unit:last-child { animation: heartbeat 1s ease-in-out infinite; }
 .countdown__label {
   margin-top: 6px;
   font-size: 0.6rem;
@@ -525,6 +555,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
 
 /* ---------- 8. Couple ---------- */
 .couple {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
@@ -538,6 +569,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   background: linear-gradient(160deg, var(--gold-soft), #fff4dc 45%, var(--gold-soft));
   box-shadow: var(--shadow);
 }
+.couple__card.is-visible .arch-frame img { animation: settle 2.2s var(--ease) both; }
 .arch-frame img {
   width: 100%;
   height: 100%;
@@ -552,6 +584,25 @@ body.is-open .hero__petals i { animation-play-state: running; }
 }
 .couple__name { font-family: var(--font-script); font-size: 1.9rem; line-height: 1.1; color: var(--charcoal); }
 .couple__role { font-size: 0.66rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+.couple__hearts { position: absolute; left: 50%; top: 0; bottom: 0; width: 0; pointer-events: none; z-index: 2; }
+.couple__hearts i {
+  position: absolute;
+  left: -8px;
+  bottom: 14%;
+  width: 16px; height: 16px;
+  opacity: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z' fill='%23d9737a'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: heartUp 7s ease-in infinite;
+}
+.couple__hearts i:nth-child(1) { animation-delay: 0s; }
+.couple__hearts i:nth-child(2) { animation-delay: 1.4s; width: 12px; height: 12px; }
+.couple__hearts i:nth-child(3) { animation-delay: 2.8s; width: 20px; height: 20px; }
+.couple__hearts i:nth-child(4) { animation-delay: 4.2s; width: 13px; height: 13px; }
+.couple__hearts i:nth-child(5) { animation-delay: 5.6s; }
+.quote__line { display: block; opacity: 0; transform: translateY(10px); }
+.quote.is-visible .quote__line { animation: lineIn 1s var(--ease) forwards; }
+.quote.is-visible .quote__line:nth-child(2) { animation-delay: 0.9s; }
+.no-js .quote__line { opacity: 1; transform: none; }
 .quote {
   margin: 32px auto 0;
   max-width: 32ch;
@@ -650,6 +701,13 @@ body.is-open .hero__petals i { animation-play-state: running; }
 }
 .event__head { position: relative; display: grid; gap: 12px; }
 .event__mid { position: relative; flex: 1; min-height: 150px; pointer-events: none; }
+.event.reveal { transform: translateY(46px) scale(0.96); }
+.event.reveal.is-visible { transform: none; }
+.event__paint {
+  will-change: transform;
+  animation: paintFloat 7s ease-in-out infinite;
+}
+.events > li:nth-child(even) .event__paint { animation-delay: -3.5s; }
 .event__paint {
   position: absolute;
   inset: 8px 0;
@@ -726,7 +784,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .more summary::-webkit-details-marker { display: none; }
 .more summary svg { width: 16px; height: 16px; color: var(--accent); transition: transform 0.25s var(--ease); }
 .more[open] summary svg { transform: rotate(180deg); }
-.more[open] .timeline { animation: rise 0.4s var(--ease); }
+.more { overflow: hidden; }
 .timeline {
   list-style: none;
   margin: 10px 0 2px;
@@ -1003,6 +1061,24 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .tile__emoji { font-size: 1.7rem; line-height: 1.1; }
 .tile__title { font-size: 0.9rem; font-weight: 500; line-height: 1.2; color: var(--charcoal); }
 .tile__sub { font-size: 0.72rem; color: var(--muted); }
+.tile__body::after {
+  content: "✓";
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 20px; height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  font-size: 0.7rem;
+  line-height: 1;
+  transform: scale(0);
+  transition: transform 0.35s cubic-bezier(0.3, 1.7, 0.5, 1);
+}
+.tile input:checked + .tile__body::after { transform: scale(1); }
+.tile input:checked + .tile__body { animation: tilePop 0.45s var(--ease); }
+.rsvp.is-visible .rsvp__seal { animation: sealWiggle 1.3s ease-in-out 0.6s; }
 .tile input:checked + .tile__body {
   transform: translateY(-2px);
   border-color: var(--gold);
@@ -1083,6 +1159,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   box-shadow: var(--shadow-lg);
 }
 .modal__emoji { font-size: 3rem; line-height: 1; }
+.modal__emoji.is-bouncing { animation: emojiBounce 0.7s var(--ease); }
 .modal__title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 500; line-height: 1.2; color: var(--charcoal); }
 .modal__text { font-size: 0.96rem; color: var(--muted); }
 .modal__text strong { color: var(--rose-deep); font-weight: 500; }
@@ -1096,6 +1173,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   text-align: center;
   background: linear-gradient(180deg, var(--ivory), var(--blush));
 }
+.footer__heart { width: 30px; height: 30px; margin: 0 auto 8px; color: var(--rose-deep); animation: beat 1.7s ease-in-out infinite; }
 .footer__names { font-family: var(--font-script); font-size: 2.6rem; line-height: 1.2; color: var(--charcoal); }
 .footer__names span { color: var(--gold); }
 .footer__text { max-width: 30ch; margin: 8px auto 0; font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--ink); }
@@ -1138,7 +1216,34 @@ body.is-open .tabbar { transform: translate(-50%, 0); }
 }
 .tabbar__item svg { width: 22px; height: 22px; transition: transform 0.25s var(--ease); }
 .tabbar__item.is-active { color: var(--gold); }
-.tabbar__item.is-active svg { transform: translateY(-2px); }
+.tabbar__item.is-active svg { transform: translateY(-2px); animation: tabBounce 0.55s var(--ease); }
+
+/* ---------- 14b. Scroll progress + celebration layer ---------- */
+.progress {
+  position: fixed;
+  top: 0; left: 50%;
+  z-index: 60;
+  width: var(--app-w);
+  height: 3px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s 0.8s;
+}
+body.is-open .progress { opacity: 1; }
+.progress span {
+  display: block;
+  height: 100%;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.fx { position: fixed; inset: 0; z-index: 150; overflow: hidden; pointer-events: none; }
+.fx i { position: absolute; top: 0; left: 0; display: block; will-change: transform, opacity; }
+.fx .piece { width: 9px; height: 13px; border-radius: 2px; }
+.fx .coin { font-style: normal; font-size: 1.6rem; line-height: 1; }
+.fx .petal { width: 11px; height: 16px; border-radius: 80% 0 80% 0; }
 
 /* ---------- 15. Toast ---------- */
 .toast {
@@ -1175,6 +1280,27 @@ body.is-open .tabbar { transform: translate(-50%, 0); }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(10px); } }
 @keyframes tick { 0% { transform: translateY(-6px); opacity: 0.4; } 100% { transform: none; opacity: 1; } }
+@keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+@keyframes write { from { clip-path: inset(-25% 100% -25% -10%); } to { clip-path: inset(-25% -10% -25% -10%); } }
+@keyframes shimmer { 0% { background-position: 130% 0; } 55%, 100% { background-position: -30% 0; } }
+@keyframes flip { 0% { transform: perspective(260px) rotateX(-85deg); opacity: 0; } 100% { transform: perspective(260px) rotateX(0); opacity: 1; } }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 8% { transform: scale(1.045); } 16% { transform: scale(1); } 24% { transform: scale(1.03); } 34% { transform: scale(1); } }
+@keyframes settle { from { transform: scale(1.18); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+@keyframes heartUp {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  12% { opacity: 0.9; }
+  50% { transform: translate(10px, -140px) scale(1); }
+  100% { opacity: 0; transform: translate(-8px, -300px) scale(1.15); }
+}
+@keyframes lineIn { to { opacity: 1; transform: none; } }
+@keyframes paintFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes tilePop { 0% { transform: scale(0.93); } 55% { transform: translateY(-4px) scale(1.04); } 100% { transform: translateY(-2px) scale(1); } }
+@keyframes sealWiggle { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(-16deg) scale(1.08); } 35% { transform: rotate(13deg) scale(1.08); } 55% { transform: rotate(-8deg); } 75% { transform: rotate(5deg); } }
+@keyframes sealPulse { 0%, 100% { transform: scale(1); box-shadow: 0 3px 8px rgba(80, 20, 10, 0.35), 0 0 0 0 rgba(216, 102, 90, 0.5), inset 0 0 0 4px rgba(255, 255, 255, 0.08); } 50% { transform: scale(1.07); box-shadow: 0 5px 12px rgba(80, 20, 10, 0.4), 0 0 0 10px rgba(216, 102, 90, 0), inset 0 0 0 4px rgba(255, 255, 255, 0.08); } }
+@keyframes sealShine { 0% { background-position: -120% 0; } 45%, 100% { background-position: 120% 0; } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+@keyframes tabBounce { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-8px) scale(1.18); } 100% { transform: translateY(-2px) scale(1); } }
+@keyframes emojiBounce { 0% { transform: scale(0.3) rotate(-20deg); opacity: 0; } 55% { transform: scale(1.25) rotate(8deg); opacity: 1; } 80% { transform: scale(0.92) rotate(-4deg); } 100% { transform: scale(1) rotate(0); } }
 @keyframes wiggle { 0%, 88%, 100% { transform: rotate(0); } 91% { transform: rotate(-2.5deg); } 94% { transform: rotate(2.5deg); } 97% { transform: rotate(-1.5deg); } }
 @keyframes pop { from { opacity: 0; transform: scale(0.85) translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -1209,4 +1335,7 @@ body.is-open .tabbar { transform: translate(-50%, 0); }
     transition-delay: 0s !important;
   }
   .hero__petals { display: none; }
+  .hero__name { clip-path: none; }
+  .quote__line { opacity: 1; transform: none; }
+  .couple__hearts, .fx { display: none; }
 }

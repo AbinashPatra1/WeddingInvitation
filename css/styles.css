@@ -574,12 +574,15 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .event {
   --band: 26px;
   --panel: rgba(255, 252, 246, 0.74);
-  --panel-mid: rgba(255, 252, 246, 0.06);
+  --panel-mid: rgba(255, 252, 246, 0);
   --ink: var(--charcoal);
   --sub: var(--muted);
   --accent: var(--gold);
   --chip: rgba(180, 138, 66, 0.14);
   --edge: rgba(255, 255, 255, 0.55);
+  /* Card background = the colour the painting fades out to, so the painting's own edge never shows.
+     g1 and g2 are the colours behind the painting; g0 and g3 are deeper tones at the top and bottom. */
+  --g0: #f7cdbd; --g1: #fde8de; --g2: #fde8de; --g3: #f7cdbd;
   position: relative;
   display: flex;
   min-height: clamp(580px, calc(100svh - var(--tabbar-h) - 48px), 820px);
@@ -587,20 +590,21 @@ body.is-open .hero__petals i { animation-play-state: running; }
   border-radius: 28px;
   overflow: hidden;
   color: var(--ink);
-  background: var(--ev-bg, var(--cream)) var(--ev-art) center bottom / cover no-repeat;
+  background: linear-gradient(180deg, var(--g0) 0%, var(--g1) 30%, var(--g2) 70%, var(--g3) 100%);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-lg);
   scroll-margin-top: 12px;
 }
-.event--engagement { --ev-art: url("../assets/events/engagement.svg"); --ev-bg: #f6cdbd; --fr: engagement; }
-.event--sangeet    { --ev-art: url("../assets/events/sangeet.svg");    --ev-bg: #1b5c4f; --fr: sangeet; }
-.event--haldi      { --ev-art: url("../assets/events/haldi.svg");      --ev-bg: #ffdd6e; --fr: haldi; }
-.event--wedding    { --ev-art: url("../assets/events/wedding.svg");    --ev-bg: #52121f; --fr: wedding; }
-.event--reception  { --ev-art: url("../assets/events/reception.svg");  --ev-bg: #2d1163; --fr: reception; }
+.event--engagement { --g0: #f6cabb; --g1: #fde8de; --g2: #fde8de; --g3: #f6cabb; }
+.event--sangeet    { --g0: #d9cdee; --g1: #f0eaf6; --g2: #f0eaf6; --g3: #d9cdee; }
+.event--mehendi    { --g0: #cfe0c2; --g1: #ecf2e4; --g2: #ecf2e4; --g3: #cfe0c2; }
+.event--haldi      { --g0: #fbd96a; --g1: #fff2c4; --g2: #fff2c4; --g3: #fbd96a; }
+.event--wedding    { --g0: #261524; --g1: #3a2535; --g2: #3a2535; --g3: #261524; }
+.event--reception  { --g0: #2a1c2a; --g1: #443240; --g2: #443240; --g3: #2a1c2a; }
 
 .event--dark {
-  --panel: rgba(22, 8, 16, 0.62);
-  --panel-mid: rgba(22, 8, 16, 0.06);
+  --panel: rgba(18, 8, 18, 0.58);
+  --panel-mid: rgba(18, 8, 18, 0);
   --ink: #fff6ea;
   --sub: rgba(255, 240, 222, 0.76);
   --accent: #f3d28a;
@@ -620,7 +624,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   background-size: auto var(--band), auto var(--band), var(--band) auto, var(--band) auto;
 }
 .event--engagement .event__frame { background-image: url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-v.svg"), url("../assets/events/frame-engagement-v.svg"); }
-.event--sangeet .event__frame    { background-image: url("../assets/events/frame-sangeet-h.svg"),    url("../assets/events/frame-sangeet-h.svg"),    url("../assets/events/frame-sangeet-v.svg"),    url("../assets/events/frame-sangeet-v.svg"); }
+.event--sangeet .event__frame, .event--mehendi .event__frame { background-image: url("../assets/events/frame-sangeet-h.svg"), url("../assets/events/frame-sangeet-h.svg"), url("../assets/events/frame-sangeet-v.svg"), url("../assets/events/frame-sangeet-v.svg"); }
 .event--haldi .event__frame      { background-image: url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-v.svg"),      url("../assets/events/frame-haldi-v.svg"); }
 .event--wedding .event__frame    { background-image: url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-v.svg"),    url("../assets/events/frame-wedding-v.svg"); }
 .event--reception .event__frame  { background-image: url("../assets/events/frame-reception-h.svg"),  url("../assets/events/frame-reception-h.svg"),  url("../assets/events/frame-reception-v.svg"),  url("../assets/events/frame-reception-v.svg"); }
@@ -637,12 +641,12 @@ body.is-open .hero__petals i { animation-play-state: running; }
   /* solid for the text at top and bottom, see-through in the middle so the artwork glows through */
   background: linear-gradient(to bottom, var(--panel) 0%, var(--panel) 36%, var(--panel-mid) 50%, var(--panel-mid) 60%, var(--panel) 78%, var(--panel) 100%);
   border: 1px solid var(--edge);
-  backdrop-filter: blur(3px) saturate(1.15);
-  -webkit-backdrop-filter: blur(3px) saturate(1.15);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 .event__head { position: relative; display: grid; gap: 12px; }
-.event__mid { position: relative; flex: 1; min-height: 150px; }
+.event__mid { position: relative; flex: 1; min-height: 150px; pointer-events: none; }
 .event__paint {
   position: absolute;
   inset: 8px 0;
@@ -650,6 +654,9 @@ body.is-open .hero__petals i { animation-play-state: running; }
   height: calc(100% - 16px);
   object-fit: contain;
 }
+.event--wedding .event__paint,
+.event--reception .event__paint { left: -22px; width: calc(100% + 44px); }
+.event--wedding .event__paint { transform: scale(1.32); }
 .event__foot { display: grid; gap: 12px; }
 
 .event__count {

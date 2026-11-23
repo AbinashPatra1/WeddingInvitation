@@ -19,14 +19,14 @@ The root `/` shows only a neutral "please open the link you were sent" page. Bri
 ├── js/main.js                  # envelope, countdown, reveal, nav, RSVP, popup, .ics
 ├── assets/
 │   ├── bg.jpg                  # hero / envelope artwork
-│   ├── events/                 # per-event card art: background scenes + scattered border strips (svg), pastel paintings (webp)
+│   ├── events/                 # per-event card art: scattered border strips (svg) + watercolour paintings (webp)
 │   └── *-placeholder.svg       # couple photos, swap for real ones
 └── tools/
     ├── build.mjs               # page template + event data → the 4 pages
     ├── sprite.html             # inline SVG icon sprite used by the template
-    ├── make-illustrations.py   # draws the card background scenes and border strips (assets/events/*.svg)
-    ├── prepare-paintings.py    # cuts + feathers the paintings out of tools/source/event-illustrations.webp
-    └── source/                 # original six-illustration sheet
+    ├── make-illustrations.py   # draws the scattered border strips around each card (assets/events/frame-*.svg)
+    ├── prepare-paintings.py    # cuts the paper away and feathers the paintings from tools/source/*.webp; prints the edge colours
+    └── source/                 # original illustration sheets (light set + dark wedding/reception)
 ```
 
 ## Editing content
@@ -35,8 +35,10 @@ Events, venues, map links, names, the RSVP number and which events each invitati
 
 ```bash
 node tools/build.mjs                  # rewrites the four pages + index.html
-python3 tools/make-illustrations.py   # background scenes + border strips
+python3 tools/make-illustrations.py   # border strips
 python3 tools/prepare-paintings.py    # paintings (needs Pillow + numpy)
+# Card background colours (--g0..--g3 per event in css/styles.css) are matched to each painting's edge colour,
+# so a new painting needs its card colour updated too.
 ```
 
 Do not edit the generated `index.html` files by hand. Your changes will be overwritten. Page markup shared by all four invitations is the template inside `build.mjs`.

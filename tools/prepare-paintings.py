@@ -75,6 +75,17 @@ def finish(rgb, alpha, width):
     return im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
 
 
+def centre_on_content(im, pad, width):
+    """Crop to the bounding box of the visible pixels (plus a margin) so the content sits dead centre."""
+    a = np.asarray(im)[..., 3]
+    ys, xs = np.where(a > 40)
+    l, r, t, b = xs.min(), xs.max(), ys.min(), ys.max()
+    mx, my = round((r - l) * pad), round((b - t) * pad)
+    box = (max(l - mx, 0), max(t - my, 0), min(r + mx, im.width), min(b + my, im.height))
+    c = im.crop(box)
+    return c.resize((width, round(c.height * width / c.width)), Image.LANCZOS)
+
+
 def edge_colour(im):
     a = np.asarray(im).astype("float32")
     al = a[..., 3] / 255.0
@@ -117,22 +128,33 @@ def main():
     save(canvas, "sangeet-mehendi")
 
     print("dark paintings:")
-    # reception: dark purple wash on cream paper -> drop the paper, keep the wash
+    # reception: dark purple wash on cream paper -> drop the paper, keep the wash, then centre on the content
     rec = Image.open(os.path.join(SRC, "reception-dark.webp")).convert("RGB")
     w, h = rec.size
     outside = soften(outside_paper(rec, 60), 15, 7)
-    alpha = (1 - outside) * feather_mask(w, h, 5, n=3.4, wobble=0.05, feather=0.12, blur=0.012, inset=1.0)
-    # push the semi-transparent mauve fringe of the wash towards transparent so it melts into the card colour
-    alpha = np.clip((alpha - 0.55) / 0.45, 0, 1) ** 1.5
-    save(finish(rec, alpha, 820), "reception")
+    paper = np.clip(((1 - outside) - 0.55) / 0.45, 0, 1) ** 1.5     # thin out the mauve fringe of the wash
+    # the soft shape is applied afterwards (not thresholded) so the bottom edge fades smoothly instead of being cut
+    alpha = paper * feather_mask(w, h, 5, n=2.8, wobble=0.07, feather=0.50, blur=0.035, inset=0.93)
+    # the paper line under the tablecloth leaves ragged dark bumps: melt the bottom edge out gradually
+    ramp = np.clip((0.95 - np.linspace(0, 1, h)) / 0.20, 0, 1)
+    alpha = alpha * (ramp * ramp * (3 - 2 * ramp))[:, None]
+    full = rec.convert("RGBA")
+    full.putalpha(Image.fromarray((np.clip(alpha, 0, 1) * 255).astype("uint8")))
+    save(centre_on_content(full, pad=0.05, width=820), "reception")
 
-    # wedding: plum background all the way to the edge -> just feather the rectangle away
+    # wedding: plum background all the way to the edge -> centre the mandap, then feather the rectangle away
     wed = Image.open(os.path.join(SRC, "wedding-dark.webp")).convert("RGB")
-    w, h = wed.size
-    alpha = feather_mask(w, h, 9, n=3.0, wobble=0.08, feather=0.30, blur=0.02, inset=1.0)
-    save(finish(wed, alpha, 820), "wedding")
-    ring = np.concatenate([np.asarray(wed)[:30].reshape(-1, 3), np.asarray(wed)[-30:].reshape(-1, 3)])
-    print("  wedding raw background rgb", tuple(int(v) for v in np.median(ring, axis=0)))
+    bg = tuple(int(v) for v in np.median(np.concatenate([np.asarray(wed)[:30].reshape(-1, 3), np.asarray(wed)[-30:].reshape(-1, 3)]), axis=0))
+    diff = np.linalg.norm(np.asarray(wed).astype("float32") - np.array(bg, dtype="float32"), axis=2)
+    diff = np.asarray(Image.fromarray(np.clip(diff * 3, 0, 255).astype("uint8")).filter(ImageFilter.GaussianBlur(4))).astype("float32") / 3
+    ys, xs = np.where(diff > 42)
+    l, r, t, b2 = xs.min(), xs.max(), ys.min(), ys.max()
+    cw, ch = round((r - l) * 1.3), round((b2 - t) * 1.3)
+    canvas = Image.new("RGB", (cw, ch), bg)
+    canvas.paste(wed, (round(cw / 2 - (l + r) / 2), round(ch / 2 - (t + b2) / 2)))
+    alpha = feather_mask(cw, ch, 9, n=3.0, wobble=0.07, feather=0.30, blur=0.02, inset=1.0)
+    save(finish(canvas, alpha, 820), "wedding")
+    print("  wedding raw background rgb", bg)
 
 
 if __name__ == "__main__":

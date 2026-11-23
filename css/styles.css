@@ -311,7 +311,8 @@ button { cursor: pointer; }
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  padding: 0 0.15em; /* avoid script swash clipping */
+  padding: 0.2em 0.15em 0.14em; /* room for the script swashes: background-clip:text clips to this box */
+  margin: -0.2em 0 -0.14em;
 }
 .hero__amp {
   font-family: var(--font-serif);
@@ -655,8 +656,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   object-fit: contain;
 }
 .event--wedding .event__paint,
-.event--reception .event__paint { left: -22px; width: calc(100% + 44px); }
-.event--wedding .event__paint { transform: scale(1.32); }
+.event--reception .event__paint { left: -22px; width: calc(100% + 44px); max-width: none; }
 .event__foot { display: grid; gap: 12px; }
 
 .event__count {

@@ -19,12 +19,14 @@ The root `/` shows only a neutral "please open the link you were sent" page. Bri
 ├── js/main.js                  # envelope, countdown, reveal, nav, RSVP, popup, .ics
 ├── assets/
 │   ├── bg.jpg                  # hero / envelope artwork
-│   ├── events/*.svg            # illustrated event-card backgrounds (generated)
+│   ├── events/                 # per-event card art: background scenes + scattered border strips (svg), pastel paintings (webp)
 │   └── *-placeholder.svg       # couple photos, swap for real ones
 └── tools/
     ├── build.mjs               # page template + event data → the 4 pages
     ├── sprite.html             # inline SVG icon sprite used by the template
-    └── make-illustrations.py   # draws assets/events/*.svg
+    ├── make-illustrations.py   # draws the card background scenes and border strips (assets/events/*.svg)
+    ├── prepare-paintings.py    # cuts + feathers the paintings out of tools/source/event-illustrations.webp
+    └── source/                 # original six-illustration sheet
 ```
 
 ## Editing content
@@ -33,7 +35,8 @@ Events, venues, map links, names, the RSVP number and which events each invitati
 
 ```bash
 node tools/build.mjs                  # rewrites the four pages + index.html
-python3 tools/make-illustrations.py   # only if you changed the artwork
+python3 tools/make-illustrations.py   # background scenes + border strips
+python3 tools/prepare-paintings.py    # paintings (needs Pillow + numpy)
 ```
 
 Do not edit the generated `index.html` files by hand. Your changes will be overwritten. Page markup shared by all four invitations is the template inside `build.mjs`.

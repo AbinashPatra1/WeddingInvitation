@@ -281,148 +281,98 @@ for name, fn in [("engagement", engagement), ("sangeet", sangeet), ("haldi", hal
 
 
 # =====================================================================================
-#  Card furniture: pastel "painting" for the middle of each card + flower border tiles
+#  Border decoration: scattered, event-specific motifs (strips for the band around the card)
+#  The pastel paintings in the middle of the cards are cut from tools/source (prepare-paintings.py).
 # =====================================================================================
-PW, PH = 320, 260
+BAND = 26
 
-def paint_svg(body, defs=""):
-    common = '''
-<filter id="paint" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/><feGaussianBlur stdDeviation=".35"/></filter>
-<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".022" numOctaves="3" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="16"/><feGaussianBlur stdDeviation="1"/></filter>'''
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {PW} {PH}"><defs>{common}{defs}</defs>'
-            f'<ellipse cx="160" cy="130" rx="142" ry="110" fill="#fffaf0" opacity=".93" filter="url(#rough)"/>'
-            f'<g filter="url(#paint)">{body}</g></svg>')
+def glow_defs(col):
+    return (f'<radialGradient id="g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{col}" stop-opacity=".95"/>'
+            f'<stop offset=".35" stop-color="{col}" stop-opacity=".45"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient>')
 
-def pflower(cx, cy, r, c1, c2, core, n=8, rot=0):
-    pet = "".join(f'<ellipse cx="0" cy="{-r*.52:.1f}" rx="{r*.3:.1f}" ry="{r*.5:.1f}" fill="{c1 if i%2 else c2}" transform="rotate({rot + i*360/n:.0f})"/>' for i in range(n))
-    return f'<g transform="translate({cx} {cy})">{pet}<circle r="{r*.2:.1f}" fill="{core}"/></g>'
+def m_flower(x, y, s, rot, c1, c2, core, n=5, edge=None):
+    stroke = f' stroke="{edge}" stroke-width=".6"' if edge else ""
+    pet = "".join(f'<ellipse cx="0" cy="{-s*.5:.1f}" rx="{s*.3:.1f}" ry="{s*.5:.1f}" fill="{c1 if i%2 else c2}"{stroke} transform="rotate({i*360/n:.0f})"/>' for i in range(n))
+    return f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})">{pet}<circle r="{s*.2:.1f}" fill="{core}"/></g>'
 
-def pleaf(x, y, rot, s=1, col="#a9cfa0"):
-    return f'<path d="M0 0 C10 -16 30 -16 40 0 C30 14 10 14 0 0Z" fill="{col}" transform="translate({x} {y}) rotate({rot}) scale({s})"/>'
+def m_ring(x, y, s, rot):
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})"><circle r="{s*.42:.1f}" fill="none" stroke="#c99a3c" stroke-width="{s*.16:.1f}"/>'
+            f'<circle r="{s*.42:.1f}" fill="none" stroke="#fbeab8" stroke-width="{s*.05:.1f}" opacity=".8"/>'
+            f'<polygon points="0,{-s*.62:.1f} {s*.14:.1f},{-s*.48:.1f} 0,{-s*.3:.1f} {-s*.14:.1f},{-s*.48:.1f}" fill="#eaf6ff" stroke="#c99a3c" stroke-width=".7"/></g>')
 
-def sparkle(x, y, r, col="#f3d28a"):
-    return star(x, y, r, col, .95)
+def m_double_ring(x, y, s, rot):
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})"><circle cx="{-s*.22:.1f}" r="{s*.34:.1f}" fill="none" stroke="#c99a3c" stroke-width="{s*.13:.1f}"/>'
+            f'<circle cx="{s*.22:.1f}" r="{s*.34:.1f}" fill="none" stroke="#e2bd6a" stroke-width="{s*.13:.1f}"/></g>')
 
-def paint_engagement():
-    b = '<circle cx="160" cy="116" r="62" fill="#fde3c8" opacity=".75"/>'
-    b += pleaf(70, 205, -30, 1.7) + pleaf(250, 205, 210, 1.7, "#b7d9ae")
-    b += '<g transform="translate(160 208)">'
-    for a, c in [(-78, "#f6c9d6"), (78, "#f6c9d6"), (-52, "#f3b5c7"), (52, "#f3b5c7"), (-26, "#efa3b9"), (26, "#efa3b9")]:
-        b += f'<ellipse cx="0" cy="-38" rx="20" ry="44" fill="{c}" transform="rotate({a})"/>'
-    b += '<ellipse cx="0" cy="-42" rx="19" ry="46" fill="#f9d6e0"/></g>'
-    b += '<ellipse cx="160" cy="128" rx="34" ry="38" fill="none" stroke="#e2bd6a" stroke-width="10"/>'
-    b += '<ellipse cx="160" cy="128" rx="34" ry="38" fill="none" stroke="#fbeab8" stroke-width="3" opacity=".8"/>'
-    b += '<polygon points="160,70 174,86 160,104 146,86" fill="#e6f4ff" stroke="#e2bd6a" stroke-width="3"/>'
-    b += '<path d="M160 74 V98 M150 86 H170" stroke="#fff" stroke-width="1.5"/>'
-    for (x, y, r) in [(88, 70, 9), (240, 82, 11), (66, 130, 6), (262, 140, 7), (118, 52, 6), (206, 46, 7)]:
-        b += sparkle(x, y, r)
-    return paint_svg(b)
+def m_dhol(x, y, s, rot):
+    w, h = s * 1.5, s * .8
+    ropes = "".join(f'<path d="M{-w/2 + k*w/6:.1f} {-h/2:.1f} l{w/12:.1f} {h:.1f}" stroke="#7a4220" stroke-width=".7"/>' for k in range(1, 6))
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})">'
+            f'<path d="M{-w/2:.1f} {-h*.42:.1f} C{-w*.2:.1f} {-h*.6:.1f} {w*.2:.1f} {-h*.6:.1f} {w/2:.1f} {-h*.42:.1f} L{w/2:.1f} {h*.42:.1f} C{w*.2:.1f} {h*.6:.1f} {-w*.2:.1f} {h*.6:.1f} {-w/2:.1f} {h*.42:.1f}Z" fill="#c9722f"/>'
+            f'{ropes}<ellipse cx="{-w/2:.1f}" cy="0" rx="{h*.18:.1f}" ry="{h*.42:.1f}" fill="#f6dcb4"/><ellipse cx="{w/2:.1f}" cy="0" rx="{h*.18:.1f}" ry="{h*.42:.1f}" fill="#f6dcb4"/>'
+            f'<rect x="{-w*.12:.1f}" y="{-h*.52:.1f}" width="{w*.1:.1f}" height="{h*1.04:.1f}" fill="#e0407f" opacity=".9"/></g>')
 
-def paint_sangeet():
-    b = '<circle cx="220" cy="92" r="40" fill="#ffd6e6" opacity=".7"/>'
-    # dholak
-    b += '<g transform="translate(120 150) rotate(-14)">'
-    b += '<path d="M-74 -28 C-52 -44 52 -44 74 -28 L74 28 C52 44 -52 44 -74 28Z" fill="#eebf94"/>'
-    b += '<path d="M-74 -28 C-52 -44 52 -44 74 -28" fill="none" stroke="#f9dcb8" stroke-width="3"/>'
-    for i in range(-5, 6):
-        b += f'<path d="M{i*13-6} -38 L{i*13+6} 38" stroke="#c78a5a" stroke-width="2.2" opacity=".8"/>'
-    b += '<rect x="-30" y="-44" width="14" height="88" rx="6" fill="#ef7fa8" opacity=".9"/><rect x="16" y="-44" width="14" height="88" rx="6" fill="#ef7fa8" opacity=".9"/>'
-    b += '<ellipse cx="-76" cy="0" rx="12" ry="30" fill="#fbe9d0"/><ellipse cx="76" cy="0" rx="12" ry="30" fill="#fbe9d0"/></g>'
-    # mehendi cone
-    b += '<g transform="translate(236 168) rotate(18)"><path d="M0 46 L-20 -34 Q0 -46 20 -34Z" fill="#f6e4b4"/><path d="M-20 -34 Q0 -46 20 -34" stroke="#e8cf92" stroke-width="3" fill="none"/>'
-    b += '<path d="M0 46 C-8 62 8 70 0 84 C-10 98 10 104 2 116" stroke="#a45a3a" stroke-width="4" fill="none" stroke-linecap="round"/></g>'
-    # notes
-    for (x, y, s, rot) in [(72, 62, 1.0, -8), (246, 52, 0.9, 10)]:
-        b += (f'<g transform="translate({x} {y}) rotate({rot}) scale({s})" fill="#b79bd8"><ellipse cx="0" cy="0" rx="9" ry="6.5" transform="rotate(-20)"/>'
-              '<rect x="6.5" y="-34" width="3" height="34"/><path d="M9.5 -34 c10 3 14 10 11 20 c-1 -8 -5 -11 -11 -12z"/></g>')
-    b += pflower(66, 196, 15, "#f7a8c8", "#f4c3da", "#fff1c9", 7) + pflower(92, 214, 11, "#b9e0cf", "#d6efe3", "#fff1c9", 7)
-    for (x, y, r) in [(160, 44, 7), (284, 120, 6), (40, 120, 6)]:
-        b += sparkle(x, y, r)
-    return paint_svg(b)
+def m_light(x, y, s):
+    return (f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{s*1.1:.1f}" fill="url(#g)"/>'
+            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{s*.26:.1f}" fill="#fff7d6"/>')
 
-def paint_haldi():
-    b = '<circle cx="160" cy="112" r="70" fill="#fff0b8" opacity=".85"/>'
-    for (x, y, r) in [(96, 92, -150), (228, 92, -30), (80, 130, 160), (244, 130, 20)]:
-        b += pleaf(x, y, r, 1.2, "#a9d29b")
-    # lota
-    b += '<path d="M-50 -6 C-66 36 -40 74 0 74 C40 74 66 36 50 -6Z" fill="#ecc977" transform="translate(160 150)"/>'
-    b += '<path d="M-50 -6 C-66 36 -40 74 0 74" fill="none" stroke="#fbe7ab" stroke-width="5" transform="translate(160 150)" opacity=".8"/>'
-    b += '<ellipse cx="160" cy="144" rx="50" ry="12" fill="#d8b058"/><ellipse cx="160" cy="142" rx="42" ry="8" fill="#f7e0a0"/>'
-    b += '<path d="M136 224 h48 l8 12 h-64z" fill="#d8b058"/>'
-    # marigolds
-    for (x, y, r, c1, c2) in [(160, 92, 30, "#ffb347", "#ffc971"), (124, 116, 25, "#ffc971", "#ffb347"), (196, 116, 25, "#ffb347", "#ffd88a"),
-                              (142, 68, 20, "#ffd88a", "#ffb347"), (180, 66, 21, "#ffc971", "#ffa94d")]:
-        b += pflower(x, y, r, c1, c2, "#e7873a", 12)
-    for (x, y) in [(70, 70), (254, 66), (60, 188), (264, 190), (110, 228), (214, 232)]:
-        b += f'<ellipse cx="{x}" cy="{y}" rx="4" ry="8" fill="#ffb347" transform="rotate({(x*7)%90} {x} {y})"/>'
-    return paint_svg(b)
+def m_petal(x, y, s, rot, col):
+    return f'<ellipse cx="{x:.1f}" cy="{y:.1f}" rx="{s*.2:.1f}" ry="{s*.45:.1f}" fill="{col}" opacity=".9" transform="rotate({rot:.0f} {x:.1f} {y:.1f})"/>'
 
-def paint_wedding():
-    b = '<circle cx="160" cy="118" r="76" fill="#ffe3df" opacity=".8"/>'
-    pts = []
-    n = 26
-    for i in range(n):
-        t = 2 * math.pi * i / n
-        x = 16 * math.sin(t) ** 3
-        y = -(13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t))
-        pts.append((160 + x * 5.4, 112 + y * 5.4))
-    for i, (x, y) in enumerate(pts):
-        b += pleaf(x - 8, y, (i * 53) % 360, .7, "#a9d29b")
-    for i, (x, y) in enumerate(pts):
-        c1, c2 = (("#f19aa8", "#f6b9c3"), ("#ffc971", "#ffb347"), ("#f6c9d6", "#f3a6b8"))[i % 3]
-        b += pflower(x, y, 15, c1, c2, "#fff1c9", 8, i * 20)
-    # diya
-    b += '<path d="M118 214 C130 242 190 242 202 214Z" fill="#e8b27c"/><ellipse cx="160" cy="214" rx="42" ry="9" fill="#f3cfa0"/>'
-    b += '<path d="M160 208 C146 190 150 176 160 160 C170 176 174 190 160 208Z" fill="#ffd27a"/><path d="M160 206 C153 194 155 186 160 176 C166 186 167 194 160 206Z" fill="#ff9d4d"/>'
-    b += '<circle cx="160" cy="190" r="24" fill="#ffe7a8" opacity=".35"/>'
-    for (x, y, r) in [(54, 60, 8), (270, 70, 9), (44, 168, 6), (282, 166, 7)]:
-        b += sparkle(x, y, r)
-    return paint_svg(b)
+THEMES = {
+    "engagement": dict(seed=3, glow="#fff1c9", items=[
+        ("ring", 4), ("dring", 2), ("spark", 3), ("petal", 3)], petal="#f4a6b8", spark="#fffdf2"),
+    "sangeet": dict(seed=7, glow="#ffe9a3", items=[
+        ("dhol", 3), ("flower", 5), ("spark", 2), ("light", 2)], petal="#e0407f", spark="#fff4cc"),
+    "haldi": dict(seed=11, step=(30, 52), glow="#fff3b0", items=[
+        ("flower", 8), ("petal", 3), ("spark", 1)], petal="#fbbf24", spark="#fffbe0"),
+    "wedding": dict(seed=17, glow="#ffd88a", items=[
+        ("light", 7), ("spark", 3)], petal="#f59e0b", spark="#ffe9b0"),
+    "reception": dict(seed=23, glow="#ffe3a8", items=[
+        ("light", 5), ("flower", 3), ("spark", 2)], petal="#d9c2f5", spark="#fff6d0"),
+}
 
-def paint_reception():
-    b = '<circle cx="160" cy="116" r="72" fill="#e9defa" opacity=".8"/>'
-    b += '<ellipse cx="160" cy="226" rx="104" ry="14" fill="#d9c9ee"/><ellipse cx="160" cy="222" rx="96" ry="11" fill="#f4ecff"/>'
-    # tiers
-    for (x, y, w, h, col) in [(88, 168, 144, 52, "#fbd8e2"), (110, 124, 100, 46, "#fde9ef"), (132, 88, 56, 38, "#fbd8e2")]:
-        b += f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="9" fill="{col}"/>'
-        for k in range(int(w / 14)):
-            b += f'<circle cx="{x + 7 + k * 14}" cy="{y + h - 2}" r="6" fill="#fff6f8"/>'
-        for k in range(int(w / 18)):
-            b += f'<circle cx="{x + 9 + k * 18}" cy="{y + 12}" r="3" fill="#ffffff" opacity=".9"/>'
-    b += pflower(112, 170, 12, "#f19aa8", "#f6b9c3", "#fff1c9", 7) + pflower(208, 170, 12, "#cbb6ec", "#e0d3f6", "#fff1c9", 7) + pflower(160, 124, 11, "#f19aa8", "#f6b9c3", "#fff1c9", 7)
-    b += pleaf(124, 182, 160, .7) + pleaf(190, 182, 20, .7)
-    b += '<path d="M160 70 C148 56 148 44 160 46 C172 44 172 56 160 70Z" fill="#f3a6b8"/><path d="M160 84 V70" stroke="#d8a0ae" stroke-width="2.5"/>'
-    for (x, y, r) in [(58, 78, 9), (268, 66, 8), (44, 156, 6), (282, 150, 7), (108, 52, 6), (216, 44, 7)]:
-        b += sparkle(x, y, r, "#e6c36a")
-    return paint_svg(b)
+def pick(rnd, items):
+    pool = [k for k, w in items for _ in range(w)]
+    return rnd.choice(pool)
 
-for name, fn in [("engagement", paint_engagement), ("sangeet", paint_sangeet), ("haldi", paint_haldi),
-                 ("wedding", paint_wedding), ("reception", paint_reception)]:
-    write(f"paint-{name}.svg", fn())
+def draw_item(kind, name, rnd, x, y):
+    t = THEMES[name]
+    s = rnd.uniform(10, 17)
+    rot = rnd.uniform(0, 360)
+    if kind == "ring":   return m_ring(x, y, s * .95, rnd.uniform(-30, 30))
+    if kind == "dring":  return m_double_ring(x, y, s * 1.15, rnd.uniform(-40, 40))
+    if kind == "dhol":   return m_dhol(x, y, s * .95, rnd.uniform(-40, 40))
+    if kind == "light":  return m_light(x, y, rnd.uniform(5, 9))
+    if kind == "spark":  return star(x, y, rnd.uniform(3, 5.5), t["spark"], .95)
+    if kind == "petal":  return m_petal(x, y, s, rot, t["petal"])
+    if kind == "flower":
+        if name == "sangeet":
+            return m_flower(x, y, s * .9, rot, "#d6204f", "#ef5a7e", "#ffd35c", 5)
+        if name == "haldi":
+            return m_flower(x, y, s, rot, "#f9b414", "#ffd23f", "#d97706", 8, "#d98a06")
+        return m_flower(x, y, s * .95, rot, "#ffffff", "#e6dafb", "#f6dd9a", 6)   # reception
+    return ""
 
-# ---------------------------------------------------------------- flower border tiles
-def frame_flower(cx, cy, r, c1, c2, core):
-    pet = "".join(f'<ellipse cx="0" cy="{-r*.5:.1f}" rx="{r*.3:.1f}" ry="{r*.5:.1f}" fill="{c1 if i%2 else c2}" transform="rotate({i*60})"/>' for i in range(6))
-    return f'<g transform="translate({cx} {cy})">{pet}<circle r="{r*.22:.1f}" fill="{core}"/></g>'
+def strip(name, length, vertical):
+    t = THEMES[name]
+    rnd = random.Random(t["seed"] * (3 if vertical else 1))
+    body, pos = "", 16
+    while pos < length - 16:
+        y = BAND / 2 + rnd.uniform(-4.5, 4.5)
+        kind = pick(rnd, t["items"])
+        body += draw_item(kind, name, rnd, pos, y)
+        pos += rnd.uniform(*t.get("step", (17, 34)))
+    if vertical:
+        w, h = BAND, length
+        inner = f'<g transform="translate({BAND} 0) rotate(90)">{body}</g>'
+    else:
+        w, h = length, BAND
+        inner = body
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
+            f'<defs>{glow_defs(t["glow"])}</defs>{inner}</svg>')
 
-def frame_tiles(name, c1, c2, c3, core, leaf="#6fa05e", sparkles=None):
-    # horizontal strip tile: 104 x 20, flowers at 15 / 52 / 89, leaves between
-    h = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 20" width="104" height="20">'
-    h += f'<path d="M0 10 H104" stroke="{leaf}" stroke-width="1.6" opacity=".8"/>'
-    for x in (33, 70, 103, -1):
-        h += f'<ellipse cx="{x}" cy="10" rx="8" ry="3.4" fill="{leaf}" transform="rotate(-18 {x} 10)"/>'
-    h += frame_flower(15, 10, 9, c1, c2, core) + frame_flower(52, 10, 9, c3, c1, core) + frame_flower(89, 10, 9, c2, c3, core)
-    if sparkles:
-        h += star(34, 10, 3.2, sparkles, .95) + star(71, 10, 3.2, sparkles, .95)
-    h += '</svg>'
-    v = h.replace('viewBox="0 0 104 20" width="104" height="20">', 'viewBox="0 0 20 104" width="20" height="104"><g transform="translate(20 0) rotate(90)">') + ''
-    v = v.replace('</svg>', '</g></svg>')
-    write(f"frame-{name}-h.svg", h)
-    write(f"frame-{name}-v.svg", v)
-
-frame_tiles("engagement", "#f4a6b8", "#f9c9d5", "#ee8ea8", "#fff1c9")
-frame_tiles("sangeet", "#e0407f", "#f0b429", "#f58fbb", "#fff4cc", sparkles="#fff4cc")
-frame_tiles("haldi", "#f59e0b", "#fbbf24", "#fb923c", "#9a3412")
-frame_tiles("wedding", "#c4263b", "#f0b429", "#e8618a", "#fff1c9", sparkles="#ffe9b0")
-frame_tiles("reception", "#f3e8ff", "#d9c2f5", "#f6b9d0", "#f6dd9a", leaf="#7fa7a0", sparkles="#f6dd9a")
-print("paintings + frames done")
+for nm in THEMES:
+    write(f"frame-{nm}-h.svg", strip(nm, 480, False))
+    write(f"frame-{nm}-v.svg", strip(nm, 880, True))
+print("border strips done")

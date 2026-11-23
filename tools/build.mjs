@@ -40,8 +40,8 @@ const VENUE = {
 /* start/end are IST. End times are assumptions used only for the "Save to calendar" file. */
 const EV = {
   engagement: { art: "engagement", icon: "i-rings", title: "Engagement", date: "2027-01-27", start: "10:00", end: "12:00", venue: VENUE.temple },
-  sangeetMehendi: { art: "sangeet", icon: "i-music", title: "Sangeet & Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.parija, dark: true },
-  mehendiGroom: { art: "sangeet", icon: "i-music", title: "Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.patra, dark: true },
+  sangeetMehendi: { art: "sangeet", paint: "sangeet-mehendi", icon: "i-music", title: "Sangeet & Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.parija, dark: true },
+  mehendiGroom: { art: "sangeet", paint: "mehendi", icon: "i-music", title: "Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.patra, dark: true },
   haldiBride: { art: "haldi", icon: "i-haldi", title: "Haldi", date: "2027-02-10", start: "09:00", end: "13:00", venue: VENUE.parija },
   haldiGroom: { art: "haldi", icon: "i-haldi", title: "Haldi", date: "2027-02-10", start: "09:00", end: "13:00", venue: VENUE.patra },
   wedding: { art: "wedding", icon: "i-mandap", title: "Wedding", date: "2027-02-10", start: "19:00", end: "07:00+1", venue: VENUE.mandap, plan: WEDDING_PLAN, dark: true, main: true },
@@ -88,9 +88,12 @@ function eventCard(ev, i, total, up) {
   const { start, end } = isoRange(ev);
   const dir = ev.venue.map;
   const plan = ev.plan
-    ? `<ol class="timeline" aria-label="Wedding day order of events">${ev.plan
-        .map((p) => `<li><time>${p.time}${p.note ? `<small>${p.note}</small>` : ""}</time><span>${esc(p.label)}</span></li>`)
-        .join("")}</ol>`
+    ? `<details class="more">
+                  <summary><span>More details</span><svg aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+                  <ol class="timeline" aria-label="Wedding day order of events">${ev.plan
+                    .map((p) => `<li><time>${p.time}${p.note ? `<small>${p.note}</small>` : ""}</time><span>${esc(p.label)}</span></li>`)
+                    .join("")}</ol>
+                </details>`
     : "";
   return `
           <li class="event event--${ev.art}${ev.dark ? " event--dark" : ""}${ev.main ? " event--main" : ""} reveal"
@@ -104,11 +107,11 @@ function eventCard(ev, i, total, up) {
                 <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
                 <p class="event__day">${dayLabel(ev.date)}</p>
                 <h3 class="event__name">${esc(ev.title)}</h3>
-                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${clock(ev.start)}${ev.plan ? " · Wedding rituals begin" : " onwards"}</p>
+                <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${clock(ev.start)} onwards</p>
                 ${plan}
               </div>
               <div class="event__mid" aria-hidden="true">
-                <img class="event__paint" src="${up}assets/events/paint-${ev.art}.svg" alt="" width="320" height="260" loading="lazy" decoding="async" />
+                <img class="event__paint" src="${up}assets/events/paint-${ev.paint || ev.art}.webp" alt="" loading="lazy" decoding="async" />
               </div>
               <div class="event__foot">
                 <div class="event__venue">

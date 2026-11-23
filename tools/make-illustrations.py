@@ -78,7 +78,6 @@ def engagement():
     for (x, y, r) in [(90, 120, 9), (320, 140, 11), (110, 250, 7), (300, 260, 8), (250, 90, 6), (150, 80, 7)]:
         b += star(x, y, r, '#fff7dc', .95)
     # garland swag
-    b += garland(curve_pts(-10, 8, 410, 8, 46, 18), "mg", 28)
     return svg(b, defs)
 
 # ------------------------------------------------------------------ SANGEET & MEHENDI
@@ -152,11 +151,6 @@ def haldi():
         f'<path d="M0 0 L{math.cos(a)*520:.0f} {math.sin(a)*520:.0f} L{math.cos(a+.1)*520:.0f} {math.sin(a+.1)*520:.0f}Z" fill="#fff6c8" opacity=".5"/>'
         for a in [i * math.pi / 8 for i in range(16)]) + '</g>'
     b += '<circle cx="200" cy="120" r="110" fill="url(#rays)"/><circle cx="200" cy="120" r="42" fill="#fff9d6"/>'
-    # hanging marigold strands
-    for x in (40, 110, 290, 360):
-        n = rnd.randint(7, 11)
-        b += f'<path d="M{x} -10 V{n*30}" stroke="#3f6b2a" stroke-width="2.5"/>'
-        b += garland([(x + rnd.uniform(-3, 3), 14 + i * 28) for i in range(n)], "mg" if x in (40, 290) else "mg2", 30)
     # leaves + flower heap
     for _ in range(26):
         x = rnd.uniform(20, 380); y = rnd.uniform(655, 740); a = rnd.uniform(-60, 60)
@@ -284,3 +278,101 @@ for name, fn in [("engagement", engagement), ("sangeet", sangeet), ("haldi", hal
                  ("wedding", wedding), ("reception", reception)]:
     write(f"{name}.svg", fn())
     print("wrote", name)
+
+
+# =====================================================================================
+#  Border decoration: scattered, event-specific motifs (strips for the band around the card)
+#  The pastel paintings in the middle of the cards are cut from tools/source (prepare-paintings.py).
+# =====================================================================================
+BAND = 26
+
+def glow_defs(col):
+    return (f'<radialGradient id="g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{col}" stop-opacity=".95"/>'
+            f'<stop offset=".35" stop-color="{col}" stop-opacity=".45"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient>')
+
+def m_flower(x, y, s, rot, c1, c2, core, n=5, edge=None):
+    stroke = f' stroke="{edge}" stroke-width=".6"' if edge else ""
+    pet = "".join(f'<ellipse cx="0" cy="{-s*.5:.1f}" rx="{s*.3:.1f}" ry="{s*.5:.1f}" fill="{c1 if i%2 else c2}"{stroke} transform="rotate({i*360/n:.0f})"/>' for i in range(n))
+    return f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})">{pet}<circle r="{s*.2:.1f}" fill="{core}"/></g>'
+
+def m_ring(x, y, s, rot):
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})"><circle r="{s*.42:.1f}" fill="none" stroke="#c99a3c" stroke-width="{s*.16:.1f}"/>'
+            f'<circle r="{s*.42:.1f}" fill="none" stroke="#fbeab8" stroke-width="{s*.05:.1f}" opacity=".8"/>'
+            f'<polygon points="0,{-s*.62:.1f} {s*.14:.1f},{-s*.48:.1f} 0,{-s*.3:.1f} {-s*.14:.1f},{-s*.48:.1f}" fill="#eaf6ff" stroke="#c99a3c" stroke-width=".7"/></g>')
+
+def m_double_ring(x, y, s, rot):
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})"><circle cx="{-s*.22:.1f}" r="{s*.34:.1f}" fill="none" stroke="#c99a3c" stroke-width="{s*.13:.1f}"/>'
+            f'<circle cx="{s*.22:.1f}" r="{s*.34:.1f}" fill="none" stroke="#e2bd6a" stroke-width="{s*.13:.1f}"/></g>')
+
+def m_dhol(x, y, s, rot):
+    w, h = s * 1.5, s * .8
+    ropes = "".join(f'<path d="M{-w/2 + k*w/6:.1f} {-h/2:.1f} l{w/12:.1f} {h:.1f}" stroke="#7a4220" stroke-width=".7"/>' for k in range(1, 6))
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot:.0f})">'
+            f'<path d="M{-w/2:.1f} {-h*.42:.1f} C{-w*.2:.1f} {-h*.6:.1f} {w*.2:.1f} {-h*.6:.1f} {w/2:.1f} {-h*.42:.1f} L{w/2:.1f} {h*.42:.1f} C{w*.2:.1f} {h*.6:.1f} {-w*.2:.1f} {h*.6:.1f} {-w/2:.1f} {h*.42:.1f}Z" fill="#c9722f"/>'
+            f'{ropes}<ellipse cx="{-w/2:.1f}" cy="0" rx="{h*.18:.1f}" ry="{h*.42:.1f}" fill="#f6dcb4"/><ellipse cx="{w/2:.1f}" cy="0" rx="{h*.18:.1f}" ry="{h*.42:.1f}" fill="#f6dcb4"/>'
+            f'<rect x="{-w*.12:.1f}" y="{-h*.52:.1f}" width="{w*.1:.1f}" height="{h*1.04:.1f}" fill="#e0407f" opacity=".9"/></g>')
+
+def m_light(x, y, s):
+    return (f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{s*1.1:.1f}" fill="url(#g)"/>'
+            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{s*.26:.1f}" fill="#fff7d6"/>')
+
+def m_petal(x, y, s, rot, col):
+    return f'<ellipse cx="{x:.1f}" cy="{y:.1f}" rx="{s*.2:.1f}" ry="{s*.45:.1f}" fill="{col}" opacity=".9" transform="rotate({rot:.0f} {x:.1f} {y:.1f})"/>'
+
+THEMES = {
+    "engagement": dict(seed=3, glow="#fff1c9", items=[
+        ("ring", 4), ("dring", 2), ("spark", 3), ("petal", 3)], petal="#f4a6b8", spark="#fffdf2"),
+    "sangeet": dict(seed=7, glow="#ffe9a3", items=[
+        ("dhol", 3), ("flower", 5), ("spark", 2), ("light", 2)], petal="#e0407f", spark="#fff4cc"),
+    "haldi": dict(seed=11, step=(30, 52), glow="#fff3b0", items=[
+        ("flower", 8), ("petal", 3), ("spark", 1)], petal="#fbbf24", spark="#fffbe0"),
+    "wedding": dict(seed=17, glow="#ffd88a", items=[
+        ("light", 7), ("spark", 3)], petal="#f59e0b", spark="#ffe9b0"),
+    "reception": dict(seed=23, glow="#ffe3a8", items=[
+        ("light", 5), ("flower", 3), ("spark", 2)], petal="#d9c2f5", spark="#fff6d0"),
+}
+
+def pick(rnd, items):
+    pool = [k for k, w in items for _ in range(w)]
+    return rnd.choice(pool)
+
+def draw_item(kind, name, rnd, x, y):
+    t = THEMES[name]
+    s = rnd.uniform(10, 17)
+    rot = rnd.uniform(0, 360)
+    if kind == "ring":   return m_ring(x, y, s * .95, rnd.uniform(-30, 30))
+    if kind == "dring":  return m_double_ring(x, y, s * 1.15, rnd.uniform(-40, 40))
+    if kind == "dhol":   return m_dhol(x, y, s * .95, rnd.uniform(-40, 40))
+    if kind == "light":  return m_light(x, y, rnd.uniform(5, 9))
+    if kind == "spark":  return star(x, y, rnd.uniform(3, 5.5), t["spark"], .95)
+    if kind == "petal":  return m_petal(x, y, s, rot, t["petal"])
+    if kind == "flower":
+        if name == "sangeet":
+            return m_flower(x, y, s * .9, rot, "#d6204f", "#ef5a7e", "#ffd35c", 5)
+        if name == "haldi":
+            return m_flower(x, y, s, rot, "#f9b414", "#ffd23f", "#d97706", 8, "#d98a06")
+        return m_flower(x, y, s * .95, rot, "#ffffff", "#e6dafb", "#f6dd9a", 6)   # reception
+    return ""
+
+def strip(name, length, vertical):
+    t = THEMES[name]
+    rnd = random.Random(t["seed"] * (3 if vertical else 1))
+    body, pos = "", 16
+    while pos < length - 16:
+        y = BAND / 2 + rnd.uniform(-4.5, 4.5)
+        kind = pick(rnd, t["items"])
+        body += draw_item(kind, name, rnd, pos, y)
+        pos += rnd.uniform(*t.get("step", (17, 34)))
+    if vertical:
+        w, h = BAND, length
+        inner = f'<g transform="translate({BAND} 0) rotate(90)">{body}</g>'
+    else:
+        w, h = length, BAND
+        inner = body
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">'
+            f'<defs>{glow_defs(t["glow"])}</defs>{inner}</svg>')
+
+for nm in THEMES:
+    write(f"frame-{nm}-h.svg", strip(nm, 480, False))
+    write(f"frame-{nm}-v.svg", strip(nm, 880, True))
+print("border strips done")

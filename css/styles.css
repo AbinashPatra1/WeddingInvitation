@@ -560,8 +560,9 @@ body.is-open .hero__petals i { animation-play-state: running; }
 }
 
 /* ---------- 9. Events ---------- */
-/* Each card is close to a full phone screen tall, with an illustration per event.
-   The info sits in a frosted panel at the top; the artwork's subject shows below it. */
+/* Near-full-height card: coloured illustration behind, a flower border all round,
+   and one frosted panel filling the rest (equal gap on every side).
+   Panel layout: details on top, a small pastel painting in the middle, address + buttons at the bottom. */
 .events {
   list-style: none;
   margin: 0 -6px;
@@ -571,7 +572,9 @@ body.is-open .hero__petals i { animation-play-state: running; }
   text-align: left;
 }
 .event {
-  --panel: rgba(255, 252, 246, 0.86);
+  --band: 26px;
+  --panel: rgba(255, 252, 246, 0.74);
+  --panel-mid: rgba(255, 252, 246, 0.06);
   --ink: var(--charcoal);
   --sub: var(--muted);
   --accent: var(--gold);
@@ -579,9 +582,8 @@ body.is-open .hero__petals i { animation-play-state: running; }
   --edge: rgba(255, 255, 255, 0.55);
   position: relative;
   display: flex;
-  flex-direction: column;
   min-height: clamp(580px, calc(100svh - var(--tabbar-h) - 48px), 820px);
-  padding: 14px;
+  padding: var(--band);
   border-radius: 28px;
   overflow: hidden;
   color: var(--ink);
@@ -590,38 +592,69 @@ body.is-open .hero__petals i { animation-play-state: running; }
   box-shadow: var(--shadow-lg);
   scroll-margin-top: 12px;
 }
-.event--engagement { --ev-art: url("../assets/events/engagement.svg"); --ev-bg: #f6cdbd; }
-.event--sangeet    { --ev-art: url("../assets/events/sangeet.svg");    --ev-bg: #1b5c4f; }
-.event--haldi      { --ev-art: url("../assets/events/haldi.svg");      --ev-bg: #ffdd6e; }
-.event--wedding    { --ev-art: url("../assets/events/wedding.svg");    --ev-bg: #52121f; }
-.event--reception  { --ev-art: url("../assets/events/reception.svg");  --ev-bg: #2d1163; }
+.event--engagement { --ev-art: url("../assets/events/engagement.svg"); --ev-bg: #f6cdbd; --fr: engagement; }
+.event--sangeet    { --ev-art: url("../assets/events/sangeet.svg");    --ev-bg: #1b5c4f; --fr: sangeet; }
+.event--haldi      { --ev-art: url("../assets/events/haldi.svg");      --ev-bg: #ffdd6e; --fr: haldi; }
+.event--wedding    { --ev-art: url("../assets/events/wedding.svg");    --ev-bg: #52121f; --fr: wedding; }
+.event--reception  { --ev-art: url("../assets/events/reception.svg");  --ev-bg: #2d1163; --fr: reception; }
 
 .event--dark {
-  --panel: rgba(22, 8, 16, 0.7);
+  --panel: rgba(22, 8, 16, 0.62);
+  --panel-mid: rgba(22, 8, 16, 0.06);
   --ink: #fff6ea;
-  --sub: rgba(255, 240, 222, 0.74);
+  --sub: rgba(255, 240, 222, 0.76);
   --accent: #f3d28a;
   --chip: rgba(255, 255, 255, 0.12);
   --edge: rgba(255, 255, 255, 0.22);
 }
 .event--haldi { --accent: #b45309; --chip: rgba(180, 83, 9, 0.12); }
 
+/* flower border: top/bottom/left/right strips of a repeating flower vine */
+.event__frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-position: 0 0, -150px 100%, 0 0, 100% -260px;
+  background-size: auto var(--band), auto var(--band), var(--band) auto, var(--band) auto;
+}
+.event--engagement .event__frame { background-image: url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-v.svg"), url("../assets/events/frame-engagement-v.svg"); }
+.event--sangeet .event__frame    { background-image: url("../assets/events/frame-sangeet-h.svg"),    url("../assets/events/frame-sangeet-h.svg"),    url("../assets/events/frame-sangeet-v.svg"),    url("../assets/events/frame-sangeet-v.svg"); }
+.event--haldi .event__frame      { background-image: url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-v.svg"),      url("../assets/events/frame-haldi-v.svg"); }
+.event--wedding .event__frame    { background-image: url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-v.svg"),    url("../assets/events/frame-wedding-v.svg"); }
+.event--reception .event__frame  { background-image: url("../assets/events/frame-reception-h.svg"),  url("../assets/events/frame-reception-h.svg"),  url("../assets/events/frame-reception-v.svg"),  url("../assets/events/frame-reception-v.svg"); }
+
 .event__panel {
   position: relative;
   z-index: 1;
-  display: grid;
-  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   padding: 22px 20px 20px;
-  border-radius: 20px;
-  background: var(--panel);
+  border-radius: 18px;
+  /* solid for the text at top and bottom, see-through in the middle so the artwork glows through */
+  background: linear-gradient(to bottom, var(--panel) 0%, var(--panel) 36%, var(--panel-mid) 50%, var(--panel-mid) 60%, var(--panel) 78%, var(--panel) 100%);
   border: 1px solid var(--edge);
-  backdrop-filter: blur(10px) saturate(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(3px) saturate(1.15);
+  -webkit-backdrop-filter: blur(3px) saturate(1.15);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
+.event__head { position: relative; display: grid; gap: 12px; }
+.event__mid { position: relative; flex: 1; min-height: 150px; }
+.event__paint {
+  position: absolute;
+  inset: 8px 0;
+  width: 100%;
+  height: calc(100% - 16px);
+  object-fit: contain;
+}
+.event__foot { display: grid; gap: 12px; }
+
 .event__count {
   position: absolute;
-  top: 18px; right: 18px;
+  top: 0; right: 0;
   font-family: var(--font-serif);
   font-size: 0.95rem;
   letter-spacing: 0.12em;
@@ -664,9 +697,30 @@ body.is-open .hero__petals i { animation-play-state: running; }
 }
 .event__time svg { width: 18px; height: 18px; color: var(--accent); }
 
+.more { justify-self: start; width: 100%; }
+.more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--edge);
+  background: var(--chip);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  touch-action: manipulation;
+}
+.more summary::-webkit-details-marker { display: none; }
+.more summary svg { width: 16px; height: 16px; color: var(--accent); transition: transform 0.25s var(--ease); }
+.more[open] summary svg { transform: rotate(180deg); }
+.more[open] .timeline { animation: rise 0.4s var(--ease); }
 .timeline {
   list-style: none;
-  margin: 2px 0;
+  margin: 10px 0 2px;
   padding: 12px 0 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -682,7 +736,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
 .event__venue svg { width: 20px; height: 20px; margin-top: 2px; color: var(--accent); }
 .event__venue p { font-size: 0.9rem; line-height: 1.5; color: var(--sub); }
 .event__venue strong { font-size: 1rem; font-weight: 500; color: var(--ink); }
-.event__actions { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 2px; }
+.event__actions { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
 .event--dark .btn--ghost { color: #fff; background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.35); }
 .event--dark .btn--gold { color: #3a2410; background: linear-gradient(135deg, #f6dd9a, #d9ad55); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
 

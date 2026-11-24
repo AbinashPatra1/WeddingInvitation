@@ -25,6 +25,7 @@
   --font-script: "Pinyon Script", "Cormorant Garamond", cursive;
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-deva: "Tiro Devanagari Hindi", "Noto Serif Devanagari", serif;
+  --font-oname: "Anek Odia", "Noto Sans Oriya", sans-serif;
   --font-odia: "Noto Sans Oriya", "Tiro Devanagari Hindi", "Noto Serif Devanagari", sans-serif;
 
   --app-w: min(100vw, 480px);
@@ -782,7 +783,6 @@ body.is-open .hero__petals i { animation-play-state: running; }
   box-shadow: var(--shadow-lg);
   scroll-margin-top: 12px;
 }
-.event--engagement { --g0: #f6cabb; --g1: #fde8de; --g2: #fde8de; --g3: #f6cabb; }
 .event--sangeet    { --g0: #d9cdee; --g1: #f0eaf6; --g2: #f0eaf6; --g3: #d9cdee; }
 .event--mehendi    { --g0: #cfe0c2; --g1: #ecf2e4; --g2: #ecf2e4; --g3: #cfe0c2; }
 .event--haldi      { --g0: #fbd96a; --g1: #fff2c4; --g2: #fff2c4; --g3: #fbd96a; }
@@ -810,7 +810,6 @@ body.is-open .hero__petals i { animation-play-state: running; }
   background-position: 0 0, -150px 100%, 0 0, 100% -260px;
   background-size: auto var(--band), auto var(--band), var(--band) auto, var(--band) auto;
 }
-.event--engagement .event__frame { background-image: url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-h.svg"), url("../assets/events/frame-engagement-v.svg"), url("../assets/events/frame-engagement-v.svg"); }
 .event--sangeet .event__frame, .event--mehendi .event__frame { background-image: url("../assets/events/frame-sangeet-h.svg"), url("../assets/events/frame-sangeet-h.svg"), url("../assets/events/frame-sangeet-v.svg"), url("../assets/events/frame-sangeet-v.svg"); }
 .event--haldi .event__frame      { background-image: url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-h.svg"),      url("../assets/events/frame-haldi-v.svg"),      url("../assets/events/frame-haldi-v.svg"); }
 .event--wedding .event__frame    { background-image: url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-h.svg"),    url("../assets/events/frame-wedding-v.svg"),    url("../assets/events/frame-wedding-v.svg"); }
@@ -1383,7 +1382,21 @@ html[lang="or"] {
 html[lang="or"] body * { letter-spacing: normal !important; text-transform: none !important; }
 html[lang="or"] .event__name, html[lang="or"] .section__title, html[lang="or"] .rsvp__lead, html[lang="or"] .modal__title { line-height: 1.35; }
 html[lang="or"] .eyebrow, html[lang="or"] .event__day { font-size: 0.8rem; }
-html[lang="or"] .hero__name, html[lang="or"] .hero__amp, html[lang="or"] .couple__name, html[lang="or"] .footer__names, html[lang="or"] .envelope__letter-names { font-family: var(--font-script); }
+/* Odia names: large, in their own display font */
+html[lang="or"] .hero__name { font-family: var(--font-oname); font-weight: 500; font-size: clamp(2.7rem, 13vw, 3.8rem); line-height: 1.3; }
+html[lang="or"] .hero__amp { font-size: clamp(1.4rem, 6.5vw, 1.9rem); }
+html[lang="or"] .envelope__letter-names { font-family: var(--font-oname); font-weight: 500; font-size: 1.35rem; line-height: 1.35; }
+html[lang="or"] .couple__name { font-family: var(--font-oname); font-weight: 500; font-size: 2.15rem; line-height: 1.25; color: var(--charcoal); }
+html[lang="or"] .footer__names { font-family: var(--font-oname); font-weight: 500; font-size: 2.4rem; line-height: 1.35; }
+html[lang="or"] .footer__names span { font-family: var(--font-serif); }
+
+/* things that only exist in Odia: the tithi under the date, and the "son/daughter of" lines under the portraits */
+.hero__tithi, .couple__prefix, .couple__kin { display: none; }
+html[lang="or"] .hero__date { font-size: 1rem; line-height: 1.5; }
+html[lang="or"] .hero__tithi { display: block; margin-top: 3px; font-size: 0.86rem; color: var(--vermilion); }
+html[lang="or"] .couple__prefix { display: block; margin-bottom: 2px; font-size: 0.8rem; color: var(--gold); }
+html[lang="or"] .couple__kin { display: block; margin-top: 6px; font-size: 0.76rem; line-height: 1.55; color: var(--muted); }
+html[lang="or"] .couple__role { display: none; }
 
 /* ---------- 14b. Scroll progress + celebration layer ---------- */
 .progress {

@@ -13,6 +13,8 @@ const SPRITE = readFileSync(join(ROOT, "tools", "sprite.html"), "utf8");
 /* ------------------------------------------------------------------ shared facts */
 const GROOM = "Abinash";
 const BRIDE = "Mousumi";
+const GROOM_OR = "ଅବିନାଶ";
+const BRIDE_OR = "ମୌସୁମୀ";
 const WEDDING_ISO = "2027-02-10T19:00:00+05:30";
 const RSVP_NUMBER = "917438013279";
 
@@ -21,17 +23,15 @@ const WEDDING_PLAN = [
   { time: "10:00 PM", t24: "22:00", label: "Baarat", labelOr: "ବରଯାତ୍ରା" },
   { time: "11:00 PM", t24: "23:00", label: "Reception", labelOr: "ରିସେପ୍ସନ୍" },
   { time: "1:00 AM", t24: "01:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Hata Ganthi / Bahaghara", labelOr: "ହାତଗଣ୍ଠି / ବାହାଘର" },
-  { time: "6:00 AM", t24: "06:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Bidia", labelOr: "ବିଦାୟ" },
+  { time: "6:00 AM", t24: "06:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Bidai", labelOr: "ବିଦାୟ" },
 ];
 const MAPS = {
-  temple: "https://maps.app.goo.gl/hMyFZrRNAsmVHJ2B6",
   parija: "https://maps.app.goo.gl/33aai4weEGtk834v9",
   patra: "https://maps.app.goo.gl/cMWfeXijimVZaX8m6",
   mandap: "https://maps.app.goo.gl/RopJnxUpWHEfgMF47",
   noc: "https://maps.app.goo.gl/n7MHrjqUbhgPd3dr6",
 };
 const VENUE = {
-  temple: { name: "Shree Rama Nigameswar Temple", addr: "Ring Rd, Chahata Nagar, Kaphala Colony, Kataka", map: MAPS.temple },
   parija: { name: "Residence of Mrs & Mr Parija", addr: "Tentulipada, Tirtol, Jagatsinghpur", map: MAPS.parija },
   patra: { name: "Residence of Mrs & Mr Patra", addr: "Chetana Bhavan, Kukudapada, Balia, Baleswar", map: MAPS.patra },
   mandap: { name: "Binapani Mandap", addr: "Cuttack-Paradip Road, Nausira, Jagatsinghpur", map: MAPS.mandap },
@@ -39,7 +39,6 @@ const VENUE = {
 };
 /* start/end are IST. End times are assumptions used only for the "Save to calendar" file. */
 const EV = {
-  engagement: { art: "engagement", icon: "i-rings", title: "Engagement", date: "2027-01-27", start: "10:00", end: "12:00", venue: VENUE.temple },
   sangeetMehendi: { art: "sangeet", paint: "sangeet-mehendi", icon: "i-music", title: "Sangeet & Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.parija },
   mehendiGroom: { art: "mehendi", paint: "mehendi", icon: "i-music", title: "Mehendi", date: "2027-02-09", start: "19:00", end: "23:00", venue: VENUE.patra },
   haldiBride: { art: "haldi", icon: "i-haldi", title: "Haldi", date: "2027-02-10", start: "09:00", end: "13:00", venue: VENUE.parija },
@@ -50,9 +49,9 @@ const EV = {
 
 /* ------------------------------------------------------------------ the four invitations */
 const PAGES = [
-  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.engagement, EV.sangeetMehendi, EV.haldiBride, EV.wedding] },
+  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.sangeetMehendi, EV.haldiBride, EV.wedding] },
   { path: "pari/v2", label: "Bride v2", side: "bride", events: [EV.haldiBride, EV.wedding] },
-  { path: "abinash/v1", label: "Groom v1", side: "groom", events: [EV.engagement, EV.mehendiGroom, EV.haldiGroom, EV.wedding, EV.reception] },
+  { path: "abinash/v1", label: "Groom v1", side: "groom", events: [EV.mehendiGroom, EV.haldiGroom, EV.wedding, EV.reception] },
   { path: "abinash/v2", label: "Groom v2", side: "groom", events: [EV.haldiGroom, EV.wedding, EV.reception] },
 ];
 
@@ -91,7 +90,6 @@ const OD_DAYS = ["ରବିବାର", "ସୋମବାର", "ମଙ୍ଗଳବ
 const OD_MONTHS = ["ଜାନୁଆରୀ", "ଫେବୃଆରୀ", "ମାର୍ଚ୍ଚ", "ଏପ୍ରିଲ", "ମଇ", "ଜୁନ", "ଜୁଲାଇ", "ଅଗଷ୍ଟ", "ସେପ୍ଟେମ୍ବର", "ଅକ୍ଟୋବର", "ନଭେମ୍ବର", "ଡିସେମ୍ବର"];
 const OD_MON_SHORT = ["ଜାନୁ", "ଫେବୃ", "ମାର୍ଚ୍ଚ", "ଏପ୍ରି", "ମଇ", "ଜୁନ", "ଜୁଲା", "ଅଗ", "ସେପ୍ଟେ", "ଅକ୍ଟୋ", "ନଭେ", "ଡିସେ"];
 const OD_TITLES = {
-  "Engagement": "ଏଙ୍ଗେଜମେଣ୍ଟ",
   "Sangeet & Mehendi": "ସଂଗୀତ ଓ ମେହେନ୍ଦି",
   "Mehendi": "ମେହେନ୍ଦି",
   "Haldi": "ହଳଦୀ",
@@ -172,17 +170,20 @@ function page(p) {
   const bridePage = p.side === "bride";
   const first = bridePage ? BRIDE : GROOM;
   const second = bridePage ? GROOM : BRIDE;
+  const firstOr = bridePage ? BRIDE_OR : GROOM_OR;
+  const secondOr = bridePage ? GROOM_OR : BRIDE_OR;
   const initials = `${first[0]}<i>&amp;</i>${second[0]}`;
+  const initialsOr = `${firstOr[0]}<i>&amp;</i>${secondOr[0]}`;
   const url = `${SITE}/${p.path}/`;
   const up = "../../";
   const pageTitle = `${first} &amp; ${second} · Wedding Invitation`;
-  const ogDesc = "Join us as we begin our forever. 10 February 2027 · Jagatsinghpur, Odisha";
-  const coupleCard = (name, role, roleOr, img, comment, fact) => `
+  const ogDesc = "Join us as we begin our forever. 10 February 2027 · Tirtol, Odisha";
+  const coupleCard = (name, nameOr, prefixOr, role, kinOr, img, comment, fact) => `
           <figure class="couple__card reveal">
             <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of ${name}">
               <span class="flip__face flip__front arch-frame">
                 <!-- ${comment} -->
-                <img src="${up}assets/${img}" alt="Portrait of ${name}" width="300" height="400" loading="lazy" decoding="async" />
+                <img src="${up}assets/${img}" alt="Portrait of ${name}" width="900" height="1200" loading="lazy" decoding="async" />
                 <span class="flip__badge" aria-hidden="true"><svg><use href="#i-flip"/></svg></span>
               </span>
               <span class="flip__face flip__back arch-frame" aria-hidden="true">
@@ -193,10 +194,15 @@ function page(p) {
                 </span>
               </span>
             </button>
-            <figcaption><span class="couple__name">${name}</span><span class="couple__role">${tr(role, roleOr)}</span></figcaption>
+            <figcaption>
+              <span class="couple__prefix" lang="or">${prefixOr}</span>
+              <span class="couple__name" data-or="${esc(nameOr)}">${name}</span>
+              <span class="couple__role">${role}</span>
+              <span class="couple__kin" lang="or">${kinOr}</span>
+            </figcaption>
           </figure>`;
-  const groomCard = coupleCard(GROOM, "The Groom", "ବର", "groom-placeholder.svg", "Replace with your photo: assets/groom.jpg", FACTS.groom);
-  const brideCard = coupleCard(BRIDE, "The Bride", "କନ୍ୟା", "bride-placeholder.svg", "Replace with your photo: assets/bride.jpg", FACTS.bride);
+  const groomCard = coupleCard(GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", "groom.webp", "Portrait: edit tools/source/portrait-groom.jpg, then run tools/prepare-portraits.py", FACTS.groom);
+  const brideCard = coupleCard(BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />କନିଷ୍ଠ ପୁତ୍ରୀ", "bride.webp", "Portrait: edit tools/source/portrait-bride.jpg, then run tools/prepare-portraits.py", FACTS.bride);
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
     .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${tr(esc(e.title), OD_TITLES[e.title])}</span><span class="chip__date">${tr(shortDate(e.date), odShort(e.date))}</span></span></label>`)
@@ -230,10 +236,10 @@ function page(p) {
   <link rel="icon" href="${up}assets/favicon.svg" type="image/svg+xml" />
   <link rel="preload" as="image" href="${up}assets/bg.jpg" />
 
-  <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi (Om), Noto Sans Oriya (mantra) -->
+  <!-- Fonts: Cormorant Garamond (serif headings), Pinyon Script (names), Jost (body), Tiro Devanagari Hindi (Om), Noto Sans Oriya (Odia text), Anek Odia (Odia names) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Oriya:wght@400;500;600&family=Anek+Odia:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="${up}css/styles.css" />
 </head>
@@ -250,12 +256,12 @@ ${SPRITE.trimEnd()}
       <span class="envelope__back" aria-hidden="true"></span>
       <span class="envelope__letter" aria-hidden="true">
         <span class="envelope__letter-om">ॐ</span>
-        <span class="envelope__letter-names">${first} <em>&amp;</em> ${second}</span>
+        <span class="envelope__letter-names">${tr(first, firstOr)} <em>&amp;</em> ${tr(second, secondOr)}</span>
         <span class="envelope__letter-line">10 · 02 · 2027</span>
       </span>
       <span class="envelope__pocket" aria-hidden="true"></span>
       <span class="envelope__flap" aria-hidden="true"></span>
-      <span class="envelope__seal" aria-hidden="true"><span>${initials}</span></span>
+      <span class="envelope__seal" aria-hidden="true"><span>${tr(initials, initialsOr)}</span></span>
       <span class="sr-only">Open the invitation</span>
     </button>
 
@@ -280,14 +286,15 @@ ${SPRITE.trimEnd()}
         <p class="hero__lead">${tr("Join us for", "ଆମ ସହ ଆନନ୍ଦ ବାଣ୍ଟିବାକୁ ଆସନ୍ତୁ")}</p>
         <p class="hero__the">${tr("The Wedding of", "ଶୁଭ ବିବାହ ଉତ୍ସବ")}</p>
         <h1 class="hero__names">
-          <span class="hero__name">${first}</span>
+          <span class="hero__name" data-or="${esc(firstOr)}">${first}</span>
           <span class="hero__amp">&amp;</span>
-          <span class="hero__name">${second}</span>
+          <span class="hero__name" data-or="${esc(secondOr)}">${second}</span>
         </h1>
         <p class="hero__date">
-          <time datetime="2027-02-10">${tr("Wednesday · 10 February 2027", "ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭")}</time>
+          <time datetime="2027-02-10">${tr("Wednesday · 10 February 2027", "ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭ · ସନ୍ଧ୍ୟା ୭:୦୦")}</time>
+          <span class="hero__tithi" lang="or">ଫାଲ୍ଗୁନ କୃଷ୍ଣ ପକ୍ଷ ନବମୀ ତିଥି</span>
         </p>
-        <p class="hero__place">${tr("Jagatsinghpur, Odisha", "ଜଗତସିଂହପୁର, ଓଡ଼ିଶା")}</p>
+        <p class="hero__place">${tr("Tirtol, Odisha", "ତିର୍ତ୍ତୋଳ, ଓଡ଼ିଶା")}</p>
       </div>
 
       <a class="scroll-cue" href="#countdown" aria-label="Scroll to details">
@@ -473,7 +480,7 @@ ${events}
 
     <footer class="footer">
       <svg class="footer__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
-      <p class="footer__names">${first} <span>&amp;</span> ${second}</p>
+      <p class="footer__names">${tr(first, firstOr)} <span>&amp;</span> ${tr(second, secondOr)}</p>
       <p class="footer__text">${tr("With love and gratitude, we look forward to celebrating with you.", "ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ।")}</p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
     </footer>

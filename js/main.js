@@ -392,7 +392,7 @@
   $("#share-btn").addEventListener("click", function () {
     var data = {
       title: COUPLE + " · Wedding Invitation",
-      text: "You're invited to the wedding of " + COUPLE + " — 10 Feb 2027, Jagatsinghpur 💐",
+      text: "You're invited to the wedding of " + COUPLE + " — 10 Feb 2027, Tirtol 💐",
       url: location.href.split("#")[0]
     };
     if (navigator.share) {

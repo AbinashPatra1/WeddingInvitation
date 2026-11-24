@@ -83,8 +83,6 @@ def m_petal(x, y, s, rot, col):
     return f'<ellipse cx="{x:.1f}" cy="{y:.1f}" rx="{s*.2:.1f}" ry="{s*.45:.1f}" fill="{col}" opacity=".9" transform="rotate({rot:.0f} {x:.1f} {y:.1f})"/>'
 
 THEMES = {
-    "engagement": dict(seed=3, glow="#fff1c9", items=[
-        ("ring", 4), ("dring", 2), ("spark", 3), ("petal", 3)], petal="#f4a6b8", spark="#fffdf2"),
     "sangeet": dict(seed=7, glow="#ffe9a3", items=[
         ("dhol", 3), ("flower", 5), ("spark", 2), ("light", 2)], petal="#e0407f", spark="#fff4cc"),
     "haldi": dict(seed=11, step=(30, 52), glow="#fff3b0", items=[

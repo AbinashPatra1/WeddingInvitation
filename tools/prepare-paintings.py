@@ -2,7 +2,7 @@
 """Prepares the watercolour paintings used in the middle of the event cards.
 
 Sources (tools/source/):
-  event-illustrations.webp   six light paintings on cream paper (engagement, sangeet, mehendi, haldi, wedding, reception)
+  event-illustrations.webp   six light paintings on cream paper (sangeet, mehendi, haldi, wedding, reception)
   reception-dark.webp        dark reception painting (cream paper around a purple wash)
   wedding-dark.webp          dark wedding painting (full-bleed plum background)
 
@@ -22,7 +22,6 @@ OUT = os.path.join(ROOT, "assets", "events")
 
 # crop boxes in the 1536x1024 light sheet: left, top, right, bottom
 LIGHT_CROPS = {
-    "engagement": (6, 30, 500, 398),
     "sangeet":    (522, 44, 1022, 394),
     "mehendi":    (1026, 44, 1506, 394),
     "haldi":      (28, 520, 505, 884),

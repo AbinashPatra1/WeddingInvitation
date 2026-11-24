@@ -21,7 +21,7 @@ W, H = 900, 1200
 # Both crops are chosen so the head is roughly the same size and sits at the same height.
 CROPS = {
     "groom": (60, 640, 960, 1840),
-    "bride": (128, 170, 1103, 1470),
+    "bride": (215, 350, 1105, 1537),
 }
 
 # shared look

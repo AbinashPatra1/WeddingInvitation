@@ -1402,13 +1402,14 @@ html[lang="or"] .footer__names { font-family: var(--font-oname); font-weight: 50
 html[lang="or"] .footer__names span { font-family: var(--font-oname); font-style: normal; }
 
 /* things that only exist in Odia: the tithi under the date, and the "son/daughter of" lines under the portraits */
-.hero__tithi, .couple__prefix, .couple__kin { display: none; }
+.hero__tithi, .couple__prefix { display: none; }
+.couple__kin { display: block; margin-top: 6px; font-size: 0.8rem; line-height: 1.5; color: var(--muted); }
 html[lang="or"] .hero__date { font-size: 1rem; line-height: 1.5; }
 html[lang="or"] .hero__tithi { display: block; margin-top: 4px; font-size: 1.08rem; font-weight: 500; color: var(--vermilion); }
 html[lang="or"] .hero__place { font-size: 1rem; }
 html[lang="or"] .opener__tap { font-size: 1.2rem; }
 html[lang="or"] .couple__prefix { display: block; margin-bottom: 2px; font-size: 0.8rem; color: var(--gold); }
-html[lang="or"] .couple__kin { display: block; margin-top: 6px; font-size: 0.76rem; line-height: 1.55; color: var(--muted); }
+html[lang="or"] .couple__kin { font-size: 0.76rem; line-height: 1.55; }
 html[lang="or"] .couple__role { display: none; }
 
 /* ---------- 14b. Scroll progress + celebration layer ---------- */

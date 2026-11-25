@@ -182,7 +182,7 @@ function page(p) {
   const up = "../../";
   const pageTitle = `${first} &amp; ${second} · Wedding Invitation`;
   const ogDesc = "Join us as we begin our forever. 10 February 2027 · Tirtol, Odisha";
-  const coupleCard = (key, name, nameOr, prefixOr, role, kinOr, fact) => `
+  const coupleCard = (key, name, nameOr, prefixOr, role, kinEn, kinOr, fact) => `
           <figure class="couple__card reveal">
             <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of ${name}">
               <span class="flip__face flip__front">
@@ -202,11 +202,11 @@ function page(p) {
               <span class="couple__prefix" lang="or">${prefixOr}</span>
               <span class="couple__name" data-or="${esc(nameOr)}">${name}</span>
               <span class="couple__role">${role}</span>
-              <span class="couple__kin" lang="or">${kinOr}</span>
+              <span class="couple__kin">${tr(kinEn, kinOr)}</span>
             </figcaption>
           </figure>`;
-  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
-  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />କନିଷ୍ଠ ପୁତ୍ରୀ", FACTS.bride);
+  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "Elder son of<br />Mr. Pashupati Patra<br />&amp; Mrs. Muktirani Patra", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
+  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "Younger daughter of<br />Mr. Parameswar Parija<br />&amp; Mrs. Subhashree Parija", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />କନିଷ୍ଠ ପୁତ୍ରୀ", FACTS.bride);
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
     .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${tr(esc(e.title), OD_TITLES[e.title])}</span><span class="chip__date">${tr(shortDate(e.date), odShort(e.date))}</span></span></label>`)

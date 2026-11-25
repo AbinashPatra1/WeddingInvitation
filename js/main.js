@@ -753,7 +753,7 @@
   }
 
   function whatsappLink(d) {
-    var foodLabel = { veg: "Veg", "non-veg": "Non-veg", jain: "Jain" }[d.food] || "";
+    var foodLabel = { veg: "Veg", "non-veg": "Non-veg" }[d.food] || "";
     var yes = d.attending === "yes";
     var lines = [
       "💌 *New RSVP — " + COUPLE + "'s Wedding*",

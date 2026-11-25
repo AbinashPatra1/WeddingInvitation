@@ -134,7 +134,7 @@ function eventCard(ev, i, total, up) {
                 </details>`
     : "";
   return `
-          <li class="event event--${ev.art}${ev.dark ? " event--dark" : ""}${ev.main ? " event--main" : ""} reveal"
+          <li data-fx="${ev.art === "sangeet" ? "mehendi" : ev.art}" class="event event--${ev.art}${ev.dark ? " event--dark" : ""}${ev.main ? " event--main" : ""} reveal"
               data-title="${esc(ev.title)} · ${esc(GROOM)} &amp; ${esc(BRIDE)}"
               data-start="${start}" data-end="${end}"
               data-location="${esc(ev.venue.name + ", " + ev.venue.addr)}">
@@ -142,7 +142,8 @@ function eventCard(ev, i, total, up) {
             <div class="event__panel">
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">${tr(`${pad2(i + 1)} / ${pad2(total)}`, od(`${pad2(i + 1)} / ${pad2(total)}`))}</span>
-                <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
+                <button class="event__icon" type="button" aria-label="${esc(ev.title)}: tap for a little surprise"><svg aria-hidden="true"><use href="#${ev.icon}"/></svg></button>
+                <span class="event__tap" aria-hidden="true">${tr("Tap here", "ଏଠାରେ ଟାପ୍ କରନ୍ତୁ")}</span>
                 <p class="event__day">${tr(dayLabel(ev.date), odDayLabel(ev.date))}</p>
                 <h3 class="event__name">${tr(esc(ev.title), OD_TITLES[ev.title])}</h3>
                 <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${tr(`${clock(ev.start)} onwards`, `${odClock(ev.start)} ଠାରୁ`)}</p>

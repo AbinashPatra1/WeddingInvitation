@@ -33,7 +33,7 @@ const MAPS = {
 };
 const VENUE = {
   parija: { name: "Residence of Mrs & Mr Parija", addr: "Tentulipada, Tirtol, Jagatsinghpur", map: MAPS.parija,
-    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଡ଼ା, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
+    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଦା, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
   patra: { name: "Residence of Mrs & Mr Patra", addr: "Chetana Bhavan, Kukudapada, Balia, Baleswar", map: MAPS.patra,
     nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପାତ୍ରଙ୍କ ବାସଭବନ", addrOr: "ଚେତନା ଭବନ, କୁକୁଡ଼ାପଦା, ବାଲିଆ, ବାଲେଶ୍ୱର" },
   mandap: { name: "Binapani Mandap", addr: "Cuttack-Paradip Road, Tirtol, Jagatsinghpur", map: MAPS.mandap,
@@ -134,7 +134,7 @@ function eventCard(ev, i, total, up) {
                 </details>`
     : "";
   return `
-          <li class="event event--${ev.art}${ev.dark ? " event--dark" : ""}${ev.main ? " event--main" : ""} reveal"
+          <li data-fx="${ev.art === "sangeet" ? "mehendi" : ev.art}" class="event event--${ev.art}${ev.dark ? " event--dark" : ""}${ev.main ? " event--main" : ""} reveal"
               data-title="${esc(ev.title)} · ${esc(GROOM)} &amp; ${esc(BRIDE)}"
               data-start="${start}" data-end="${end}"
               data-location="${esc(ev.venue.name + ", " + ev.venue.addr)}">
@@ -142,7 +142,8 @@ function eventCard(ev, i, total, up) {
             <div class="event__panel">
               <div class="event__head">
                 <span class="event__count" aria-hidden="true">${tr(`${pad2(i + 1)} / ${pad2(total)}`, od(`${pad2(i + 1)} / ${pad2(total)}`))}</span>
-                <div class="event__icon" aria-hidden="true"><svg><use href="#${ev.icon}"/></svg></div>
+                <button class="event__icon" type="button" aria-label="${esc(ev.title)}: tap for a little surprise"><svg aria-hidden="true"><use href="#${ev.icon}"/></svg></button>
+                <span class="event__tap" aria-hidden="true">${tr("Tap here", "ଏଠାରେ ଟାପ୍ କରନ୍ତୁ")}</span>
                 <p class="event__day">${tr(dayLabel(ev.date), odDayLabel(ev.date))}</p>
                 <h3 class="event__name">${tr(esc(ev.title), OD_TITLES[ev.title])}</h3>
                 <p class="event__time"><svg aria-hidden="true"><use href="#i-clock"/></svg>${tr(`${clock(ev.start)} onwards`, `${odClock(ev.start)} ଠାରୁ`)}</p>
@@ -182,7 +183,7 @@ function page(p) {
   const up = "../../";
   const pageTitle = `${first} &amp; ${second} · Wedding Invitation`;
   const ogDesc = "Join us as we begin our forever. 10 February 2027 · Tirtol, Odisha";
-  const coupleCard = (key, name, nameOr, prefixOr, role, kinOr, fact) => `
+  const coupleCard = (key, name, nameOr, prefixOr, role, kinEn, kinOr, fact) => `
           <figure class="couple__card reveal">
             <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of ${name}">
               <span class="flip__face flip__front">
@@ -202,11 +203,11 @@ function page(p) {
               <span class="couple__prefix" lang="or">${prefixOr}</span>
               <span class="couple__name" data-or="${esc(nameOr)}">${name}</span>
               <span class="couple__role">${role}</span>
-              <span class="couple__kin" lang="or">${kinOr}</span>
+              <span class="couple__kin">${tr(kinEn, kinOr)}</span>
             </figcaption>
           </figure>`;
-  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
-  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />କନିଷ୍ଠ ପୁତ୍ରୀ", FACTS.bride);
+  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "Elder son of<br />Mr. Pashupati Patra<br />&amp; Mrs. Muktirani Patra", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
+  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "Daughter of<br />Mr. Parameswar Parija<br />&amp; Mrs. Subhashree Parija", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />ପୁତ୍ରୀ", FACTS.bride);
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
     .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${tr(esc(e.title), OD_TITLES[e.title])}</span><span class="chip__date">${tr(shortDate(e.date), odShort(e.date))}</span></span></label>`)

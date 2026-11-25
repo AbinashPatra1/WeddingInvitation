@@ -160,6 +160,105 @@
       ];
     }, { min: 900, max: 1500, delay: 160, text: ["❤️", "💖", "💗", "🩷"] });
   }
+  // one little show per event, played full-screen over the page (all pieces are removed when they finish)
+  function eventFx(kind) {
+    if (reduceMotion || !doc.body.animate) return;
+    var host = layer(), w = window.innerWidth, h = window.innerHeight, pending = 0;
+    function add(el, frames, timing) {
+      host.appendChild(el);
+      pending++;
+      var a = el.animate(frames, timing);
+      a.onfinish = function () { if (--pending === 0 && host.parentNode) host.parentNode.removeChild(host); };
+      return a;
+    }
+    function piece(text, size) {
+      var el = doc.createElement("i");
+      el.className = "bloom";
+      el.textContent = text;
+      el.style.fontSize = size + "rem";
+      return el;
+    }
+    var i, el, x, y, s, r;
+    if (kind === "mehendi") {                       // purple flowers fill the screen
+      var purple = ["🪻", "💜", "🪻", "🌸", "🪻"];
+      for (i = 0; i < 54; i++) {
+        x = rand(-10, w - 20); y = rand(0, h - 30); s = rand(1.8, 3.6); r = rand(-40, 40);
+        add(piece(purple[i % purple.length], s), [
+          { transform: "translate(" + x + "px," + (y + 30) + "px) rotate(" + r + "deg) scale(0)", opacity: 0 },
+          { transform: "translate(" + x + "px," + y + "px) rotate(" + (r + 12) + "deg) scale(1)", opacity: 1, offset: 0.25 },
+          { transform: "translate(" + x + "px," + (y - 10) + "px) rotate(" + (r + 20) + "deg) scale(1.05)", opacity: 1, offset: 0.75 },
+          { transform: "translate(" + x + "px," + (y - 40) + "px) rotate(" + (r + 30) + "deg) scale(1)", opacity: 0 }
+        ], { duration: rand(2300, 3000), delay: rand(0, 900), easing: "ease-out", fill: "both" });
+      }
+    } else if (kind === "haldi") {                  // yellow splashes
+      var yellows = ["#ffd23f", "#ffc300", "#f9a602", "#ffe066", "#f7b32b"];
+      for (i = 0; i < 15; i++) {
+        s = rand(110, 250); x = rand(-s / 3, w - s * 0.66); y = rand(-s / 3, h - s * 0.66);
+        el = doc.createElement("i");
+        el.className = "splash";
+        el.style.cssText = "width:" + s + "px;height:" + s * rand(0.8, 1.1) + "px;background:radial-gradient(circle at 40% 38%," + yellows[i % 5] + " 0%," + yellows[(i + 2) % 5] + " 62%,rgba(255,195,0,0.75) 100%);box-shadow:0 0 0 " + rand(4, 10) + "px rgba(255,200,0,0.28);";
+        add(el, [
+          { transform: "translate(" + x + "px," + y + "px) scale(0)", opacity: 0.95 },
+          { transform: "translate(" + x + "px," + y + "px) scale(1.12)", opacity: 0.95, offset: 0.16 },
+          { transform: "translate(" + x + "px," + y + "px) scale(1)", opacity: 0.9, offset: 0.7 },
+          { transform: "translate(" + x + "px," + (y + 50) + "px) scale(1.04)", opacity: 0 }
+        ], { duration: rand(2000, 2600), delay: rand(0, 650), easing: "cubic-bezier(0.2, 0.9, 0.3, 1)", fill: "both" });
+        for (var d = 0; d < 5; d++) {               // droplets around each splash
+          var dr = doc.createElement("i"), dx = x + s / 2 + rand(-s * 0.9, s * 0.9), dy = y + s / 2 + rand(-s * 0.9, s * 0.9), ds = rand(8, 22);
+          dr.className = "splash";
+          dr.style.cssText = "width:" + ds + "px;height:" + ds + "px;background:" + yellows[(i + d) % 5] + ";";
+          add(dr, [
+            { transform: "translate(" + (x + s / 2) + "px," + (y + s / 2) + "px) scale(0)", opacity: 1 },
+            { transform: "translate(" + dx + "px," + dy + "px) scale(1)", opacity: 1, offset: 0.2 },
+            { transform: "translate(" + dx + "px," + (dy + 40) + "px) scale(0.9)", opacity: 0 }
+          ], { duration: rand(1500, 2200), delay: rand(100, 700), easing: "ease-out", fill: "both" });
+        }
+      }
+    } else if (kind === "wedding") {                // big flowers drift up the screen
+      var big = ["🌺", "🌸", "🌼", "🌷", "🏵️", "🌹"];
+      for (i = 0; i < 16; i++) {
+        s = rand(3.8, 6.4); x = rand(-20, w - 50); y = h + 40; r = rand(-60, 60);
+        add(piece(big[i % big.length], s), [
+          { transform: "translate(" + x + "px," + y + "px) rotate(" + r + "deg) scale(0.6)", opacity: 0 },
+          { transform: "translate(" + (x + rand(-30, 30)) + "px," + h * 0.7 + "px) rotate(" + (r + 40) + "deg) scale(1)", opacity: 1, offset: 0.2 },
+          { transform: "translate(" + (x + rand(-50, 50)) + "px," + h * 0.25 + "px) rotate(" + (r + 120) + "deg) scale(1.1)", opacity: 1, offset: 0.75 },
+          { transform: "translate(" + (x + rand(-60, 60)) + "px," + (-80) + "px) rotate(" + (r + 180) + "deg) scale(1.1)", opacity: 0 }
+        ], { duration: rand(2800, 3900), delay: rand(0, 900), easing: "ease-out", fill: "both" });
+      }
+    } else if (kind === "reception") {              // two cocktail glasses swing in and clink
+      var cx = w / 2, cy = h * 0.42, gl = doc.createElement("i"), gr = doc.createElement("i");
+      gl.className = "glassL"; gl.textContent = "🍸";
+      gr.className = "glassR"; gr.textContent = "🍸";
+      var half = 34;                                // half the width of a glass, so they meet in the middle
+      add(gl, [
+        { transform: "translate(" + (-90) + "px," + cy + "px) rotate(-30deg)", opacity: 0 },
+        { transform: "translate(" + (cx - half - 70) + "px," + (cy - 10) + "px) rotate(-18deg)", opacity: 1, offset: 0.4 },
+        { transform: "translate(" + (cx - half - 2) + "px," + (cy - 14) + "px) rotate(18deg)", opacity: 1, offset: 0.55 },
+        { transform: "translate(" + (cx - half - 22) + "px," + (cy - 6) + "px) rotate(-6deg)", opacity: 1, offset: 0.65 },
+        { transform: "translate(" + (cx - half - 8) + "px," + (cy - 10) + "px) rotate(4deg)", opacity: 1, offset: 0.8 },
+        { transform: "translate(" + (cx - half - 8) + "px," + (cy - 10) + "px) rotate(0deg)", opacity: 0 }
+      ], { duration: 2300, easing: "ease-in-out", fill: "both" });
+      add(gr, [
+        { transform: "translate(" + (w + 40) + "px," + cy + "px) scaleX(-1) rotate(-30deg)", opacity: 0 },
+        { transform: "translate(" + (cx + half + 70) + "px," + (cy - 10) + "px) scaleX(-1) rotate(-18deg)", opacity: 1, offset: 0.4 },
+        { transform: "translate(" + (cx + half + 2) + "px," + (cy - 14) + "px) scaleX(-1) rotate(18deg)", opacity: 1, offset: 0.55 },
+        { transform: "translate(" + (cx + half + 22) + "px," + (cy - 6) + "px) scaleX(-1) rotate(-6deg)", opacity: 1, offset: 0.65 },
+        { transform: "translate(" + (cx + half + 8) + "px," + (cy - 10) + "px) scaleX(-1) rotate(4deg)", opacity: 1, offset: 0.8 },
+        { transform: "translate(" + (cx + half + 8) + "px," + (cy - 10) + "px) scaleX(-1) rotate(0deg)", opacity: 0 }
+      ], { duration: 2300, easing: "ease-in-out", fill: "both" });
+      // sparkles burst out at the moment of the clink (about 55% of the way through)
+      for (i = 0; i < 16; i++) {
+        var a = (i / 16) * Math.PI * 2, dist = rand(60, 130), sp = piece(i % 3 ? "✨" : "🥂", i % 3 ? rand(1, 1.7) : 1.4);
+        add(sp, [
+          { transform: "translate(" + cx + "px," + (cy + 36) + "px) scale(0)", opacity: 0 },
+          { transform: "translate(" + cx + "px," + (cy + 36) + "px) scale(0)", opacity: 1, offset: 0.54 },
+          { transform: "translate(" + (cx + Math.cos(a) * dist) + "px," + (cy + 36 + Math.sin(a) * dist) + "px) scale(1.1)", opacity: 1, offset: 0.72 },
+          { transform: "translate(" + (cx + Math.cos(a) * dist * 1.25) + "px," + (cy + 36 + Math.sin(a) * dist * 1.25 + 24) + "px) scale(0.8)", opacity: 0 }
+        ], { duration: 2300, easing: "ease-out", fill: "both" });
+      }
+    }
+  }
+
   // confetti or coins falling from the top of the screen
   function rainDown(opts) {
     if (reduceMotion || !doc.body.animate) return;
@@ -370,6 +469,16 @@
       toast(t("blessing"));
     });
   }
+
+  /* ---------- 4d2. Tap the little icon on an event card for a surprise ---------- */
+  $$("button.event__icon").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var card = btn.closest(".event");
+      card.classList.add("is-tapped");
+      eventFx(card.getAttribute("data-fx"));
+      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) { /* ignore */ } }
+    });
+  });
 
   /* ---------- 4e. Tap a portrait to flip it ---------- */
   $$(".flip").forEach(function (card) {

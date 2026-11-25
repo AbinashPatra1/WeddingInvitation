@@ -25,7 +25,7 @@
   --font-script: "Pinyon Script", "Cormorant Garamond", cursive;
   --font-sans: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-deva: "Tiro Devanagari Hindi", "Noto Serif Devanagari", serif;
-  --font-oname: "Anek Odia", "Noto Sans Oriya", sans-serif;
+  --font-oname: "Noto Serif Oriya", "Noto Sans Oriya", serif;
   --font-odia: "Noto Sans Oriya", "Tiro Devanagari Hindi", "Noto Serif Devanagari", sans-serif;
 
   --app-w: min(100vw, 480px);
@@ -230,9 +230,9 @@ button { cursor: pointer; }
 }
 .opener__for { font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: var(--charcoal); }
 .opener__tap {
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   font-weight: 500;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--gold);
   animation: pulse 1.8s ease-in-out infinite, bob 1.8s ease-in-out infinite;
@@ -373,7 +373,7 @@ body.is-open .hero__name:last-child { animation-delay: 2.3s; }
 }
 .hero__place {
   margin-top: 8px;
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--muted);
@@ -661,7 +661,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   background: linear-gradient(160deg, var(--gold-soft), #fff4dc 45%, var(--gold-soft));
   box-shadow: var(--shadow);
 }
-.couple__card.is-visible .arch-frame img { animation: settle 2.2s var(--ease) both; }
+.couple__card.is-visible .flip__front img { animation: settle 2.2s var(--ease) both; }
 .arch-frame img {
   width: 100%;
   height: 100%;
@@ -683,20 +683,23 @@ body.is-open .hero__petals i { animation-play-state: running; }
   -webkit-appearance: none;
   appearance: none;
 }
-.flip .arch-frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
-.flip__face { backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform 0.8s var(--ease); }
+.flip { transform: rotate(var(--tilt, 0deg)); transition: transform 0.4s var(--ease); }
+.couple__card:nth-child(1) .flip { --tilt: -1.3deg; }
+.couple__card:nth-child(2) .flip { --tilt: 1.1deg; }
+.flip__face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform 0.8s var(--ease); }
+.flip__front img { width: 100%; height: 100%; object-fit: contain; }
 .flip__front { transform: rotateY(0deg); }
 .flip__back {
   transform: rotateY(-180deg);
   display: grid;
   place-items: center;
-  background: linear-gradient(160deg, #fff6e2, var(--gold-pale) 55%, #f4dcd6);
+  background: center / 100% 100% no-repeat;
 }
 .flip.is-flipped .flip__front { transform: rotateY(180deg); }
 .flip.is-flipped .flip__back { transform: rotateY(0deg); }
 .flip__badge {
   position: absolute;
-  right: 12px; bottom: 12px;
+  right: 18px; bottom: 20px;
   width: 30px; height: 30px;
   display: grid;
   place-items: center;
@@ -707,7 +710,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   animation: badgePulse 2.6s ease-in-out infinite;
 }
 .flip__badge svg { width: 16px; height: 16px; }
-.flip__inner { display: grid; justify-items: center; gap: 8px; padding: 26px 14px 20px; text-align: center; }
+.flip__inner { display: grid; justify-items: center; gap: 8px; padding: 34px 22px 30px; text-align: center; }
 .flip__q { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
 .flip__fact { font-family: var(--font-serif); font-style: italic; font-size: 0.98rem; line-height: 1.35; color: var(--ink); }
 .flip__heart { width: 18px; height: 18px; color: var(--rose); }
@@ -1383,17 +1386,26 @@ html[lang="or"] body * { letter-spacing: normal !important; text-transform: none
 html[lang="or"] .event__name, html[lang="or"] .section__title, html[lang="or"] .rsvp__lead, html[lang="or"] .modal__title { line-height: 1.35; }
 html[lang="or"] .eyebrow, html[lang="or"] .event__day { font-size: 0.8rem; }
 /* Odia names: large, in their own display font */
-html[lang="or"] .hero__name { font-family: var(--font-oname); font-weight: 500; font-size: clamp(2.7rem, 13vw, 3.8rem); line-height: 1.3; }
-html[lang="or"] .hero__amp { font-size: clamp(1.4rem, 6.5vw, 1.9rem); }
+html[lang="or"] .hero__names { gap: 0; }
+/* even gaps (10px) between each Odia name and the "ଓ": measured from the real letter shapes, as they differ in height */
+html[lang="or"] .hero__names[data-order="mo-ab"] .hero__name:first-child { margin-bottom: -0.1485em; }
+html[lang="or"] .hero__names[data-order="mo-ab"] .hero__name:last-child { margin-top: -0.2088em; }
+html[lang="or"] .hero__names[data-order="ab-mo"] .hero__name:first-child { margin-bottom: -0.4171em; }
+html[lang="or"] .hero__names[data-order="ab-mo"] .hero__name:last-child { margin-top: -0.1844em; }
+html[lang="or"] .hero__amp { margin: 0; }
+html[lang="or"] .hero__name { font-family: var(--font-oname); font-weight: 500; font-size: clamp(2.3rem, 10.5vw, 3.1rem); line-height: 1.3; }
+html[lang="or"] .hero__amp { font-family: var(--font-oname); font-style: normal; font-weight: 600; font-size: clamp(1.7rem, 8vw, 2.3rem); line-height: 1.3; }
 html[lang="or"] .envelope__letter-names { font-family: var(--font-oname); font-weight: 500; font-size: 1.35rem; line-height: 1.35; }
 html[lang="or"] .couple__name { font-family: var(--font-oname); font-weight: 500; font-size: 2.15rem; line-height: 1.25; color: var(--charcoal); }
 html[lang="or"] .footer__names { font-family: var(--font-oname); font-weight: 500; font-size: 2.4rem; line-height: 1.35; }
-html[lang="or"] .footer__names span { font-family: var(--font-serif); }
+html[lang="or"] .footer__names span { font-family: var(--font-oname); font-style: normal; }
 
 /* things that only exist in Odia: the tithi under the date, and the "son/daughter of" lines under the portraits */
 .hero__tithi, .couple__prefix, .couple__kin { display: none; }
 html[lang="or"] .hero__date { font-size: 1rem; line-height: 1.5; }
-html[lang="or"] .hero__tithi { display: block; margin-top: 3px; font-size: 0.86rem; color: var(--vermilion); }
+html[lang="or"] .hero__tithi { display: block; margin-top: 4px; font-size: 1.08rem; font-weight: 500; color: var(--vermilion); }
+html[lang="or"] .hero__place { font-size: 1rem; }
+html[lang="or"] .opener__tap { font-size: 1.2rem; }
 html[lang="or"] .couple__prefix { display: block; margin-bottom: 2px; font-size: 0.8rem; color: var(--gold); }
 html[lang="or"] .couple__kin { display: block; margin-top: 6px; font-size: 0.76rem; line-height: 1.55; color: var(--muted); }
 html[lang="or"] .couple__role { display: none; }

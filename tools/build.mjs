@@ -33,7 +33,7 @@ const MAPS = {
 };
 const VENUE = {
   parija: { name: "Residence of Mrs & Mr Parija", addr: "Tentulipada, Tirtol, Jagatsinghpur", map: MAPS.parija,
-    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଡ଼ା, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
+    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଦା, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
   patra: { name: "Residence of Mrs & Mr Patra", addr: "Chetana Bhavan, Kukudapada, Balia, Baleswar", map: MAPS.patra,
     nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପାତ୍ରଙ୍କ ବାସଭବନ", addrOr: "ଚେତନା ଭବନ, କୁକୁଡ଼ାପଦା, ବାଲିଆ, ବାଲେଶ୍ୱର" },
   mandap: { name: "Binapani Mandap", addr: "Cuttack-Paradip Road, Tirtol, Jagatsinghpur", map: MAPS.mandap,

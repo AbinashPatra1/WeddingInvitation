@@ -107,6 +107,7 @@
     });
     langBtn.textContent = l === "or" ? "English" : "ଓଡ଼ିଆ";
     store.set("am-lang", l);
+    last = {};            // forget the cached countdown numbers so they are redrawn in the new digits
     refreshDynamic();
   }
   langBtn.addEventListener("click", function () { applyLang(lang === "or" ? "en" : "or"); });
@@ -208,11 +209,12 @@
   var cdTimer;
 
   function pad(n) { return n < 10 ? "0" + n : String(n); }
+  function dig(str) { return lang === "or" ? String(str).replace(/\d/g, function (d) { return ODIGITS.charAt(d); }) : String(str); }
   function setUnit(unit, val) {
     if (last[unit] === val) return;
     last[unit] = val;
     var el = numEls[unit];
-    el.textContent = val;
+    el.textContent = dig(val);
     if (!reduceMotion) {
       el.classList.remove("tick");
       void el.offsetWidth; // restart animation
@@ -732,7 +734,7 @@
   // Message counter
   function updateCounter() {
     var len = msg.value.length;
-    counter.textContent = len + " / 300";
+    counter.textContent = dig(len) + " / " + dig(300);
     counter.classList.toggle("is-near", len > 260);
   }
   msg.addEventListener("input", function () { updateCounter(); validateField("message"); });
@@ -867,6 +869,8 @@
 
   // everything text-related that was built in JS and has to follow the language switch
   function refreshDynamic() {
+    updateCountdown();
+    updateCounter();
     renderFact();
     $$(".field.is-invalid").forEach(function (f) { validateField(f.getAttribute("data-field")); });
     if (lastDone && !doneEl.hidden) renderDone(lastDone);

@@ -206,8 +206,8 @@ function page(p) {
               <span class="couple__kin">${tr(kinEn, kinOr)}</span>
             </figcaption>
           </figure>`;
-  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "Elder son of<br />Mr. Pashupati Patra<br />&amp; Mrs. Muktirani Patra", "ପଶୁପତି ପାତ୍ର ଓ ମୁକ୍ତିରଣି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
-  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "Daughter of<br />Mr. Parameswar Parija<br />&amp; Mrs. Subhashree Parija", "ପରମେଶ୍ୱର ପରିଜା ଓ ଶୁଭଶ୍ରୀ ପରିଜାଙ୍କର,<br />ପୁତ୍ରୀ", FACTS.bride);
+  const groomCard = coupleCard("groom", GROOM, GROOM_OR, "ଆୟୁଷ୍ମାନ", "The Groom", "Elder son of<br />Mrs. Muktirani Patra<br />&amp; Mr. Pashupati Patra", "ମୁକ୍ତିରାଣୀ ପାତ୍ର ଓ<br />ପଶୁପତି ପାତ୍ରଙ୍କର,<br />ଜ୍ୟେଷ୍ଠ ପୁତ୍ର", FACTS.groom);
+  const brideCard = coupleCard("bride", BRIDE, BRIDE_OR, "ଆୟୁଷ୍ମତି", "The Bride", "Daughter of<br />Mrs. Subhashree Parija<br />&amp; Mr. Parameswar Parija", "ଶୁଭଶ୍ରୀ ପରିଜା ଓ<br />ପରମେଶ୍ୱର ପରିଜାଙ୍କର,<br />ପୁତ୍ରୀ", FACTS.bride);
   const events = p.events.map((e, i) => eventCard(e, i, p.events.length, up)).join("\n");
   const eventChips = p.events
     .map((e) => `<label class="chip"><input type="checkbox" name="events" value="${esc(e.title)}" checked /><span class="chip__body"><span class="chip__title">${tr(esc(e.title), OD_TITLES[e.title])}</span><span class="chip__date">${tr(shortDate(e.date), odShort(e.date))}</span></span></label>`)
@@ -257,6 +257,10 @@ ${SPRITE.trimEnd()}
   <div class="opener" id="opener" role="dialog" aria-modal="true" aria-labelledby="opener-label">
     <div class="opener__veil" aria-hidden="true"></div>
 
+    <p class="opener__hint opener__hint--above" id="opener-label">
+      <span class="opener__for">${tr("You are cordially invited", "ଆପଣଙ୍କୁ ସାଦର ନିମନ୍ତ୍ରଣ")}</span>
+    </p>
+
     <button class="envelope" id="envelope" type="button" aria-describedby="opener-label">
       <span class="envelope__back" aria-hidden="true"></span>
       <span class="envelope__letter" aria-hidden="true">
@@ -270,8 +274,7 @@ ${SPRITE.trimEnd()}
       <span class="sr-only">Open the invitation</span>
     </button>
 
-    <p class="opener__hint" id="opener-label">
-      <span class="opener__for">${tr("You are cordially invited", "ଆପଣଙ୍କୁ ସାଦର ନିମନ୍ତ୍ରଣ")}</span>
+    <p class="opener__hint opener__hint--below">
       <span class="opener__tap">${tr("Tap to open", "ଖୋଲିବାକୁ ଟାପ୍ କରନ୍ତୁ")}</span>
     </p>
   </div>

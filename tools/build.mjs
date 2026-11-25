@@ -33,13 +33,13 @@ const MAPS = {
 };
 const VENUE = {
   parija: { name: "Residence of Mrs & Mr Parija", addr: "Tentulipada, Tirtol, Jagatsinghpur", map: MAPS.parija,
-    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଡ଼ା, ତିର୍ତ୍ତୋଳ, ଜଗତସିଂହପୁର" },
+    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପରିଜାଙ୍କ ବାସଭବନ", addrOr: "ତେନ୍ତୁଳିପଡ଼ା, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
   patra: { name: "Residence of Mrs & Mr Patra", addr: "Chetana Bhavan, Kukudapada, Balia, Baleswar", map: MAPS.patra,
-    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପାତ୍ରଙ୍କ ବାସଭବନ", addrOr: "ଚେତନା ଭବନ, କୁକୁଡ଼ାପଡ଼ା, ବାଲିଆ, ବାଲେଶ୍ୱର" },
-  mandap: { name: "Binapani Mandap", addr: "Cuttack-Paradip Road, Nausira, Jagatsinghpur", map: MAPS.mandap,
-    nameOr: "ବୀଣାପାଣି ମଣ୍ଡପ", addrOr: "କଟକ-ପାରାଦୀପ ରୋଡ୍, ନଉସିରା, ଜଗତସିଂହପୁର" },
+    nameOr: "ଶ୍ରୀମତୀ ଓ ଶ୍ରୀ ପାତ୍ରଙ୍କ ବାସଭବନ", addrOr: "ଚେତନା ଭବନ, କୁକୁଡ଼ାପଦା, ବାଲିଆ, ବାଲେଶ୍ୱର" },
+  mandap: { name: "Binapani Mandap", addr: "Cuttack-Paradip Road, Tirtol, Jagatsinghpur", map: MAPS.mandap,
+    nameOr: "ବୀଣାପାଣି ମଣ୍ଡପ", addrOr: "କଟକ-ପାରାଦୀପ ରୋଡ୍, ତିର୍ତୋଲ, ଜଗତସିଂହପୁର" },
   noc: { name: "NOCCi Residency", addr: "NOCCi Business Park, Bampada, Kuruda, Baleswar", map: MAPS.noc,
-    nameOr: "ନୋକ୍ସି ରେସିଡେନ୍ସି", addrOr: "ନୋକ୍ସି ବିଜନେସ୍ ପାର୍କ, ବାମ୍ପଡ଼ା, କୁରୁଡ଼ା, ବାଲେଶ୍ୱର" },
+    nameOr: "ନୋସି ରେସିଡେନ୍ସି", addrOr: "ନୋସି ବିଜନେସ୍ ପାର୍କ, ବାମ୍ପଦା, କୁରୁଡ଼ା, ବାଲେଶ୍ୱର" },
 };
 /* start/end are IST. End times are assumptions used only for the "Save to calendar" file. */
 const EV = {
@@ -298,7 +298,7 @@ ${SPRITE.trimEnd()}
           <time datetime="2027-02-10">${tr("Wednesday · 10 February 2027", "ବୁଧବାର · ୧୦ ଫେବୃଆରୀ ୨୦୨୭ · ସନ୍ଧ୍ୟା ୭:୦୦")}</time>
           <span class="hero__tithi" lang="or">ଫାଲ୍ଗୁନ କୃଷ୍ଣ ପକ୍ଷ, ନବମୀ ତିଥି</span>
         </p>
-        <p class="hero__place">${tr("Tirtol, Odisha", "ତିର୍ତ୍ତୋଳ, ଓଡ଼ିଶା")}</p>
+        <p class="hero__place">${tr("Tirtol, Odisha", "ତିର୍ତୋଲ, ଓଡ଼ିଶା")}</p>
       </div>
 
       <a class="scroll-cue" href="#countdown" aria-label="Scroll to details">
@@ -444,7 +444,6 @@ ${events}
                 <div class="tiles tiles--3">
                   <label class="tile tile--sm"><input type="radio" name="food" value="veg" aria-describedby="e-food" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🥗</span><span class="tile__title">${tr("Veg", "ନିରାମିଷ")}</span></span></label>
                   <label class="tile tile--sm"><input type="radio" name="food" value="non-veg" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🍗</span><span class="tile__title">${tr("Non-veg", "ଆମିଷ")}</span></span></label>
-                  <label class="tile tile--sm"><input type="radio" name="food" value="jain" /><span class="tile__body"><span class="tile__emoji" aria-hidden="true">🌿</span><span class="tile__title">${tr("Jain", "ଜୈନ")}</span></span></label>
                 </div>
                 <p class="field__error" id="e-food" aria-live="polite"></p>
               </fieldset>

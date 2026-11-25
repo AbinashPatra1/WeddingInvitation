@@ -66,6 +66,19 @@ def remove_star(img):
     return np.clip(a * (1 - mm) + fill * mm, 0, 255).astype("uint8")
 
 
+BRIGHTEN = {"groom": 1.14, "bride": 1.0}   # exposure gain; the groom's photo is darker than the bride's
+
+
+def brighten(img, gain):
+    """Lift the painting only (shadows and mid-tones), leaving the white paper border alone."""
+    if gain == 1.0:
+        return img
+    a = img.astype("float32") / 255.0
+    lifted = np.clip(a ** (1.0 / gain), 0, 1)
+    paper = np.clip((a.min(axis=2, keepdims=True) - 0.85) / 0.1, 0, 1)
+    return (np.clip(lifted * (1 - paper) + a * paper, 0, 1) * 255).astype("uint8")
+
+
 def tint_paper(img):
     """Multiply by the page colour: white becomes IVORY, the painting barely changes."""
     a = img.astype("float32") / 255.0
@@ -94,7 +107,7 @@ def make(name):
     img = np.asarray(Image.open(os.path.join(SRC, f"couple-{name}.webp")).convert("RGB"))
     clean = remove_star(img)
     shape = torn_shape(clean)
-    photo = Image.fromarray(tint_paper(clean)).resize((W, H), Image.LANCZOS)
+    photo = Image.fromarray(tint_paper(brighten(clean, BRIGHTEN[name]))).resize((W, H), Image.LANCZOS)
     photo.save(os.path.join(OUT, f"{name}.webp"), "WEBP", quality=88, method=6)
     sh = Image.fromarray((shape * 255).astype("uint8")).resize((W, H), Image.LANCZOS)
     back = Image.fromarray(np.clip(paper(W, H), 0, 255).astype("uint8")).convert("RGBA")

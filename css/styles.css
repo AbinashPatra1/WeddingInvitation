@@ -224,7 +224,7 @@ button { cursor: pointer; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   text-align: center;
   transition: opacity 0.4s;
 }
@@ -1583,3 +1583,6 @@ body.is-open .progress { opacity: 1; }
 
 /* "Tap to open" sits over the artwork: a soft cream halo keeps it readable */
 .opener__tap { text-shadow: 0 0 8px rgba(251, 247, 240, 0.95), 0 0 16px rgba(251, 247, 240, 0.9), 0 1px 2px rgba(251, 247, 240, 0.9); }
+
+/* "Tap to open": a deeper gold so it stays readable on the light artwork */
+.opener__tap { color: #8f6a2a; font-weight: 600; }

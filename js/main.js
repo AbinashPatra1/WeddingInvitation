@@ -46,19 +46,19 @@
   var T = {
     shareCopied: ["Invitation link copied", "ଆମନ୍ତ୍ରଣ ଲିଙ୍କ୍ କପି ହେଲା"],
     calAdded: ["Added to your calendar file", "ଆପଣଙ୍କ କ୍ୟାଲେଣ୍ଡର୍ ଫାଇଲ୍‌ରେ ଯୋଡ଼ାଗଲା"],
-    nameReq: ["Please tell us your name.", "ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ।"],
-    nameShort: ["Name looks a little short.", "ନାମ ଟିକେ ଛୋଟ ଲାଗୁଛି।"],
-    nameLetters: ["Please use letters only.", "ଦୟାକରି କେବଳ ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"],
-    attendReq: ["Please let us know if you can make it.", "ଆପଣ ଆସିପାରିବେ କି ନାହିଁ ଜଣାନ୍ତୁ।"],
-    eventsReq: ["Please pick at least one event.", "ଅତିକମରେ ଗୋଟିଏ କାର୍ଯ୍ୟକ୍ରମ ବାଛନ୍ତୁ।"],
-    guestsRange: ["Please choose between 1 and 10 guests.", "୧ ରୁ ୧୦ ଜଣ ମଧ୍ୟରେ ବାଛନ୍ତୁ।"],
-    foodReq: ["Please pick a food preference.", "ଖାଦ୍ୟ ପସନ୍ଦ ବାଛନ୍ତୁ।"],
-    msgLong: ["Please keep your wish under 300 characters.", "ଦୟାକରି ଶୁଭେଚ୍ଛା ୩୦୦ ଅକ୍ଷର ମଧ୍ୟରେ ରଖନ୍ତୁ।"],
+    nameReq: ["Please tell us your name", "ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ"],
+    nameShort: ["Name looks a little short", "ନାମ ଟିକେ ଛୋଟ ଲାଗୁଛି"],
+    nameLetters: ["Please use letters only", "ଦୟାକରି କେବଳ ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ"],
+    attendReq: ["Please let us know if you can make it", "ଆପଣ ଆସିପାରିବେ କି ନାହିଁ ଜଣାନ୍ତୁ"],
+    eventsReq: ["Please pick at least one event", "ଅତିକମରେ ଗୋଟିଏ କାର୍ଯ୍ୟକ୍ରମ ବାଛନ୍ତୁ"],
+    guestsRange: ["Please choose between 1 and 10 guests", "୧ ରୁ ୧୦ ଜଣ ମଧ୍ୟରେ ବାଛନ୍ତୁ"],
+    foodReq: ["Please pick a food preference", "ଖାଦ୍ୟ ପସନ୍ଦ ବାଛନ୍ତୁ"],
+    msgLong: ["Please keep your wish under 300 characters", "ଦୟାକରି ଶୁଭେଚ୍ଛା ୩୦୦ ଅକ୍ଷର ମଧ୍ୟରେ ରଖନ୍ତୁ"],
     doneYesTitle: ["Thank you, {n}!", "ଧନ୍ୟବାଦ, {n}!"],
     doneNoTitle: ["We'll miss you, {n}", "ଆପଣଙ୍କୁ ମନେ ପଡ଼ିବ, {n}"],
-    doneYesText: ["We're so happy you'll be celebrating with us. See you soon!", "ଆପଣ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି। ଶୀଘ୍ର ଦେଖା ହେବ!"],
-    doneYesMany: ["We're so happy you'll be celebrating with us — all {g} of you. See you soon!", "ଆପଣମାନେ {g} ଜଣ ଯାକ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି। ଶୀଘ୍ର ଦେଖା ହେବ!"],
-    doneNoText: ["Thank you for letting us know. Your blessings mean the world to us.", "ଜଣାଇଥିବାରୁ ଧନ୍ୟବାଦ। ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଆମ ପାଇଁ ସବୁକିଛି।"],
+    doneYesText: ["We're so happy you'll be celebrating with us<br />See you soon!", "ଆପଣ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି<br />ଶୀଘ୍ର ଦେଖା ହେବ!"],
+    doneYesMany: ["We're so happy you'll be celebrating with us — all {g} of you<br />See you soon!", "ଆପଣମାନେ {g} ଜଣ ଯାକ ଆମ ସହ ଉତ୍ସବ ପାଳନ କରିବେ ଜାଣି ଆମେ ଖୁବ୍ ଖୁସି<br />ଶୀଘ୍ର ଦେଖା ହେବ!"],
+    doneNoText: ["Thank you for letting us know<br />Your blessings mean the world to us", "ଜଣାଇଥିବାରୁ ଧନ୍ୟବାଦ<br />ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଆମ ପାଇଁ ସବୁକିଛି"],
     update: ["Update RSVP", "ଉତ୍ତର ଅପଡେଟ୍ କରନ୍ତୁ"],
     wish: ["Make a wish ✨", "ଗୋଟିଏ ଇଚ୍ଛା କରନ୍ତୁ ✨"],
     blessing: ["Blessings! 🌼", "ଆଶୀର୍ବାଦ! 🌼"],
@@ -69,9 +69,9 @@
     factChai: ["That's roughly {n} cups of chai ☕", "ପ୍ରାୟ {n} କପ୍ ଚା' ☕"],
     factBeats: ["Your heart will beat about {n} times until then 💓", "ସେତେବେଳ ଯାଏ ଆପଣଙ୍କ ହୃଦୟ ପ୍ରାୟ {n} ଥର ଧଡ଼କିବ 💓"],
     s1Title: ["Wait… you really wanted to gift us?", "ଅପେକ୍ଷା କରନ୍ତୁ… ଆପଣ ସତରେ ଉପହାର ଦେବାକୁ ଚାହୁଁଥିଲେ?"],
-    s1Text: ["Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list.", "ଆହା, କେତେ ମଧୁର! କିନ୍ତୁ ଆପଣଙ୍କ <strong>ଉପସ୍ଥିତି</strong> ହିଁ ଆମ ପାଇଁ ସବୁଠୁ ବଡ଼ ଉପହାର। ଭୋକିଲା ହୋଇ ଆସନ୍ତୁ, ଖୁବ୍ ନାଚନ୍ତୁ ଆଉ ଆମକୁ ଆଶୀର୍ବାଦ ଦିଅନ୍ତୁ। ଏତିକି ଆମର ଉପହାର ତାଲିକା।"],
-    s2Title: ["Okay, you're stubborn. We like that.", "ଠିକ୍ ଅଛି, ଆପଣ ଜିଦ୍ଖୋର। ଆମକୁ ତାହା ଭଲ ଲାଗେ।"],
-    s2Text: ["Then here's the deal: bring your <strong>blessings</strong>, your best dance moves and an empty stomach. Gulab jamuns are our official currency. 🍬", "ତେବେ ଏଇ ଚୁକ୍ତି: ଆପଣଙ୍କ <strong>ଆଶୀର୍ବାଦ</strong>, ସର୍ବୋତ୍ତମ ନାଚ ଆଉ ଖାଲି ପେଟ ନେଇ ଆସନ୍ତୁ। ଗୁଲାବ୍ ଜାମୁନ୍ ହିଁ ଆମର ସରକାରୀ ମୁଦ୍ରା। 🍬"],
+    s1Text: ["Aww, that's sweet! But your <strong>presence</strong> is the only present we need<br />Come hungry, dance hard and bless us<br />That is the whole gift list", "ଆହା, କେତେ ମଧୁର! କିନ୍ତୁ ଆପଣଙ୍କ <strong>ଉପସ୍ଥିତି</strong> ହିଁ ଆମ ପାଇଁ ସବୁଠୁ ବଡ଼ ଉପହାର<br />ଭୋକିଲା ହୋଇ ଆସନ୍ତୁ, ଖୁବ୍ ନାଚନ୍ତୁ ଆଉ ଆମକୁ ଆଶୀର୍ବାଦ ଦିଅନ୍ତୁ<br />ଏତିକି ଆମର ଉପହାର ତାଲିକା"],
+    s2Title: ["Okay, you're stubborn, we like that", "ଠିକ୍ ଅଛି, ଆପଣ ଜିଦ୍ଖୋର, ଆମକୁ ତାହା ଭଲ ଲାଗେ"],
+    s2Text: ["Then here's the deal: bring your <strong>blessings</strong>, your best dance moves and an empty stomach<br />Gulab jamuns are our official currency 🍬", "ତେବେ ଏଇ ଚୁକ୍ତି: ଆପଣଙ୍କ <strong>ଆଶୀର୍ବାଦ</strong>, ସର୍ବୋତ୍ତମ ନାଚ ଆଉ ଖାଲି ପେଟ ନେଇ ଆସନ୍ତୁ<br />ଗୁଲାବ୍ ଜାମୁନ୍ ହିଁ ଆମର ସରକାରୀ ମୁଦ୍ରା 🍬"],
     yes1: ["Fine, I'll come! 🤗", "ଠିକ୍ ଅଛି, ମୁଁ ଆସିବି! 🤗"],
     yes2: ["Deal! See you there 🤝", "ଠିକ୍! ସେଠାରେ ଦେଖା ହେବ 🤝"],
     deal: ["It's a deal! 🎉", "ଚୁକ୍ତି ପକ୍କା! 🎉"],
@@ -885,7 +885,7 @@
   function renderDone(d) {
     var first = d.name.split(" ")[0];
     $("#rsvp-done-title").textContent = d.attending === "yes" ? t("doneYesTitle", { n: first }) : t("doneNoTitle", { n: first });
-    $("#rsvp-done-text").textContent = d.attending === "yes"
+    $("#rsvp-done-text").innerHTML = d.attending === "yes"
       ? (d.guests > 1 ? t("doneYesMany", { g: d.guests }) : t("doneYesText"))
       : t("doneNoText");
   }

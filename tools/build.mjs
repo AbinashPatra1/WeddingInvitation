@@ -118,8 +118,8 @@ function odClock(hhmm) {
 
 /* A light-hearted line on the back of each portrait. PLACEHOLDERS: replace with real fun facts. */
 const FACTS = {
-  groom: { en: "He says he can cook. We'll let you be the judge! 🍳", or: "ସେ କହେ ସେ ରାନ୍ଧିପାରେ। ବିଚାର ଆପଣ କରନ୍ତୁ! 🍳" },
-  bride: { en: "She can spot the perfect shade of anything from a mile away. 🎨", or: "ସେ ଯେକୌଣସି ଜିନିଷର ସବୁଠୁ ସୁନ୍ଦର ରଙ୍ଗ ଦୂରରୁ ଚିହ୍ନିପାରେ। 🎨" },
+  groom: { en: "He says he can cook, we'll let you be the judge! 🍳", or: "ସେ କହେ ସେ ରାନ୍ଧିପାରେ, ବିଚାର ଆପଣ କରନ୍ତୁ! 🍳" },
+  bride: { en: "She can spot the perfect shade of anything from a mile away 🎨", or: "ସେ ଯେକୌଣସି ଜିନିଷର ସବୁଠୁ ସୁନ୍ଦର ରଙ୍ଗ ଦୂରରୁ ଚିହ୍ନିପାରେ 🎨" },
 };
 
 function eventCard(ev, i, total, up) {
@@ -182,7 +182,7 @@ function page(p) {
   const url = `${SITE}/${p.path}/`;
   const up = "../../";
   const pageTitle = `${first} &amp; ${second} · Wedding Invitation`;
-  const ogDesc = "Join us as we begin our forever. 10 February 2027 · Tirtol, Odisha";
+  const ogDesc = "Join us as we begin our forever · 10 February 2027 · Tirtol, Odisha";
   const coupleCard = (key, name, nameOr, prefixOr, role, kinEn, kinOr, fact) => `
           <figure class="couple__card reveal">
             <button class="flip" type="button" aria-pressed="false" aria-label="Tap to flip the photo of ${name}">
@@ -225,7 +225,7 @@ function page(p) {
   <meta name="theme-color" content="#f4ebdc" />
   <meta name="robots" content="noindex, nofollow" />
   <title>${pageTitle}</title>
-  <meta name="description" content="With the blessings of Lord Ganesha, join us for the wedding of ${first} &amp; ${second}." />
+  <meta name="description" content="With the blessings of Lord Ganesha, join us for the wedding of ${first} &amp; ${second}" />
 
   <!-- Social share preview -->
   <meta property="og:type" content="website" />
@@ -323,7 +323,7 @@ ${SPRITE.trimEnd()}
           <button type="button" class="countdown__unit" data-fact="seconds"><span class="countdown__num" data-unit="seconds">--</span><span class="countdown__label">${tr("Seconds", "ସେକେଣ୍ଡ")}</span></button>
         </div>
         <p class="countdown__fact" id="countdown-fact" aria-live="polite">Tap a box for a fun fact</p>
-        <p class="countdown__done" id="countdown-done" hidden>${tr("We're married! Thank you for your blessings. ✨", "ଆମେ ବିବାହିତ! ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ପାଇଁ ଧନ୍ୟବାଦ। ✨")}</p>
+        <p class="countdown__done" id="countdown-done" hidden>${tr("We're married! Thank you for your blessings ✨", "ଆମେ ବିବାହିତ! ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ପାଇଁ ଧନ୍ୟବାଦ ✨")}</p>
         <p class="section__note reveal">${tr("10 February 2027 · 7:00 PM IST", "୧୦ ଫେବୃଆରୀ ୨୦୨୭ · ସନ୍ଧ୍ୟା ୭:୦୦ (IST)")}</p>
       </section>
 
@@ -362,7 +362,7 @@ ${SPRITE.trimEnd()}
         </div>
 
         <blockquote class="quote reveal">
-          <p><span class="quote__line">${tr("“Like Shiva and Shakti, two halves of one whole —", "“ଶିବ ଓ ଶକ୍ତିଙ୍କ ପରି, ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣତାର ଦୁଇ ଅଂଶ —")}</span> <span class="quote__line">${tr("bound by love, blessed by the divine.”", "ପ୍ରେମରେ ବାନ୍ଧି, ଭଗବାନଙ୍କ ଆଶୀର୍ବାଦରେ ଧନ୍ୟ।”")}</span></p>
+          <p><span class="quote__line">${tr("“Like Shiva and Shakti, two halves of one whole", "“ଶିବ ଓ ଶକ୍ତିଙ୍କ ପରି, ଗୋଟିଏ ସମ୍ପୂର୍ଣ୍ଣତାର ଦୁଇ ଅଂଶ")}</span> <span class="quote__line">${tr("bound by love, blessed by the divine”", "ପ୍ରେମରେ ବାନ୍ଧି, ଭଗବାନଙ୍କ ଆଶୀର୍ବାଦରେ ଧନ୍ୟ”")}</span></p>
         </blockquote>
       </section>
 
@@ -383,18 +383,17 @@ ${events}
 
         <div class="shagun card reveal">
           <div class="shagun__coins" aria-hidden="true"><span>💸</span><span>💰</span><span>🪙</span></div>
-          <p class="shagun__pitch">${tr("We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner.", "ଆମକୁ ଘର ସଜାଇବାକୁ ଅଛି, ହନିମୁନ୍ ଯୋଜନା କରିବାକୁ ଅଛି, ଆଉ <em>“ବିବାହ ବଜେଟ୍”</em> ନାମକ ଏକ ରହସ୍ୟମୟ ସ୍ପ୍ରେଡ୍‌ସିଟ୍ କୋଣରେ କାନ୍ଦୁଛି।")}</p>
-          <p class="shagun__pitch">${tr("Your blessings are priceless. Cash, however, is also accepted. 😇", "ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଅମୂଲ୍ୟ। ହେଲେ, ନଗଦ ଟଙ୍କା ମଧ୍ୟ ଗ୍ରହଣୀୟ। 😇")}</p>
+          <p class="shagun__pitch">${tr("We have a home to set up, a honeymoon to plan, and a mysterious spreadsheet called <em>“Wedding Budget”</em> that is crying in a corner", "ଆମକୁ ଘର ସଜାଇବାକୁ ଅଛି, ହନିମୁନ୍ ଯୋଜନା କରିବାକୁ ଅଛି, ଆଉ <em>“ବିବାହ ବଜେଟ୍”</em> ନାମକ ଏକ ରହସ୍ୟମୟ ସ୍ପ୍ରେଡ୍‌ସିଟ୍ କୋଣରେ କାନ୍ଦୁଛି")}</p>
+          <p class="shagun__pitch">${tr("Your blessings are priceless<br />Cash, however, is also accepted 😇", "ଆପଣଙ୍କ ଆଶୀର୍ବାଦ ଅମୂଲ୍ୟ<br />ହେଲେ, ନଗଦ ଟଙ୍କା ମଧ୍ୟ ଗ୍ରହଣୀୟ 😇")}</p>
           <button class="btn btn--gold btn--block shagun__btn" type="button" id="shagun-btn">
             <svg aria-hidden="true"><use href="#i-gift"/></svg>${tr("Send Shagun", "ଶଗୁଣ ପଠାନ୍ତୁ")}
           </button>
-          <p class="shagun__fine">${tr("<sup>*</sup>Terms &amp; conditions apply. Clicking may cause guilt.", "<sup>*</sup>ସର୍ତ୍ତ ପ୍ରଯୁଜ୍ୟ। କ୍ଲିକ୍ କଲେ ଦୋଷବୋଧ ହୋଇପାରେ।")}</p>
+          <p class="shagun__fine">${tr("<sup>*</sup>Terms &amp; conditions apply, clicking may cause guilt", "<sup>*</sup>ସର୍ତ୍ତ ପ୍ରଯୁଜ୍ୟ, କ୍ଲିକ୍ କଲେ ଦୋଷବୋଧ ହୋଇପାରେ")}</p>
         </div>
       </section>
 
       <!-- RSVP -->
       <section class="section section--rsvp" id="rsvp" aria-labelledby="rsvp-title">
-        <p class="eyebrow reveal">${tr("Kindly respond by 15 January 2027", "ଦୟାକରି ୧୫ ଜାନୁଆରୀ ୨୦୨୭ ମଧ୍ୟରେ ଜଣାନ୍ତୁ")}</p>
         <h2 class="section__title reveal" id="rsvp-title">${tr("RSVP", "ଉତ୍ତର ଜଣାନ୍ତୁ")}</h2>
 
         <div class="rsvp reveal">
@@ -421,7 +420,7 @@ ${events}
 
             <div class="field" data-field="name">
               <label for="f-name">${tr("Your name", "ଆପଣଙ୍କ ନାମ")} <span aria-hidden="true">*</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="e.g. Priya Sharma"${ph("ଯଥା: ପ୍ରିୟା ଶର୍ମା")}
+              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Priya Sharma"${ph("ଯଥା: ପ୍ରିୟା ଶର୍ମା")}
                      required minlength="2" maxlength="60" aria-describedby="e-name" />
               <p class="field__error" id="e-name" aria-live="polite"></p>
             </div>
@@ -467,7 +466,7 @@ ${events}
               <span class="btn__label" data-or="ହ୍ୱାଟସଆପ୍ ଜରିଆରେ ପଠାନ୍ତୁ">Send RSVP via WhatsApp</span>
               <span class="btn__spinner" aria-hidden="true"></span>
             </button>
-            <p class="form__note">${tr("Next, we'll open WhatsApp with your RSVP ready to go.", "ପରେ, ଆପଣଙ୍କ ଉତ୍ତର ସହ ହ୍ୱାଟସଆପ୍ ଖୋଲିବ।")}</p>
+            <p class="form__note">${tr("Next, we'll open WhatsApp with your RSVP ready to go", "ପରେ, ଆପଣଙ୍କ ଉତ୍ତର ସହ ହ୍ୱାଟସଆପ୍ ଖୋଲିବ")}</p>
             <p class="form__status" id="rsvp-status" role="status" aria-live="polite"></p>
           </form>
 
@@ -488,7 +487,7 @@ ${events}
     <footer class="footer">
       <svg class="footer__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="currentColor"/></svg>
       <p class="footer__names">${tr(first, firstOr)} <span>${tr("&amp;", "ଓ")}</span> ${tr(second, secondOr)}</p>
-      <p class="footer__text">${tr("With love and gratitude, we look forward to celebrating with you.", "ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ।")}</p>
+      <p class="footer__text">${tr("With love and gratitude, we look forward to celebrating with you", "ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ")}</p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
     </footer>
 
@@ -507,7 +506,7 @@ ${events}
     <div class="modal__card">
       <p class="modal__emoji" id="shagun-emoji" aria-hidden="true">🥹</p>
       <h3 class="modal__title" id="shagun-title">Wait… you really wanted to gift us?</h3>
-      <p class="modal__text" id="shagun-text">Aww, that's sweet! But your <strong>presence</strong> is the only present we need. Come hungry, dance hard and bless us. That is the whole gift list.</p>
+      <p class="modal__text" id="shagun-text">Aww, that's sweet! But your <strong>presence</strong> is the only present we need<br />Come hungry, dance hard and bless us<br />That is the whole gift list</p>
       <div class="modal__actions">
         <button class="btn btn--gold btn--block" type="button" id="shagun-yes">Fine, I'll come! 🤗</button>
         <button class="btn btn--ghost btn--block" type="button" id="shagun-insist" data-or="ନା, ମୁଁ ଜିଦ୍ କରୁଛି! 😤">No, I insist! 😤</button>
@@ -519,7 +518,7 @@ ${events}
   <dialog class="modal" id="wa-modal" aria-labelledby="wa-title">
     <div class="modal__card">
       <h3 class="modal__title" id="wa-title">${tr("One last step 💚", "ଶେଷ ପଦକ୍ଷେପ 💚")}</h3>
-      <p class="modal__text">${tr("<strong>Please do not forget to press “Send” in WhatsApp.</strong> Your RSVP only reaches us once you send it.", "<strong>ଦୟାକରି ହ୍ୱାଟସଆପ୍‌ରେ “Send” ଦାବିବାକୁ ଭୁଲିବେ ନାହିଁ।</strong> ଆପଣ ପଠାଇଲେ ହିଁ ଆପଣଙ୍କ ଉତ୍ତର ଆମ ପାଖରେ ପହଞ୍ଚିବ।")}</p>
+      <p class="modal__text">${tr("<strong>Please do not forget to press “Send” in WhatsApp</strong><br />Your RSVP only reaches us once you send it", "<strong>ଦୟାକରି ହ୍ୱାଟସଆପ୍‌ରେ “Send” ଦାବିବାକୁ ଭୁଲିବେ ନାହିଁ</strong><br />ଆପଣ ପଠାଇଲେ ହିଁ ଆପଣଙ୍କ ଉତ୍ତର ଆମ ପାଖରେ ପହଞ୍ଚିବ")}</p>
       <img class="modal__img" src="${up}assets/whatsapp-send.svg" data-src-or="${up}assets/whatsapp-send-or.svg" alt="In WhatsApp, tap the green send arrow at the bottom right" width="360" height="210" />
       <div class="modal__actions">
         <a class="btn btn--whatsapp btn--block" id="wa-open" target="_blank" rel="noopener" href="#">
@@ -564,7 +563,7 @@ function landing() {
   <main class="landing">
     <div>
       <h1>${GROOM} &amp; ${BRIDE}</h1>
-      <p>Please open the invitation link that was shared with you.</p>
+      <p>Please open the invitation link that was shared with you</p>
     </div>
   </main>
 </body>

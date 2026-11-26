@@ -259,6 +259,7 @@ ${SPRITE.trimEnd()}
 
     <p class="opener__hint opener__hint--above" id="opener-label">
       <span class="opener__for">${tr("You are cordially invited", "ଆପଣଙ୍କୁ ସାଦର ନିମନ୍ତ୍ରଣ")}</span>
+      <span class="opener__tap">${tr("Tap to open", "ଖୋଲିବାକୁ ଟାପ୍ କରନ୍ତୁ")}</span>
     </p>
 
     <button class="envelope" id="envelope" type="button" aria-describedby="opener-label">
@@ -274,9 +275,7 @@ ${SPRITE.trimEnd()}
       <span class="sr-only">Open the invitation</span>
     </button>
 
-    <p class="opener__hint opener__hint--below">
-      <span class="opener__tap">${tr("Tap to open", "ଖୋଲିବାକୁ ଟାପ୍ କରନ୍ତୁ")}</span>
-    </p>
+
   </div>
 
   <!-- ============ APP SHELL ============ -->

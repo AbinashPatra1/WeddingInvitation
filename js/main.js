@@ -387,26 +387,7 @@
     reveals.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  /* ---------- 4. Bottom nav: active state + smooth scroll ---------- */
-  var tabs = $$(".tabbar__item[href]");
-  var sectionIds = { home: "home", countdown: "home", couple: "home", events: "events", rsvp: "rsvp", gifts: "gifts" };
-
-  function setActive(id) {
-    tabs.forEach(function (t) {
-      var on = t.getAttribute("href") === "#" + id;
-      t.classList.toggle("is-active", on);
-      if (on) t.setAttribute("aria-current", "true"); else t.removeAttribute("aria-current");
-    });
-  }
-  if ("IntersectionObserver" in window) {
-    var navIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) setActive(sectionIds[entry.target.id] || "home");
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    Object.keys(sectionIds).forEach(function (id) { var el = doc.getElementById(id); if (el) navIO.observe(el); });
-  }
-
+  /* ---------- 4. Smooth scrolling for in-page links (the scroll cue) ---------- */
   $$('a[href^="#"]').forEach(function (a) {
     a.addEventListener("click", function (e) {
       var id = a.getAttribute("href").slice(1);

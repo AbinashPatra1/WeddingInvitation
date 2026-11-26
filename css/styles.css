@@ -35,7 +35,6 @@
   --shadow: 0 10px 30px rgba(74, 52, 30, 0.10);
   --shadow-lg: 0 24px 60px rgba(74, 52, 30, 0.22);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --tabbar-h: 64px;
   --safe-b: env(safe-area-inset-bottom, 0px);
 }
 
@@ -45,7 +44,7 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 12px;
-  scroll-padding-bottom: calc(var(--tabbar-h) + 24px);
+  scroll-padding-bottom: 24px;
 }
 body {
   margin: 0;
@@ -94,7 +93,7 @@ button { cursor: pointer; }
   background: var(--ivory);
   box-shadow: 0 0 80px rgba(60, 40, 20, 0.18);
   overflow: hidden; /* guarantees zero horizontal scroll */
-  padding-bottom: calc(var(--tabbar-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
 }
 
 /* ---------- 4. Envelope opener ---------- */
@@ -777,7 +776,7 @@ body.is-open .hero__petals i { animation-play-state: running; }
   --g0: #f7cdbd; --g1: #fde8de; --g2: #fde8de; --g3: #f7cdbd;
   position: relative;
   display: flex;
-  min-height: clamp(580px, calc(100svh - var(--tabbar-h) - 48px), 820px);
+  min-height: clamp(580px, calc(100svh - 48px), 820px);
   padding: var(--band);
   border-radius: 28px;
   overflow: hidden;
@@ -1349,45 +1348,6 @@ button.event__icon::after { /* a soft ring pulse while the hint is up */
 .footer__text { max-width: 30ch; margin: 8px auto 0; font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--ink); }
 .footer__tag { margin-top: 14px; font-size: 0.75rem; letter-spacing: 0.18em; color: var(--gold); }
 
-/* ---------- 14. Bottom tab bar ---------- */
-.tabbar {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  z-index: 50;
-  width: var(--app-w);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  height: calc(var(--tabbar-h) + var(--safe-b));
-  padding: 0 6px var(--safe-b);
-  background: rgba(251, 247, 240, 0.88);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  border-top: 1px solid var(--line);
-  transform: translate(-50%, 110%);
-  transition: transform 0.6s var(--ease) 0.4s;
-}
-body.is-open .tabbar { transform: translate(-50%, 0); }
-.tabbar__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  min-height: 48px;
-  border: 0;
-  background: none;
-  text-decoration: none;
-  font-size: 0.64rem;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  transition: color 0.2s;
-  touch-action: manipulation;
-}
-.tabbar__item svg { width: 22px; height: 22px; transition: transform 0.25s var(--ease); }
-.tabbar__item.is-active { color: var(--gold); }
-.tabbar__item.is-active svg { transform: translateY(-2px); animation: tabBounce 0.55s var(--ease); }
-
 /* ---------- 14a. Language switch ---------- */
 .lang {
   position: fixed;
@@ -1478,7 +1438,7 @@ body.is-open .progress { opacity: 1; }
 .toast {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--tabbar-h) + var(--safe-b) + 16px);
+  bottom: calc(var(--safe-b) + 24px);
   z-index: 120;
   max-width: calc(var(--app-w) - 40px);
   padding: 12px 20px;
@@ -1500,7 +1460,6 @@ body.is-open .progress { opacity: 1; }
 .no-js .reveal, .no-js .hero__content > * { opacity: 1; transform: none; }
 .no-js .opener { display: none; }
 .no-js body.is-locked { overflow: auto; height: auto; }
-.no-js .tabbar { transform: translate(-50%, 0); }
 .no-js .scroll-cue { opacity: 1; }
 
 /* ---------- 17. Keyframes ---------- */
@@ -1528,7 +1487,6 @@ body.is-open .progress { opacity: 1; }
 @keyframes sealPulse { 0%, 100% { transform: scale(1); box-shadow: 0 3px 8px rgba(80, 20, 10, 0.35), 0 0 0 0 rgba(216, 102, 90, 0.5), inset 0 0 0 4px rgba(255, 255, 255, 0.08); } 50% { transform: scale(1.07); box-shadow: 0 5px 12px rgba(80, 20, 10, 0.4), 0 0 0 10px rgba(216, 102, 90, 0), inset 0 0 0 4px rgba(255, 255, 255, 0.08); } }
 @keyframes sealShine { 0% { background-position: -120% 0; } 45%, 100% { background-position: 120% 0; } }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-@keyframes tabBounce { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-8px) scale(1.18); } 100% { transform: translateY(-2px) scale(1); } }
 @keyframes emojiBounce { 0% { transform: scale(0.3) rotate(-20deg); opacity: 0; } 55% { transform: scale(1.25) rotate(8deg); opacity: 1; } 80% { transform: scale(0.92) rotate(-4deg); } 100% { transform: scale(1) rotate(0); } }
 @keyframes twinkleStars { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
 @keyframes handTap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
@@ -1586,3 +1544,6 @@ body.is-open .progress { opacity: 1; }
 
 /* "Tap to open": a deeper gold so it stays readable on the light artwork */
 .opener__tap { color: #8f6a2a; font-weight: 600; }
+
+/* the share button at the very end of the page */
+.footer__share { margin-top: 22px; min-height: 50px; padding: 0 26px; }

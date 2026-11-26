@@ -488,16 +488,9 @@ ${events}
       <p class="footer__names">${tr(first, firstOr)} <span>${tr("&amp;", "ଓ")}</span> ${tr(second, secondOr)}</p>
       <p class="footer__text">${tr("With love and gratitude, we look forward to celebrating with you", "ପ୍ରେମ ଓ କୃତଜ୍ଞତା ସହ, ଆପଣଙ୍କ ସହ ଏହି ଉତ୍ସବ ପାଳନ କରିବାକୁ ଅପେକ୍ଷାରେ ଅଛୁ")}</p>
       <p class="footer__tag">#AbinashWedsMousumi</p>
+      <button class="btn btn--gold footer__share" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg>${tr("Share this invitation", "ନିମନ୍ତ୍ରଣ ଶେୟାର୍ କରନ୍ତୁ")}</button>
     </footer>
 
-    <!-- Bottom nav (social-app style) -->
-    <nav class="tabbar" id="tabbar" aria-label="Sections">
-      <a class="tabbar__item is-active" href="#home"><svg aria-hidden="true"><use href="#i-home"/></svg><span>${tr("Home", "ହୋମ୍")}</span></a>
-      <a class="tabbar__item" href="#events"><svg aria-hidden="true"><use href="#i-calendar"/></svg><span>${tr("Events", "କାର୍ଯ୍ୟକ୍ରମ")}</span></a>
-      <a class="tabbar__item" href="#gifts"><svg aria-hidden="true"><use href="#i-gift"/></svg><span>${tr("Gifts", "ଉପହାର")}</span></a>
-      <a class="tabbar__item" href="#rsvp"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>${tr("RSVP", "ଉତ୍ତର")}</span></a>
-      <button class="tabbar__item" type="button" id="share-btn"><svg aria-hidden="true"><use href="#i-share"/></svg><span>${tr("Share", "ଶେୟାର୍")}</span></button>
-    </nav>
   </div>
 
   <!-- Shagun popup -->

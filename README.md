@@ -4,7 +4,7 @@ Four mobile-first invitations built with plain HTML, CSS and JavaScript, generat
 
 | Invitation | URL |
 |---|---|
-| Bride v1 (Sangeet & Mehendi, Haldi, Wedding) | `/pari/v1/` |
+| Bride v1 (Sangeet & Mehendi, Wedding) | `/pari/v1/` |
 | Bride v2 (Haldi, Wedding) | `/pari/v2/` |
 | Groom v1 (Mehendi, Haldi, Wedding, Reception) | `/abinash/v1/` |
 | Groom v2 (Haldi, Wedding, Reception) | `/abinash/v2/` |
@@ -25,6 +25,7 @@ The root `/` shows only a neutral "please open the link you were sent" page. Bri
     ├── build.mjs               # page template + event data → the 4 pages
     ├── sprite.html             # inline SVG icon sprite used by the template
     ├── make-illustrations.py   # draws the scattered border strips around each card (assets/events/frame-*.svg)
+    ├── make-preview-image.py   # builds assets/og-preview-groom.jpg and og-preview-bride.jpg (the WhatsApp / social link previews) from tools/source/preview-poster-*.webp
     ├── prepare-couple-photos.py # removes the generator star, tints the white paper to the page colour, builds the flip side
     ├── prepare-paintings.py    # cuts the paper away and feathers the paintings from tools/source/*.webp; prints the edge colours
     └── source/                 # original illustration sheets (light set + dark wedding/reception)

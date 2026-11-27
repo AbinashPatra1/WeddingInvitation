@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://abinashpatra1.github.io/WeddingInvitation";
+/* one link-preview image per side (built by tools/make-preview-image.py); bump v when you change a picture */
+const previewImage = (side) => `${SITE}/assets/og-preview-${side}.jpg?v=1`;
 const SPRITE = readFileSync(join(ROOT, "tools", "sprite.html"), "utf8");
 
 /* ------------------------------------------------------------------ shared facts */
@@ -21,7 +23,7 @@ const RSVP_NUMBER = "917438013279";
 /* ------------------------------------------------------------------ event catalogue */
 const WEDDING_PLAN = [
   { time: "10:00 PM", t24: "22:00", label: "Baarat", labelOr: "ବରଯାତ୍ରା" },
-  { time: "11:00 PM", t24: "23:00", label: "Reception", labelOr: "ରିସେପ୍ସନ୍" },
+  { time: "11:00 PM", t24: "23:00", label: "Varmala", labelOr: "ବରମାଳା" },
   { time: "1:00 AM", t24: "01:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Hata Ganthi / Bahaghara", labelOr: "ହାତଗଣ୍ଠି / ବାହାଘର" },
   { time: "6:00 AM", t24: "06:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Bidai", labelOr: "ବିଦାୟ" },
 ];
@@ -53,7 +55,7 @@ const EV = {
 
 /* ------------------------------------------------------------------ the four invitations */
 const PAGES = [
-  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.sangeetMehendi, EV.haldiBride, EV.wedding] },
+  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.sangeetMehendi, EV.wedding] },
   { path: "pari/v2", label: "Bride v2", side: "bride", events: [EV.haldiBride, EV.wedding] },
   { path: "abinash/v1", label: "Groom v1", side: "groom", events: [EV.mehendiGroom, EV.haldiGroom, EV.wedding, EV.reception] },
   { path: "abinash/v2", label: "Groom v2", side: "groom", events: [EV.haldiGroom, EV.wedding, EV.reception] },
@@ -227,15 +229,26 @@ function page(p) {
   <title>${pageTitle}</title>
   <meta name="description" content="With the blessings of Lord Ganesha, join us for the wedding of ${first} &amp; ${second}" />
 
-  <!-- Social share preview -->
+  <!-- Social share preview (WhatsApp, Facebook, iMessage, Telegram, X ...). Image URLs must be absolute.
+       The ?v= suffix makes apps fetch a fresh image when it changes (WhatsApp caches previews hard). -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="${first} &amp; ${second}" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="or_IN" />
   <meta property="og:title" content="${pageTitle}" />
   <meta property="og:description" content="${ogDesc}" />
   <meta property="og:url" content="${url}" />
-  <meta property="og:image" content="${SITE}/assets/bg.jpg" />
-  <meta property="og:image:width" content="736" />
-  <meta property="og:image:height" content="1308" />
+  <meta property="og:image" content="${previewImage(p.side)}" />
+  <meta property="og:image:secure_url" content="${previewImage(p.side)}" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Wedding invitation of ${first} &amp; ${second}, 10 February 2027, Tirtol, Odisha" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${pageTitle}" />
+  <meta name="twitter:description" content="${ogDesc}" />
+  <meta name="twitter:image" content="${previewImage(p.side)}" />
+  <meta name="twitter:image:alt" content="Wedding invitation of ${first} &amp; ${second}" />
   <link rel="canonical" href="${url}" />
 
   <link rel="icon" href="${up}assets/favicon.svg" type="image/svg+xml" />

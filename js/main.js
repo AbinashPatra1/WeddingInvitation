@@ -288,7 +288,9 @@
     petalBurst(er.left + er.width / 2, er.top + er.height * 0.55);
     if (navigator.vibrate) { try { navigator.vibrate(15); } catch (e) { /* ignore */ } }
 
-    var delay = reduceMotion ? 50 : 1700;
+    // the flap and letter finish opening ~1.55 s after the tap; the envelope then stays open for 1 s before the home page appears
+    var OPEN_ANIM = reduceMotion ? 0 : 1550, HOLD = 1000;
+    var delay = OPEN_ANIM + HOLD;
     setTimeout(function () {
       opener.classList.add("is-gone");
       body.classList.remove("is-locked");

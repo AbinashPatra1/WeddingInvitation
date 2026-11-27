@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://abinashpatra1.github.io/WeddingInvitation";
+const PREVIEW_IMAGE = `${SITE}/assets/og-preview.jpg?v=1`;   // bump v when you change assets/og-preview.jpg
 const SPRITE = readFileSync(join(ROOT, "tools", "sprite.html"), "utf8");
 
 /* ------------------------------------------------------------------ shared facts */
@@ -227,15 +228,26 @@ function page(p) {
   <title>${pageTitle}</title>
   <meta name="description" content="With the blessings of Lord Ganesha, join us for the wedding of ${first} &amp; ${second}" />
 
-  <!-- Social share preview -->
+  <!-- Social share preview (WhatsApp, Facebook, iMessage, Telegram, X ...). Image URLs must be absolute.
+       The ?v= suffix makes apps fetch a fresh image when it changes (WhatsApp caches previews hard). -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="${first} &amp; ${second}" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:locale:alternate" content="or_IN" />
   <meta property="og:title" content="${pageTitle}" />
   <meta property="og:description" content="${ogDesc}" />
   <meta property="og:url" content="${url}" />
-  <meta property="og:image" content="${SITE}/assets/bg.jpg" />
-  <meta property="og:image:width" content="736" />
-  <meta property="og:image:height" content="1308" />
+  <meta property="og:image" content="${PREVIEW_IMAGE}" />
+  <meta property="og:image:secure_url" content="${PREVIEW_IMAGE}" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Wedding invitation of ${first} &amp; ${second}, 10 February 2027, Tirtol, Odisha" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${pageTitle}" />
+  <meta name="twitter:description" content="${ogDesc}" />
+  <meta name="twitter:image" content="${PREVIEW_IMAGE}" />
+  <meta name="twitter:image:alt" content="Wedding invitation of ${first} &amp; ${second}" />
   <link rel="canonical" href="${url}" />
 
   <link rel="icon" href="${up}assets/favicon.svg" type="image/svg+xml" />

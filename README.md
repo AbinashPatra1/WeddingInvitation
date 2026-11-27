@@ -25,7 +25,7 @@ The root `/` shows only a neutral "please open the link you were sent" page. Bri
     ├── build.mjs               # page template + event data → the 4 pages
     ├── sprite.html             # inline SVG icon sprite used by the template
     ├── make-illustrations.py   # draws the scattered border strips around each card (assets/events/frame-*.svg)
-    ├── make-preview-image.py   # builds assets/og-preview.jpg (the WhatsApp / social link preview) from tools/source/preview-poster.webp
+    ├── make-preview-image.py   # builds assets/og-preview-groom.jpg and og-preview-bride.jpg (the WhatsApp / social link previews) from tools/source/preview-poster-*.webp
     ├── prepare-couple-photos.py # removes the generator star, tints the white paper to the page colour, builds the flip side
     ├── prepare-paintings.py    # cuts the paper away and feathers the paintings from tools/source/*.webp; prints the edge colours
     └── source/                 # original illustration sheets (light set + dark wedding/reception)

@@ -21,7 +21,7 @@ const RSVP_NUMBER = "917438013279";
 /* ------------------------------------------------------------------ event catalogue */
 const WEDDING_PLAN = [
   { time: "10:00 PM", t24: "22:00", label: "Baarat", labelOr: "ବରଯାତ୍ରା" },
-  { time: "11:00 PM", t24: "23:00", label: "Reception", labelOr: "ରିସେପ୍ସନ୍" },
+  { time: "11:00 PM", t24: "23:00", label: "Varmala", labelOr: "ବରମାଳା" },
   { time: "1:00 AM", t24: "01:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Hata Ganthi / Bahaghara", labelOr: "ହାତଗଣ୍ଠି / ବାହାଘର" },
   { time: "6:00 AM", t24: "06:00", note: "11 Feb", noteOr: "୧୧ ଫେବୃ", label: "Bidai", labelOr: "ବିଦାୟ" },
 ];
@@ -53,7 +53,7 @@ const EV = {
 
 /* ------------------------------------------------------------------ the four invitations */
 const PAGES = [
-  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.sangeetMehendi, EV.haldiBride, EV.wedding] },
+  { path: "pari/v1", label: "Bride v1", side: "bride", events: [EV.sangeetMehendi, EV.wedding] },
   { path: "pari/v2", label: "Bride v2", side: "bride", events: [EV.haldiBride, EV.wedding] },
   { path: "abinash/v1", label: "Groom v1", side: "groom", events: [EV.mehendiGroom, EV.haldiGroom, EV.wedding, EV.reception] },
   { path: "abinash/v2", label: "Groom v2", side: "groom", events: [EV.haldiGroom, EV.wedding, EV.reception] },

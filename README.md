@@ -4,7 +4,7 @@ Four mobile-first invitations built with plain HTML, CSS and JavaScript, generat
 
 | Invitation | URL |
 |---|---|
-| Bride v1 (Sangeet & Mehendi, Haldi, Wedding) | `/pari/v1/` |
+| Bride v1 (Sangeet & Mehendi, Wedding) | `/pari/v1/` |
 | Bride v2 (Haldi, Wedding) | `/pari/v2/` |
 | Groom v1 (Mehendi, Haldi, Wedding, Reception) | `/abinash/v1/` |
 | Groom v2 (Haldi, Wedding, Reception) | `/abinash/v2/` |
